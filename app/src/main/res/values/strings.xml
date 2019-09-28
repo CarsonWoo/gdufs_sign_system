@@ -1,3 +1,6 @@
 <resources>
-    <string name="app_name">gdufs_sign_system</string>
+    <string name="app_name">人人签</string>
+
+    <!--  字符常量  -->
+    <string name="back_confirm_toast">再按一次退出app</string>
 </resources>

@@ -2,11 +2,11 @@ package com.carson.gdufs_sign_system
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.carson.gdufs_sign_system.base.BaseActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    override fun getContentViewResId(): Int {
+        return R.layout.activity_main
     }
 }
