@@ -10,17 +10,41 @@ import androidx.fragment.app.Fragment
  * Fragment基类
  */
 abstract class BaseFragment : Fragment() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        LifeCallbackManager.get().addFragment(this)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return getContentView()
+        return getContentView(inflater, container, savedInstanceState)
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
     }
 
-    abstract fun getContentView(): View?
+    // 懒加载可以在这里操作
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LifeCallbackManager.get().removeFragment(this)
+    }
+
+    open fun onBackPressed() {
+
+    }
+
+    protected abstract fun getContentView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
+
+    companion object {
+        private val TAG = "BaseFragment"
+    }
 }

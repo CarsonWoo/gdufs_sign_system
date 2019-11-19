@@ -4,10 +4,12 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.utils.StatusBarUtil
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Activity基类

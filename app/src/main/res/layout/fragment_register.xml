@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/ic_logo"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="70dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <EditText
+        android:id="@+id/et_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/phone_number"
+        android:textSize="@dimen/normal_text_size"
+        android:theme="@style/EditTextUnderlineStyle"
+        android:inputType="number"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintTop_toBottomOf="@id/ic_logo" />
+
+    <EditText
+        android:id="@+id/et_code"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/auth_code"
+        android:textSize="@dimen/normal_text_size"
+        android:theme="@style/EditTextUnderlineStyle"
+        android:inputType="number"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintTop_toBottomOf="@id/et_username"
+        app:layout_constraintLeft_toLeftOf="@id/et_username"
+        app:layout_constraintRight_toLeftOf="@id/btn_get_code" />
+
+    <Button
+        android:id="@+id/btn_get_code"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:textSize="@dimen/mini_text_size"
+        android:background="@drawable/button_solid_cyan_style"
+        android:textColor="@color/colorWhite"
+        android:text="@string/get_code"
+        app:layout_constraintBaseline_toBaselineOf="@id/et_code"
+        app:layout_constraintRight_toRightOf="@id/et_username" />
+
+    <EditText
+        android:id="@+id/et_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/password"
+        android:textSize="@dimen/normal_text_size"
+        android:theme="@style/EditTextUnderlineStyle"
+        android:inputType="textPassword"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@id/et_code" />
+
+    <EditText
+        android:id="@+id/et_confirm_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/confirm_password"
+        android:textSize="@dimen/normal_text_size"
+        android:theme="@style/EditTextUnderlineStyle"
+        android:inputType="textPassword"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@id/et_password" />
+
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:background="@drawable/button_solid_cyan_style"
+        android:text="@string/register"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/button_text_size"
+        android:layout_marginTop="60dp"
+        app:layout_constraintLeft_toLeftOf="@id/et_username"
+        app:layout_constraintRight_toRightOf="@id/et_username"
+        app:layout_constraintTop_toBottomOf="@id/et_confirm_password" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
