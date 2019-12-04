@@ -120,10 +120,10 @@ object StatusBarUtil {
             val decorView = activity.window.decorView
             if (decorView != null) {
                 var vis = decorView.systemUiVisibility
-                if (dark) {
-                    vis = vis or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                vis = if (dark) {
+                    vis or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
                 } else {
-                    vis = vis and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+                    vis and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
                 }
                 if (decorView.systemUiVisibility != vis) {
                     decorView.systemUiVisibility = vis

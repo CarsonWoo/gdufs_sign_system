@@ -13,6 +13,14 @@
     <string name="auth_code">验证码</string>
     <string name="confirm_password">再次输入密码</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--  首页  -->
+    <string name="sign">签到</string>
+    <string name="sign_activity">签到活动</string>
+    <string name="sign_people">已签到人数：%s</string>
+    <string name="edit_info">编辑资料 ></string>
+    <string name="student">学生</string>
+    <string name="clazz">班级</string>
+    <string name="search_hint">请输入要找的签到活动</string>
+
+
 </resources>

@@ -17,4 +17,16 @@
         <item name="colorControlActivated">@color/colorCyan</item>
     </style>
 
+    <declare-styleable name="RoundImageView">
+        <attr name="leftTopRadius" format="dimension" />
+        <attr name="leftBottomRadius" format="dimension" />
+        <attr name="rightTopRadius" format="dimension" />
+        <attr name="rightBottomRadius" format="dimension" />
+        <attr name="radius" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="CircleImageView">
+        <attr name="borderColor" format="color" />
+    </declare-styleable>
+
 </resources>

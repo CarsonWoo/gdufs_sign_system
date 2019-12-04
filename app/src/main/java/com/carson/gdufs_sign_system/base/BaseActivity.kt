@@ -1,6 +1,7 @@
 package com.carson.gdufs_sign_system.base
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
@@ -57,9 +58,10 @@ abstract class BaseActivity : AppCompatActivity() {
         // 设置透明
         StatusBarUtil.setTranslucentStatus(this)
         // 设置深色主题
-        if (!StatusBarUtil.setStatusBarDarkTheme(this, true)) {
-            StatusBarUtil.setStatusBarColor(this, 0x55000000)
-        }
+//        if (!StatusBarUtil.setStatusBarDarkTheme(this, true)) {
+//            StatusBarUtil.setStatusBarColor(this, 0x55000000)
+//        }
+        StatusBarUtil.setStatusBarColor(this, 0x55000000)
     }
 
     abstract fun getContentViewResId(): Int
