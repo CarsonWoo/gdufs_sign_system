@@ -26,6 +26,7 @@ class RoundRelativeLayout: RelativeLayout {
 
     private fun initParams() {
 //        setBackgroundColor(Color.WHITE)
+        clipChildren = true
         mPath = Path()
         mPath.fillType = Path.FillType.EVEN_ODD
     }

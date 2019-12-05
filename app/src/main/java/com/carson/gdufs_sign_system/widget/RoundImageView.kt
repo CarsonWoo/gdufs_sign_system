@@ -18,8 +18,6 @@ class RoundImageView : ImageView {
     private var mRightTopRadius: Int = 0
     private var mRightBottomRadius: Int = 0
 
-    private var mRids = FloatArray(8)
-    private lateinit var mPath: Path
     private lateinit var mRectF: RectF
 
     private val mPaint: Paint by lazy { Paint(Paint.ANTI_ALIAS_FLAG) }

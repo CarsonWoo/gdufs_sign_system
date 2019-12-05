@@ -1,4 +1,4 @@
-package com.carson.gdufs_sign_system.home.adapter
+package com.carson.gdufs_sign_system.main.adapter
 
 import android.util.Log
 import android.view.View

@@ -1,4 +1,4 @@
-package com.carson.gdufs_sign_system.home
+package com.carson.gdufs_sign_system.main.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -8,12 +8,14 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
-import com.carson.gdufs_sign_system.home.adapter.HomeBannerAdapter
-import com.carson.gdufs_sign_system.utils.ScreenUtils
+import com.carson.gdufs_sign_system.main.adapter.HomeBannerAdapter
+import com.carson.gdufs_sign_system.main.adapter.HomeSignItemAdapter
+import com.carson.gdufs_sign_system.main.model.HomeSignItem
 import com.carson.gdufs_sign_system.widget.BannerDot
 import com.carson.gdufs_sign_system.widget.CircleImageView
 
@@ -29,6 +31,8 @@ class HomeFragment private constructor(): BaseFragment() {
     private lateinit var mRecyclerview: RecyclerView
 
     private lateinit var mPagerAdapter: HomeBannerAdapter
+
+    private lateinit var mItemAdapter: HomeSignItemAdapter
 
     override fun getContentView(
         inflater: LayoutInflater,
@@ -49,12 +53,42 @@ class HomeFragment private constructor(): BaseFragment() {
         mBannerDot = mRoot.findViewById(R.id.banner_dot)
         mRecyclerview = mRoot.findViewById(R.id.home_recyclerview)
 
+        // 以下这些数据可以由controller请求
         val bannerList = mutableListOf("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png",
             "https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_reading.png", "https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_class.png",
             "https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_prize.png")
+        val itemList = mutableListOf(
+            HomeSignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png", "activity 1",
+                "2019/11/30 14:00-18:00", 38),
+            HomeSignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_reading.png", "activity 2",
+                "2019/11/30 14:00-18:00", 20),
+            HomeSignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png", "activity 3",
+                "2019/11/30 14:00-18:00", 0),
+            HomeSignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_prize.png", "activity 4",
+                "2019/11/30 14:00-18:00", 55),
+            HomeSignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_reading.png", "activity 5",
+                "2019/11/30 14:00-18:00", 18),
+            HomeSignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png", "activity 6",
+                "2019/11/30 14:00-18:00", 38),
+            HomeSignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png", "activity 7",
+                "2019/11/30 14:00-18:00", 68),
+            HomeSignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_class.png", "activity 8",
+                "2019/11/30 14:00-18:00", 68),
+            HomeSignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png", "activity 9",
+                "2019/11/30 14:00-18:00", 68),
+            HomeSignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_class.png", "activity 10",
+                "2019/11/30 14:00-18:00", 68)
+        )
+        // banner
         mPagerAdapter = HomeBannerAdapter(bannerList)
         mPagerAdapter.setUpWithViewPager(mViewPager)
         mPagerAdapter.setUpWithBannerDot(mBannerDot)
+        // recycler-view
+        mItemAdapter = HomeSignItemAdapter(itemList)
+        mRecyclerview.layoutManager = GridLayoutManager(this.context, 2)
+        mRecyclerview.setHasFixedSize(true)
+        mRecyclerview.adapter = mItemAdapter
+
     }
 
     fun onRefresh() {
@@ -67,7 +101,8 @@ class HomeFragment private constructor(): BaseFragment() {
         private var mInstance: HomeFragment? = null
 
         fun newInstance(): HomeFragment {
-            if (mInstance == null) mInstance = HomeFragment()
+            if (mInstance == null) mInstance =
+                HomeFragment()
             return mInstance!!
         }
     }

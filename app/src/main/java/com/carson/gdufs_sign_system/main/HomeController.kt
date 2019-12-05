@@ -1,14 +1,13 @@
-package com.carson.gdufs_sign_system.home
+package com.carson.gdufs_sign_system.main
 
-import android.content.Context
 import android.graphics.Color
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.carson.gdufs_sign_system.R
-import com.carson.gdufs_sign_system.user.UserFragment
+import com.carson.gdufs_sign_system.main.home.HomeFragment
+import com.carson.gdufs_sign_system.main.user.UserFragment
 import com.carson.gdufs_sign_system.utils.StatusBarUtil
 import com.carson.gdufs_sign_system.widget.TabSelector
-import kotlinx.android.synthetic.main.activity_home.view.*
 
 class HomeController(private var activity: HomeActivity?): TabSelector.OnTabSelectListener {
 
@@ -24,7 +23,8 @@ class HomeController(private var activity: HomeActivity?): TabSelector.OnTabSele
     fun initView() {
         mFragmentManager?.beginTransaction()?.apply {
             if (mHomeFragment == null) {
-                mHomeFragment = HomeFragment.newInstance()
+                mHomeFragment =
+                    HomeFragment.newInstance()
                 add(R.id.home_container, mHomeFragment!!, "Home")
             } else {
                 show(mHomeFragment!!)
@@ -49,7 +49,8 @@ class HomeController(private var activity: HomeActivity?): TabSelector.OnTabSele
                     StatusBarUtil.setStatusBarDarkTheme(it, true)
                 }
                 if (mHomeFragment == null) {
-                    mHomeFragment = HomeFragment.newInstance()
+                    mHomeFragment =
+                        HomeFragment.newInstance()
                     trans?.add(R.id.home_container, mHomeFragment!!, "Home")
                 } else {
                     mHomeFragment?.let {

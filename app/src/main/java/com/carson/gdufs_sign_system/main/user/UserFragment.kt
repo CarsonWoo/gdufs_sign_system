@@ -1,4 +1,4 @@
-package com.carson.gdufs_sign_system.user
+package com.carson.gdufs_sign_system.main.user
 
 import android.annotation.SuppressLint
 import android.os.Bundle

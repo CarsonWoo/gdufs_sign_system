@@ -1,4 +1,4 @@
-package com.carson.gdufs_sign_system.home
+package com.carson.gdufs_sign_system.main
 
 import android.os.Bundle
 import android.widget.FrameLayout
