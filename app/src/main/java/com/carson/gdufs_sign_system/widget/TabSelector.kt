@@ -1,6 +1,8 @@
 package com.carson.gdufs_sign_system.widget
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -47,6 +49,9 @@ class TabSelector: LinearLayout, View.OnClickListener {
         mHomeLayout.setOnClickListener(this)
         mUserLayout.setOnClickListener(this)
         gravity = Gravity.BOTTOM
+//        background = ColorDrawable(Color.WHITE)
+//        background.alpha = 128
+//        mRoot.background.alpha = 128
         setSelected(TAB.HOME)
     }
 

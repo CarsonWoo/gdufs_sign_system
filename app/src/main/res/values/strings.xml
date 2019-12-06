@@ -22,5 +22,10 @@
     <string name="clazz">班级</string>
     <string name="search_hint">请输入要找的签到活动</string>
 
+    <!--  个人页  -->
+    <string name="signed_activity">已签到活动</string>
+    <string name="dark_mode">夜间模式</string>
+    <string name="user_scan">扫一扫</string>
+    <string name="setting">设置</string>
 
 </resources>

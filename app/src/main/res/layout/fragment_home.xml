@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="50dp"
     android:clipChildren="false"
     android:fillViewport="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -12,7 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="20dp"
+        android:paddingBottom="40dp"
         android:clipChildren="false"
         android:focusable="true"
         android:focusableInTouchMode="true">

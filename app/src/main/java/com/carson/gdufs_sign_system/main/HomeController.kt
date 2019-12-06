@@ -31,6 +31,10 @@ class HomeController(private var activity: HomeActivity?): TabSelector.OnTabSele
             }
             commit()
         }
+        activity?.let {
+            StatusBarUtil.setStatusBarColor(it, it.resources.getColor(R.color.colorCommonBackground))
+            StatusBarUtil.setStatusBarDarkTheme(it, true)
+        }
     }
 
     fun onDestroy() {
@@ -45,7 +49,7 @@ class HomeController(private var activity: HomeActivity?): TabSelector.OnTabSele
         when (position) {
             0 -> {
                 activity?.let {
-                    StatusBarUtil.setStatusBarColor(it, Color.WHITE)
+                    StatusBarUtil.setStatusBarColor(it, it.resources.getColor(R.color.colorCommonBackground))
                     StatusBarUtil.setStatusBarDarkTheme(it, true)
                 }
                 if (mHomeFragment == null) {

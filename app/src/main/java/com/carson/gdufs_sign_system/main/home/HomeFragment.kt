@@ -15,7 +15,7 @@ import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.main.adapter.HomeBannerAdapter
 import com.carson.gdufs_sign_system.main.adapter.HomeSignItemAdapter
-import com.carson.gdufs_sign_system.main.model.HomeSignItem
+import com.carson.gdufs_sign_system.main.model.SignItem
 import com.carson.gdufs_sign_system.widget.BannerDot
 import com.carson.gdufs_sign_system.widget.CircleImageView
 
@@ -58,25 +58,25 @@ class HomeFragment private constructor(): BaseFragment() {
             "https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_reading.png", "https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_class.png",
             "https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_prize.png")
         val itemList = mutableListOf(
-            HomeSignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png", "activity 1",
+            SignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png", "activity 1",
                 "2019/11/30 14:00-18:00", 38),
-            HomeSignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_reading.png", "activity 2",
+            SignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_reading.png", "activity 2",
                 "2019/11/30 14:00-18:00", 20),
-            HomeSignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png", "activity 3",
+            SignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png", "activity 3",
                 "2019/11/30 14:00-18:00", 0),
-            HomeSignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_prize.png", "activity 4",
+            SignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_prize.png", "activity 4",
                 "2019/11/30 14:00-18:00", 55),
-            HomeSignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_reading.png", "activity 5",
+            SignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_reading.png", "activity 5",
                 "2019/11/30 14:00-18:00", 18),
-            HomeSignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png", "activity 6",
+            SignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png", "activity 6",
                 "2019/11/30 14:00-18:00", 38),
-            HomeSignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png", "activity 7",
+            SignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png", "activity 7",
                 "2019/11/30 14:00-18:00", 68),
-            HomeSignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_class.png", "activity 8",
+            SignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_class.png", "activity 8",
                 "2019/11/30 14:00-18:00", 68),
-            HomeSignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png", "activity 9",
+            SignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png", "activity 9",
                 "2019/11/30 14:00-18:00", 68),
-            HomeSignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_class.png", "activity 10",
+            SignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_class.png", "activity 10",
                 "2019/11/30 14:00-18:00", 68)
         )
         // banner

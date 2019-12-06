@@ -7,8 +7,12 @@
     <color name="colorGray">#CCCCCC</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorDeepGray">#666666</color>
+    <color name="colorBlack">#333333</color>
+    <color name="colorCommonBackground">#F8F8F8</color>
 
     <!--  含有透明色  -->
     <color name="alphaColorCyan">#740080FF</color>
-    <color name="colorBlack">#333333</color>
+    <color name="alphaColorWhite_70">#B2FFFFFF</color>
+    <color name="alphaColorWhite_50">#7FFFFFFF</color>
+    <color name="transparent">#00FFFFFF</color>
 </resources>
