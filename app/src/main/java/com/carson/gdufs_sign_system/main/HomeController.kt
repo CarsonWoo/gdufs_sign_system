@@ -4,6 +4,7 @@ import android.graphics.Color
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.carson.gdufs_sign_system.R
+import com.carson.gdufs_sign_system.base.LifeCallbackManager
 import com.carson.gdufs_sign_system.main.home.HomeFragment
 import com.carson.gdufs_sign_system.main.user.UserFragment
 import com.carson.gdufs_sign_system.utils.StatusBarUtil
@@ -39,6 +40,18 @@ class HomeController(private var activity: HomeActivity?): TabSelector.OnTabSele
 
     fun onDestroy() {
         activity = null
+    }
+    
+    fun onBackPressed(): Boolean {
+        if (LifeCallbackManager.get().getActivitySize() == 1) {
+            return false
+        } else {
+            activity?.apply {
+                finish(HomeActivity::class.java.name)
+                overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out)
+            }
+            return true
+        }
     }
 
     override fun onTabSelected(position: Int) {

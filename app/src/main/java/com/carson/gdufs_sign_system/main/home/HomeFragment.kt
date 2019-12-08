@@ -1,6 +1,7 @@
 package com.carson.gdufs_sign_system.main.home
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
+import com.carson.gdufs_sign_system.detail.DetailActivity
 import com.carson.gdufs_sign_system.main.adapter.HomeBannerAdapter
 import com.carson.gdufs_sign_system.main.adapter.HomeSignItemAdapter
 import com.carson.gdufs_sign_system.main.model.SignItem
@@ -83,6 +85,13 @@ class HomeFragment private constructor(): BaseFragment() {
         mPagerAdapter = HomeBannerAdapter(bannerList)
         mPagerAdapter.setUpWithViewPager(mViewPager)
         mPagerAdapter.setUpWithBannerDot(mBannerDot)
+        mPagerAdapter.setBannerClickListener(object: HomeBannerAdapter.OnBannerItemClickListener {
+            override fun onBannerClick(url: String) {
+                val toDetail = Intent(context, DetailActivity::class.java)
+                startActivity(toDetail)
+                activity?.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out)
+            }
+        })
         // recycler-view
         mItemAdapter = HomeSignItemAdapter(itemList)
         mRecyclerview.layoutManager = GridLayoutManager(this.context, 2)

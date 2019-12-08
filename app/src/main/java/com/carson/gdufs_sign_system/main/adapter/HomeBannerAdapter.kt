@@ -27,10 +27,16 @@ class HomeBannerAdapter(bannerList: MutableList<String>) : PagerAdapter(),
 
     private var mCurrentPosition = 0
 
+    private var mBannerClickListener: OnBannerItemClickListener? = null
+
     init {
         mSize = mBannerList.size
         mBannerList.add(0, bannerList[mSize - 1])
         mBannerList.add(bannerList[0])
+    }
+
+    fun setBannerClickListener(listener: OnBannerItemClickListener) {
+        this.mBannerClickListener = listener
     }
 
     fun setUpWithBannerDot(bannerDot: BannerDot) {
@@ -65,6 +71,9 @@ class HomeBannerAdapter(bannerList: MutableList<String>) : PagerAdapter(),
 //        }*/
         container.addView(imgView)
         Glide.with(container.context).load(mBannerList[position]).into(imgView)
+        imgView.setOnClickListener {
+            mBannerClickListener?.onBannerClick(mBannerList[position])
+        }
         return imgView
     }
 
@@ -110,5 +119,9 @@ class HomeBannerAdapter(bannerList: MutableList<String>) : PagerAdapter(),
             val alphaFactor = MIN_ALPHA + (1 - MIN_ALPHA) * (1 - abs(position))
             page.alpha = alphaFactor
         }
+    }
+
+    interface OnBannerItemClickListener {
+        fun onBannerClick(url: String)
     }
 }

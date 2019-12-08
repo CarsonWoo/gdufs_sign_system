@@ -24,6 +24,7 @@
             android:windowSoftInputMode="adjustPan|stateHidden">
 
         </activity>
+        <activity android:name=".detail.DetailActivity" />
     </application>
 
 </manifest>

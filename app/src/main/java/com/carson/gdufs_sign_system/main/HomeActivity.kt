@@ -25,13 +25,8 @@ class HomeActivity: BaseActivity() {
     }
 
     override fun onBackPressed() {
-//        super.onBackPressed()
-
-        if (LifeCallbackManager.get().getActivitySize() == 1) {
+        if (mHomeController?.onBackPressed() == false) {
             super.onBackPressed()
-        } else {
-            finish(HomeActivity::class.java.name)
-            overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out)
         }
     }
 
