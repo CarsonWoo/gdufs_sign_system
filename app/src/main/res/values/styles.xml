@@ -9,7 +9,6 @@
     </style>
 
     <style name="CustomTheme" parent="Theme.AppCompat.Light.NoActionBar">
-
     </style>
 
     <style name="EditTextUnderlineStyle" parent="Theme.AppCompat.Light">

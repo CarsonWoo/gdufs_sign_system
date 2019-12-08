@@ -54,7 +54,7 @@ class LifeCallbackManager {
 
     fun addActivity(activity: BaseActivity?) = activity?.let { activityList.add(it) }
 
-    fun removeActivity(activity: BaseActivity?) = activity?.let { activityList.add(it) }
+    fun removeActivity(activity: BaseActivity?) = activity?.let { activityList.remove(it) }
 
     fun finishActivity(className: String) {
         var target: BaseActivity? = null
@@ -65,6 +65,10 @@ class LifeCallbackManager {
         }
         // 由此会对该activity执行onDestroy 在onDestroy中执行removeActivity
         target?.finish()
+    }
+
+    fun getActivitySize(): Int {
+        return activityList.size
     }
 
     /**

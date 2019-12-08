@@ -1,6 +1,7 @@
 package com.carson.gdufs_sign_system.login
 
 import android.content.Context
+import android.content.Intent
 import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
@@ -10,6 +11,7 @@ import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseActivity
 import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.base.LifeCallbackManager
+import com.carson.gdufs_sign_system.main.HomeActivity
 
 class LoginController(private var activity: BaseActivity?) : LoginCallback {
 
@@ -39,6 +41,19 @@ class LoginController(private var activity: BaseActivity?) : LoginCallback {
             return
         }
 
+        // 跳转
+        jumpToMain()
+
+    }
+
+    private fun jumpToMain() {
+        activity?.let {
+            val toMain = Intent(it, HomeActivity::class.java)
+            // set data bundle
+            it.startActivity(toMain)
+            it.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out)
+            it.finish(LoginActivity::class.java.name)
+        }
     }
 
     override fun register(username: String?, password: String?, code: String?) {
@@ -56,6 +71,8 @@ class LoginController(private var activity: BaseActivity?) : LoginCallback {
             Toast.makeText(activity, "code auth error. please make sure the code is correct.", Toast.LENGTH_SHORT).show()
             return
         }
+
+        jumpToMain()
     }
 
     override fun goToRegister() {

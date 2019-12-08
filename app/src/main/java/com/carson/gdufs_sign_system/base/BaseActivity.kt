@@ -43,11 +43,15 @@ abstract class BaseActivity : AppCompatActivity() {
         val pressTime = System.currentTimeMillis()
         if (pressTime - mPressedBackTime < BACK_INTERVAL) {
             mPressedBackTime = 0
-            super.onBackPressed()
+            LifeCallbackManager.get().exitApp(0)
         } else {
             mPressedBackTime = pressTime
             Toast.makeText(this, R.string.back_confirm_toast, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    open fun finish(clazzName: String) {
+        LifeCallbackManager.get().finishActivity(clazzName)
     }
 
     /**

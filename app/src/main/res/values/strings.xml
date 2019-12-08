@@ -28,4 +28,14 @@
     <string name="user_scan">扫一扫</string>
     <string name="setting">设置</string>
 
+    <!--  详情页  -->
+    <string name="detail_type">活动类别:  %s</string>
+    <string name="detail_time">活动时间:  %s</string>
+    <string name="detail_area">活动地点:  %s</string>
+    <string name="detail_people">签到人数:  %d1 / %d2</string>
+    <string name="detail_end_time">签到截止时间:  %s</string>
+
+    <!--  util  -->
+    <string name="test_long_string">哈哈哈 哈哈哈啊爱看的舒服就是打开放得开方式登录森林砍伐奥克兰两款手机来扩大到了开发撒旦拉萨的看见路上看到案例的历史拉山口是多少了来上课啦流口水的拉萨德累斯顿老师楼上的就是上课阿拉十九点看\ndslkfj势力扩大解放奥地利开发加萨洛克发生了打开\nd\nd\n\f\nf\n\nf\n\nfn\f\nf\fn\fn\fn\fn\</string>
+
 </resources>
