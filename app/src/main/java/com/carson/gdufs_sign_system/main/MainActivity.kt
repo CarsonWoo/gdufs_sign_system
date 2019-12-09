@@ -4,20 +4,19 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseActivity
-import com.carson.gdufs_sign_system.base.LifeCallbackManager
 import com.carson.gdufs_sign_system.widget.TabSelector
 
-class HomeActivity: BaseActivity() {
+class MainActivity: BaseActivity() {
 
     private lateinit var mContainer: FrameLayout
     private lateinit var mTabSelector: TabSelector
-    private var mHomeController: HomeController? = null
+    private var mHomeController: MainController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mContainer = findViewById(R.id.home_container)
         mTabSelector = findViewById(R.id.tab_selector)
-        mHomeController = HomeController(this)
+        mHomeController = MainController(this)
         mHomeController?.initView()
         mHomeController?.let {
             mTabSelector.setSelectListener(it)

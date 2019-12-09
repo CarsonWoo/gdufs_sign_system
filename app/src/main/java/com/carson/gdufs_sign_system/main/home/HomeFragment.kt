@@ -1,6 +1,5 @@
 package com.carson.gdufs_sign_system.main.home
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,6 +14,7 @@ import androidx.viewpager.widget.ViewPager
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.detail.DetailActivity
+import com.carson.gdufs_sign_system.main.MainController
 import com.carson.gdufs_sign_system.main.adapter.HomeBannerAdapter
 import com.carson.gdufs_sign_system.main.adapter.HomeSignItemAdapter
 import com.carson.gdufs_sign_system.main.model.SignItem
@@ -22,6 +22,9 @@ import com.carson.gdufs_sign_system.widget.BannerDot
 import com.carson.gdufs_sign_system.widget.CircleImageView
 
 class HomeFragment private constructor(): BaseFragment() {
+    override fun fragmentString(): String {
+        return "Home"
+    }
 
     private lateinit var mRoot: View
     private lateinit var mAvatar: CircleImageView
@@ -105,14 +108,9 @@ class HomeFragment private constructor(): BaseFragment() {
     }
 
     companion object {
+        @JvmStatic
+        fun newInstance() = HomeFragment().apply {
 
-        @SuppressLint("StaticFieldLeak")
-        private var mInstance: HomeFragment? = null
-
-        fun newInstance(): HomeFragment {
-            if (mInstance == null) mInstance =
-                HomeFragment()
-            return mInstance!!
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.carson.gdufs_sign_system.main.user
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +16,9 @@ import com.carson.gdufs_sign_system.main.model.SignItem
 import com.carson.gdufs_sign_system.widget.CircleImageView
 
 class UserFragment private constructor(): BaseFragment() {
+    override fun fragmentString(): String {
+        return "User"
+    }
 
     private lateinit var mRoot: View
     private lateinit var mAvatarView: CircleImageView
@@ -93,12 +95,8 @@ class UserFragment private constructor(): BaseFragment() {
 
     companion object {
 
-        @SuppressLint("StaticFieldLeak")
-        private var mInstance: UserFragment? = null
-
-        fun newInstance(): UserFragment {
-            if (mInstance == null) mInstance = UserFragment()
-            return mInstance!!
+        @JvmStatic
+        fun newInstance() = UserFragment().apply {
         }
     }
 

@@ -1,42 +1,38 @@
 package com.carson.gdufs_sign_system.login
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.FragmentTransaction
 import com.carson.gdufs_sign_system.R
-import com.carson.gdufs_sign_system.base.BaseActivity
+import com.carson.gdufs_sign_system.base.BaseFragment
+import com.carson.gdufs_sign_system.base.BaseFragmentActivity
 
-class LoginActivity : BaseActivity() {
+class LoginActivity : BaseFragmentActivity() {
+
+    override fun getFragmentList(): MutableList<BaseFragment> {
+        if (mLoginFragment == null) {
+            mLoginFragment = LoginFragment.newInstance()
+        }
+        if (mRegisterFragment == null) {
+            mRegisterFragment = RegisterFragment.newInstance()
+        }
+        return mutableListOf(mLoginFragment!!, mRegisterFragment!!)
+    }
+
+    override fun getContainerId(): Int {
+        return R.id.container
+    }
+
     override fun getContentViewResId(): Int {
         return R.layout.activity_login
     }
 
-    private lateinit var mContainer: ConstraintLayout
-    private val mLoginController = LoginController(this)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mContainer = findViewById(R.id.container)
-        // 默认一进来先加载登录页
-        initTab()
-    }
-
-    private fun initTab() {
-        mLoginController.initTab()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mLoginController.onDestroy()
-    }
+    private var mLoginFragment: LoginFragment? = null
+    private var mRegisterFragment: RegisterFragment? = null
 
     override fun onBackPressed() {
-        if (!mLoginController.onBackPressed()) {
+        if (mLoginFragment?.let { return@let isFragmentTop(it) } == true) {
             super.onBackPressed()
+        } else {
+            mRegisterFragment?.onBackPressed()
         }
     }
-
-
 }

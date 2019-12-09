@@ -41,7 +41,6 @@
         android:id="@+id/edit_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/username"
         android:layout_toEndOf="@id/username"
         android:layout_alignTop="@id/username"
         android:textAlignment="textEnd"

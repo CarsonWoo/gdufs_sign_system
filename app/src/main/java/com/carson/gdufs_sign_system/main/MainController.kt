@@ -1,6 +1,5 @@
 package com.carson.gdufs_sign_system.main
 
-import android.graphics.Color
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.carson.gdufs_sign_system.R
@@ -10,7 +9,7 @@ import com.carson.gdufs_sign_system.main.user.UserFragment
 import com.carson.gdufs_sign_system.utils.StatusBarUtil
 import com.carson.gdufs_sign_system.widget.TabSelector
 
-class HomeController(private var activity: HomeActivity?): TabSelector.OnTabSelectListener {
+class MainController(private var activity: MainActivity?): TabSelector.OnTabSelectListener {
 
     private var mHomeFragment: HomeFragment? = null
     private var mUserFragment: UserFragment? = null
@@ -43,14 +42,14 @@ class HomeController(private var activity: HomeActivity?): TabSelector.OnTabSele
     }
     
     fun onBackPressed(): Boolean {
-        if (LifeCallbackManager.get().getActivitySize() == 1) {
-            return false
+        return if (LifeCallbackManager.get().getActivitySize() == 1) {
+            false
         } else {
             activity?.apply {
-                finish(HomeActivity::class.java.name)
+                finish(MainActivity::class.java.name)
                 overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out)
             }
-            return true
+            true
         }
     }
 

@@ -38,11 +38,13 @@ abstract class BaseFragment : Fragment() {
         LifeCallbackManager.get().removeFragment(this)
     }
 
-    open fun onBackPressed() {
-
+    open fun onBackPressed(): Boolean {
+        return false
     }
 
     protected abstract fun getContentView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
+
+    abstract fun fragmentString(): String
 
     companion object {
         private val TAG = "BaseFragment"
