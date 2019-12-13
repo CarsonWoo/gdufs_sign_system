@@ -1,6 +1,7 @@
 package com.carson.gdufs_sign_system.detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,13 +9,26 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.widget.NestedScrollView
+import com.bumptech.glide.Glide
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
+import com.carson.gdufs_sign_system.detail.controller.DetailController
 import com.carson.gdufs_sign_system.widget.RoundImageView
 
-class DetailFragment private constructor(): BaseFragment() {
+class DetailFragment private constructor(): BaseFragment(), IViewCallback {
+    override fun onFabShow(value: Float) {
+        Log.i(TAG, "value = $value")
+        if (value > 0) {
+            mFloatingButton.visibility = View.VISIBLE
+            mFloatingButton.translationY = 50F * (1F - value)
+            mFloatingButton.alpha = value
+        } else {
+            mFloatingButton.visibility = View.GONE
+        }
+    }
+
     override fun fragmentString(): String {
-        return "Detail"
+        return FRAGMENT_TAG
     }
 
     private lateinit var mRootView: View
@@ -30,6 +44,8 @@ class DetailFragment private constructor(): BaseFragment() {
     private lateinit var mDetailEndTime: TextView
     private lateinit var mFloatingButton: RelativeLayout
 
+    private lateinit var mDetailController: DetailController
+
     override fun getContentView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,6 +57,8 @@ class DetailFragment private constructor(): BaseFragment() {
     }
 
     private fun initViews() {
+        mDetailController = DetailController(this, this)
+
         mBack = mRootView.findViewById(R.id.detail_back)
         mScrollView = mRootView.findViewById(R.id.detail_scrollView)
         mTitle = mRootView.findViewById(R.id.detail_activity_name)
@@ -52,9 +70,23 @@ class DetailFragment private constructor(): BaseFragment() {
         mDetailSignedPeople = mRootView.findViewById(R.id.detail_people)
         mDetailEndTime = mRootView.findViewById(R.id.detail_end_time)
         mFloatingButton = mRootView.findViewById(R.id.detail_sign_fab)
+
+        Glide.with(this).load("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png").into(mCover)
+
+        mScrollView.setOnScrollChangeListener(mDetailController)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mDetailController.onDestroy()
     }
 
     companion object {
+
+        private const val TAG = "DetailFragment"
+
+        private const val FRAGMENT_TAG = "Detail"
+
         @JvmStatic
         fun newInstance() = DetailFragment().apply {
         }

@@ -17,13 +17,14 @@ import com.carson.gdufs_sign_system.detail.DetailActivity
 import com.carson.gdufs_sign_system.main.MainController
 import com.carson.gdufs_sign_system.main.adapter.HomeBannerAdapter
 import com.carson.gdufs_sign_system.main.adapter.HomeSignItemAdapter
+import com.carson.gdufs_sign_system.main.controller.HomeController
 import com.carson.gdufs_sign_system.main.model.SignItem
 import com.carson.gdufs_sign_system.widget.BannerDot
 import com.carson.gdufs_sign_system.widget.CircleImageView
 
 class HomeFragment private constructor(): BaseFragment() {
     override fun fragmentString(): String {
-        return "Home"
+        return FRAGMENT_TAG
     }
 
     private lateinit var mRoot: View
@@ -39,6 +40,8 @@ class HomeFragment private constructor(): BaseFragment() {
 
     private lateinit var mItemAdapter: HomeSignItemAdapter
 
+    private lateinit var mHomeController: HomeController
+
     override fun getContentView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,6 +53,7 @@ class HomeFragment private constructor(): BaseFragment() {
     }
 
     private fun initViews() {
+        mHomeController = HomeController(this)
         mAvatar = mRoot.findViewById(R.id.avatar)
         mUsername = mRoot.findViewById(R.id.username)
         mScan = mRoot.findViewById(R.id.home_scan)
@@ -58,45 +62,15 @@ class HomeFragment private constructor(): BaseFragment() {
         mBannerDot = mRoot.findViewById(R.id.banner_dot)
         mRecyclerview = mRoot.findViewById(R.id.home_recyclerview)
 
-        // 以下这些数据可以由controller请求
-        val bannerList = mutableListOf("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png",
-            "https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_reading.png", "https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_class.png",
-            "https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_prize.png")
-        val itemList = mutableListOf(
-            SignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png", "activity 1",
-                "2019/11/30 14:00-18:00", 38),
-            SignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_reading.png", "activity 2",
-                "2019/11/30 14:00-18:00", 20),
-            SignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png", "activity 3",
-                "2019/11/30 14:00-18:00", 0),
-            SignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_prize.png", "activity 4",
-                "2019/11/30 14:00-18:00", 55),
-            SignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_reading.png", "activity 5",
-                "2019/11/30 14:00-18:00", 18),
-            SignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png", "activity 6",
-                "2019/11/30 14:00-18:00", 38),
-            SignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png", "activity 7",
-                "2019/11/30 14:00-18:00", 68),
-            SignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_class.png", "activity 8",
-                "2019/11/30 14:00-18:00", 68),
-            SignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png", "activity 9",
-                "2019/11/30 14:00-18:00", 68),
-            SignItem("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_class.png", "activity 10",
-                "2019/11/30 14:00-18:00", 68)
-        )
+
+
         // banner
-        mPagerAdapter = HomeBannerAdapter(bannerList)
+        mPagerAdapter = mHomeController.getBannerAdapter()
         mPagerAdapter.setUpWithViewPager(mViewPager)
         mPagerAdapter.setUpWithBannerDot(mBannerDot)
-        mPagerAdapter.setBannerClickListener(object: HomeBannerAdapter.OnBannerItemClickListener {
-            override fun onBannerClick(url: String) {
-                val toDetail = Intent(context, DetailActivity::class.java)
-                startActivity(toDetail)
-                activity?.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out)
-            }
-        })
+        mPagerAdapter.setBannerClickListener(mHomeController)
         // recycler-view
-        mItemAdapter = HomeSignItemAdapter(itemList)
+        mItemAdapter = mHomeController.getItemAdapter()
         mRecyclerview.layoutManager = GridLayoutManager(this.context, 2)
         mRecyclerview.setHasFixedSize(true)
         mRecyclerview.adapter = mItemAdapter
@@ -107,7 +81,17 @@ class HomeFragment private constructor(): BaseFragment() {
         // TODO 刷新操作
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mHomeController.onDestroy()
+    }
+
+    override fun onBackPressed(): Boolean {
+        return mHomeController.onBackPressed()
+    }
+
     companion object {
+        private const val FRAGMENT_TAG = "Home"
         @JvmStatic
         fun newInstance() = HomeFragment().apply {
 

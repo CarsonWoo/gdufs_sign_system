@@ -1,39 +1,38 @@
-package com.carson.gdufs_sign_system.login
+package com.carson.gdufs_sign_system.login.controller
 
 import android.content.Intent
 import android.text.TextUtils.isEmpty
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseActivity
 import com.carson.gdufs_sign_system.base.BaseController
 import com.carson.gdufs_sign_system.base.BaseFragmentActivity
+import com.carson.gdufs_sign_system.login.LoginActivity
+import com.carson.gdufs_sign_system.login.LoginFragment
 import com.carson.gdufs_sign_system.main.MainActivity
 
-class RegisterController(mFragment: RegisterFragment?): BaseController<RegisterFragment?>(mFragment) {
+class LoginController(mFragment: LoginFragment?): BaseController<LoginFragment?>(mFragment) {
 
     companion object {
-        private const val TAG = "RegisterController"
+        private const val TAG = "LoginController"
     }
 
-    fun register(username: String?, password: String?, code: String?) {
+    fun login(username: String?, password: String?) {
         if (mFragment?.activity == null) {
-            Log.e(TAG, "activity is null do not do register.")
+            Log.e(TAG, "activity is null do not do login.")
             return
         }
-        // 注册操作
-        Log.i(TAG, "register")
+        // 登录操作
+        Log.i(TAG, "login")
         if (isEmpty(username) || isEmpty(password)) {
-            Toast.makeText(mFragment?.activity, "please confirm the username & password are both filled.", Toast.LENGTH_SHORT).show()
-            return
-        }
-        if (isEmpty(code)) {
-            Toast.makeText(mFragment?.activity, "code auth error. please make sure the code is correct.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(mFragment?.activity, "please fill the blank info.", Toast.LENGTH_SHORT).show()
             return
         }
 
+        // 跳转
         jumpToMain()
+
     }
 
     private fun jumpToMain() {
@@ -46,13 +45,12 @@ class RegisterController(mFragment: RegisterFragment?): BaseController<RegisterF
         }
     }
 
-    fun onBackPressed(): Boolean {
+    fun goToRegister() {
         (mFragment?.activity as BaseFragmentActivity?)?.apply {
-            setFragmentAnimation(R.anim.slide_left_in, R.anim.slide_right_out )
-            hide("Register")
-            show("Login")
-            return true
+            setFragmentAnimation(R.anim.slide_right_in, R.anim.slide_left_out)
+            hide("Login")
+            show("Register")
         }
-        return false
     }
+
 }

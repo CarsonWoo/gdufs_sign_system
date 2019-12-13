@@ -7,6 +7,7 @@ import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
+import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.utils.ScreenUtils
 import com.carson.gdufs_sign_system.widget.BannerDot
 import com.carson.gdufs_sign_system.widget.RoundImageView
@@ -65,6 +66,7 @@ class HomeBannerAdapter(bannerList: MutableList<String>) : PagerAdapter(),
         imgView.layoutParams = params
         imgView.scaleType = ImageView.ScaleType.CENTER_CROP
         imgView.setRadius(ScreenUtils.dip2px_10(container.context))
+        imgView.transitionName = imgView.resources.getString(R.string.home_detail_transition_cover)
 //            mImgList.add(imgView)
 //        }/* else {
 //            imgView = mImgList[position]
@@ -72,7 +74,7 @@ class HomeBannerAdapter(bannerList: MutableList<String>) : PagerAdapter(),
         container.addView(imgView)
         Glide.with(container.context).load(mBannerList[position]).into(imgView)
         imgView.setOnClickListener {
-            mBannerClickListener?.onBannerClick(mBannerList[position])
+            mBannerClickListener?.onBannerClick(it, mBannerList[position], position)
         }
         return imgView
     }
@@ -122,6 +124,6 @@ class HomeBannerAdapter(bannerList: MutableList<String>) : PagerAdapter(),
     }
 
     interface OnBannerItemClickListener {
-        fun onBannerClick(url: String)
+        fun onBannerClick(view: View, url: String, position: Int)
     }
 }

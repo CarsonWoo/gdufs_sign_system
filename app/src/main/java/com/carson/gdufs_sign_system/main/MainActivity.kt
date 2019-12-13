@@ -4,38 +4,81 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseActivity
+import com.carson.gdufs_sign_system.base.BaseFragment
+import com.carson.gdufs_sign_system.base.BaseFragmentActivity
+import com.carson.gdufs_sign_system.main.home.HomeFragment
+import com.carson.gdufs_sign_system.main.user.UserFragment
+import com.carson.gdufs_sign_system.utils.StatusBarUtil
 import com.carson.gdufs_sign_system.widget.TabSelector
 
-class MainActivity: BaseActivity() {
+class MainActivity: BaseFragmentActivity(), TabSelector.OnTabSelectListener {
 
-    private lateinit var mContainer: FrameLayout
     private lateinit var mTabSelector: TabSelector
-    private var mHomeController: MainController? = null
+    private var mHomeFragment: HomeFragment? = null
+    private var mUserFragment: UserFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mContainer = findViewById(R.id.home_container)
         mTabSelector = findViewById(R.id.tab_selector)
-        mHomeController = MainController(this)
-        mHomeController?.initView()
-        mHomeController?.let {
-            mTabSelector.setSelectListener(it)
-        }
+        mTabSelector.setSelectListener(this)
+        StatusBarUtil.setStatusBarColor(this, resources.getColor(R.color.colorCommonBackground))
+        StatusBarUtil.setStatusBarDarkTheme(this, true)
     }
 
     override fun onBackPressed() {
-        if (mHomeController?.onBackPressed() == false) {
+        if (mHomeFragment?.let { isFragmentTop(it) } == true) {
+            if (mHomeFragment?.onBackPressed() == false) {
+                super.onBackPressed()
+            }
+        } else {
             super.onBackPressed()
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        mHomeController?.onDestroy()
+    override fun onTabSelected(position: Int) {
+        when (position) {
+            0 -> {
+                StatusBarUtil.setStatusBarColor(this, resources.getColor(R.color.colorCommonBackground))
+                StatusBarUtil.setStatusBarDarkTheme(this, true)
+                hide(mUserFragment?.fragmentString())
+                show(mHomeFragment?.fragmentString())
+            }
+            1 -> {
+                StatusBarUtil.setStatusBarColor(this, resources.getColor(R.color.colorCyan))
+                StatusBarUtil.setStatusBarDarkTheme(this, false)
+                hide(mHomeFragment?.fragmentString())
+                show(mUserFragment?.fragmentString())
+            }
+        }
+    }
+
+    override fun onTabReselected(position: Int) {
+        when (position) {
+            0 -> {
+                mHomeFragment?.onRefresh()
+            }
+            1 -> {
+                mUserFragment?.onRefresh()
+            }
+        }
     }
 
     override fun getContentViewResId(): Int {
         return R.layout.activity_home
+    }
+
+    override fun getContainerId(): Int {
+        return R.id.home_container
+    }
+
+    override fun getFragmentList(): MutableList<BaseFragment> {
+        if (mHomeFragment == null) {
+            mHomeFragment = HomeFragment.newInstance()
+        }
+        if (mUserFragment == null) {
+            mUserFragment = UserFragment.newInstance()
+        }
+        return mutableListOf(mHomeFragment!!, mUserFragment!!)
     }
 
 }

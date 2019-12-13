@@ -26,7 +26,7 @@ class UserSignItemAdapter(private val mList: MutableList<SignItem>):
     override fun onBindViewHolder(holder: UserItemViewHolder, position: Int) {
         holder.mItemView.apply {
             val params = layoutParams as RecyclerView.LayoutParams
-            params.width = ScreenUtils.dip2px(context, 180F)
+            params.width = ScreenUtils.dip2px(context, 160F)
             when (position) {
                 0 -> {
                     // 最左侧item

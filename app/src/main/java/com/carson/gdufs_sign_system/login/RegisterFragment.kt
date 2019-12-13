@@ -1,6 +1,5 @@
 package com.carson.gdufs_sign_system.login
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,15 +7,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.carson.gdufs_sign_system.R
-import com.carson.gdufs_sign_system.base.BaseActivity
 import com.carson.gdufs_sign_system.base.BaseFragment
-import com.carson.gdufs_sign_system.base.BaseFragmentActivity
+import com.carson.gdufs_sign_system.login.controller.RegisterController
 
 class RegisterFragment private constructor() : BaseFragment(), View.OnClickListener {
 
     companion object {
+        private const val FRAGMENT_TAG = "Register"
         private val TAG = "RegisterFragment"
         @JvmStatic
         fun newInstance() = RegisterFragment().apply {
@@ -31,7 +29,8 @@ class RegisterFragment private constructor() : BaseFragment(), View.OnClickListe
     private lateinit var mBtnGetCode: Button
     private lateinit var mBtnRegister: Button
 
-    private val mRegisterController = RegisterController(this)
+    private val mRegisterController =
+        RegisterController(this)
 
     override fun getContentView(
         inflater: LayoutInflater,
@@ -45,7 +44,7 @@ class RegisterFragment private constructor() : BaseFragment(), View.OnClickListe
     }
 
     override fun fragmentString(): String {
-        return "Register"
+        return FRAGMENT_TAG
     }
 
     override fun onClick(v: View?) {

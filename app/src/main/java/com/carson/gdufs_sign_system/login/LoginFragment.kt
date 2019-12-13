@@ -11,6 +11,7 @@ import android.widget.TextView
 
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
+import com.carson.gdufs_sign_system.login.controller.LoginController
 
 class LoginFragment private constructor(): BaseFragment(), View.OnClickListener {
 
@@ -21,7 +22,8 @@ class LoginFragment private constructor(): BaseFragment(), View.OnClickListener 
     private lateinit var mBtnRegister: Button
     private lateinit var mTvForgetPassword: TextView
 
-    private val mLoginController = LoginController(this)
+    private val mLoginController =
+        LoginController(this)
 
     override fun getContentView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mContainer = inflater.inflate(R.layout.fragment_login, container, false)
@@ -31,7 +33,7 @@ class LoginFragment private constructor(): BaseFragment(), View.OnClickListener 
     }
 
     override fun fragmentString(): String {
-        return "Login"
+        return FRAGMENT_TAG
     }
 
     override fun onClick(v: View?) {
@@ -70,6 +72,7 @@ class LoginFragment private constructor(): BaseFragment(), View.OnClickListener 
     }
 
     companion object {
+        private const val FRAGMENT_TAG = "Login"
         private val TAG = "LoginFragment"
         @JvmStatic
         fun newInstance() = LoginFragment().apply {
