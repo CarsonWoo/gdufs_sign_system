@@ -18,7 +18,7 @@ import com.carson.gdufs_sign_system.widget.RoundImageView
 class DetailFragment private constructor(): BaseFragment(), IViewCallback {
     override fun onFabShow(value: Float) {
         Log.i(TAG, "value = $value")
-        if (value > 0) {
+        if (value > 0.1F) {
             mFloatingButton.visibility = View.VISIBLE
             mFloatingButton.translationY = 50F * (1F - value)
             mFloatingButton.alpha = value
@@ -74,6 +74,8 @@ class DetailFragment private constructor(): BaseFragment(), IViewCallback {
         Glide.with(this).load("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png").into(mCover)
 
         mScrollView.setOnScrollChangeListener(mDetailController)
+        mBack.setOnClickListener(mDetailController)
+        mFloatingButton.setOnClickListener(mDetailController)
     }
 
     override fun onDestroy() {

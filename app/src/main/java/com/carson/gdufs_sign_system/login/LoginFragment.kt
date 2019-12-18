@@ -2,6 +2,8 @@ package com.carson.gdufs_sign_system.login
 
 
 import android.os.Bundle
+import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +15,8 @@ import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.login.controller.LoginController
 
-class LoginFragment private constructor(): BaseFragment(), View.OnClickListener {
+class LoginFragment private constructor() : BaseFragment(), View.OnClickListener,
+    View.OnKeyListener {
 
     private lateinit var mContainer: View
     private lateinit var mEditUserName: EditText
@@ -25,7 +28,11 @@ class LoginFragment private constructor(): BaseFragment(), View.OnClickListener 
     private val mLoginController =
         LoginController(this)
 
-    override fun getContentView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun getContentView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         mContainer = inflater.inflate(R.layout.fragment_login, container, false)
         initViews()
         initEvents()
@@ -64,6 +71,15 @@ class LoginFragment private constructor(): BaseFragment(), View.OnClickListener 
         mBtnLogin.setOnClickListener(this)
         mBtnRegister.setOnClickListener(this)
         mTvForgetPassword.setOnClickListener(this)
+        mEditPassword.setOnKeyListener(this)
+    }
+
+    override fun onKey(v: View?, keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_ENTER && event?.action == KeyEvent.ACTION_DOWN) {
+            mLoginController.login(mEditUserName.text.toString(), mEditPassword.text.toString())
+            return true
+        }
+        return false
     }
 
     override fun onDestroy() {

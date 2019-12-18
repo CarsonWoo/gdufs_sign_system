@@ -19,3 +19,21 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keepclassmembers class ** {
+    public void on*Event(...);
+}
+-keep class c.t.**{*;}
+-keep class com.tencent.map.geolocation.**{*;}
+
+
+-dontwarn  org.eclipse.jdt.annotation.**
+-dontwarn  c.t.**
+
+#腾讯地图 2D sdk
+-keep class com.tencent.mapsdk.**{*;}
+-keep class com.tencent.tencentmap.**{*;}
+
+#腾讯地图检索sdk
+-keep class com.tencent.lbssearch.**{*;}
+-keepattributes Signature
+-dontwarn com.tencent.lbssearch.**

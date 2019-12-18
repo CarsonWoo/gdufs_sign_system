@@ -3,6 +3,8 @@ package com.carson.gdufs_sign_system.login.controller
 import android.content.Intent
 import android.text.TextUtils.isEmpty
 import android.util.Log
+import android.view.KeyEvent
+import android.view.View
 import android.widget.Toast
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseActivity
