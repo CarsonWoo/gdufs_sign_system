@@ -15,7 +15,7 @@ import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.detail.controller.DetailController
 import com.carson.gdufs_sign_system.widget.RoundImageView
 
-class DetailFragment private constructor(): BaseFragment(), IViewCallback {
+class DetailFragment : BaseFragment(), IViewCallback {
     override fun onFabShow(value: Float) {
         Log.i(TAG, "value = $value")
         if (value > 0.1F) {

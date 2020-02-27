@@ -11,7 +11,7 @@ import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.login.controller.RegisterController
 
-class RegisterFragment private constructor() : BaseFragment(), View.OnClickListener {
+class RegisterFragment : BaseFragment(), View.OnClickListener {
 
     companion object {
         private const val FRAGMENT_TAG = "Register"

@@ -1,6 +1,7 @@
 package com.carson.gdufs_sign_system.base
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,11 @@ import androidx.fragment.app.Fragment
 abstract class BaseFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+//        if (savedInstanceState != null) {
+//            // 存在数据恢复
+//            Log.e(TAG, "onCreate savedInstanceState: $savedInstanceState")
+//            return
+//        }
         super.onCreate(savedInstanceState)
         LifeCallbackManager.get().addFragment(this)
     }

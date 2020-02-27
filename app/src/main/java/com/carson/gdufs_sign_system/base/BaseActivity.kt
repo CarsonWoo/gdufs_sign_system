@@ -1,6 +1,7 @@
 package com.carson.gdufs_sign_system.base
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -9,6 +10,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.carson.gdufs_sign_system.R
+import com.carson.gdufs_sign_system.login.LoginActivity
 import com.carson.gdufs_sign_system.utils.StatusBarUtil
 import java.util.concurrent.ConcurrentHashMap
 
@@ -27,7 +29,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(getContentViewResId())
+        Log.e(TAG, "savedInstanceState: $savedInstanceState")
 
         setStatusBar()
 

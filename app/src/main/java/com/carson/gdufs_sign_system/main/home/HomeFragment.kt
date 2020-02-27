@@ -22,7 +22,7 @@ import com.carson.gdufs_sign_system.main.model.SignItem
 import com.carson.gdufs_sign_system.widget.BannerDot
 import com.carson.gdufs_sign_system.widget.CircleImageView
 
-class HomeFragment private constructor(): BaseFragment() {
+class HomeFragment: BaseFragment() {
     override fun fragmentString(): String {
         return FRAGMENT_TAG
     }

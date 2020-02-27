@@ -15,7 +15,7 @@ import com.carson.gdufs_sign_system.utils.StatusBarUtil
 import com.tencent.tencentmap.mapsdk.map.MapView
 import com.tencent.tencentmap.mapsdk.map.TencentMap
 
-class MapFragment private constructor() : BaseFragment() {
+class MapFragment : BaseFragment() {
 
     companion object {
         private const val FRAGMENT_TAG = "Map"

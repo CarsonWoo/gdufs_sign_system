@@ -17,7 +17,7 @@ import com.carson.gdufs_sign_system.main.controller.UserController
 import com.carson.gdufs_sign_system.main.model.SignItem
 import com.carson.gdufs_sign_system.widget.CircleImageView
 
-class UserFragment private constructor(): BaseFragment() {
+class UserFragment: BaseFragment() {
     override fun fragmentString(): String {
         return FRAGMENT_TAG
     }

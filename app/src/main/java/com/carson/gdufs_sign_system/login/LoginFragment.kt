@@ -1,6 +1,10 @@
 package com.carson.gdufs_sign_system.login
 
 
+import android.Manifest
+import android.app.Activity
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
@@ -10,12 +14,15 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.login.controller.LoginController
+import com.carson.gdufs_sign_system.utils.PermissionUtils
 
-class LoginFragment private constructor() : BaseFragment(), View.OnClickListener,
+class LoginFragment : BaseFragment(), View.OnClickListener,
     View.OnKeyListener {
 
     private lateinit var mContainer: View
@@ -56,6 +63,7 @@ class LoginFragment private constructor() : BaseFragment(), View.OnClickListener
             R.id.tv_forget_password -> {
                 // find password dialog
             }
+
         }
     }
 
@@ -80,11 +88,6 @@ class LoginFragment private constructor() : BaseFragment(), View.OnClickListener
             return true
         }
         return false
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mLoginController.onDestroy()
     }
 
     companion object {

@@ -19,6 +19,7 @@ class MainActivity: BaseFragmentActivity(), TabSelector.OnTabSelectListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(getContentViewResId())
         mTabSelector = findViewById(R.id.tab_selector)
         mTabSelector.setSelectListener(this)
         StatusBarUtil.setStatusBarColor(this, resources.getColor(R.color.colorCommonBackground))

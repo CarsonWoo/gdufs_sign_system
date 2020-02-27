@@ -9,7 +9,7 @@ import android.widget.TextView
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
 
-class SignSuccessFragment private constructor(): BaseFragment() {
+class SignSuccessFragment: BaseFragment() {
 
     companion object {
         private const val FRAGMENT_TAG = "SignSuccess"

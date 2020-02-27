@@ -1,5 +1,6 @@
 package com.carson.gdufs_sign_system.sign
 
+import android.os.Bundle
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.base.BaseFragmentActivity
@@ -8,6 +9,11 @@ class SignActivity : BaseFragmentActivity() {
 
     private var mMapFragment: MapFragment? = null
     private var mSignSuccessFragment: SignSuccessFragment? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(getContentViewResId())
+    }
 
     override fun getContainerId(): Int {
         return R.id.sign_container
