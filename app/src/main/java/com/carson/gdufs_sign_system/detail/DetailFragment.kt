@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.detail.controller.DetailController
+import com.carson.gdufs_sign_system.utils.PermissionUtils
 import com.carson.gdufs_sign_system.widget.RoundImageView
 
 class DetailFragment : BaseFragment(), IViewCallback {
@@ -80,6 +81,7 @@ class DetailFragment : BaseFragment(), IViewCallback {
 
     override fun onDestroy() {
         super.onDestroy()
+        PermissionUtils.getInstance().destroy()
         mDetailController.onDestroy()
     }
 

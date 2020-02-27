@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.base.BaseFragmentActivity
+import com.carson.gdufs_sign_system.sign.controller.MapController
 import com.carson.gdufs_sign_system.utils.StatusBarUtil
 import com.tencent.tencentmap.mapsdk.map.MapView
 import com.tencent.tencentmap.mapsdk.map.TencentMap
@@ -29,6 +30,9 @@ class MapFragment : BaseFragment() {
     private lateinit var mBack: ImageView
     private lateinit var mBackLayout: LinearLayout
     private lateinit var mSignButton: Button
+    private lateinit var mLocateButton: ImageView
+
+    private lateinit var mMapController: MapController
 
     override fun getContentView(
         inflater: LayoutInflater,
@@ -51,6 +55,11 @@ class MapFragment : BaseFragment() {
             StatusBarUtil.setStatusBarColor(this, resources.getColor(R.color.colorCyan))
             StatusBarUtil.setStatusBarDarkTheme(this, false)
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        mMapView?.onSaveInstanceState(outState)
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -86,13 +95,21 @@ class MapFragment : BaseFragment() {
      */
 
     private fun initViews() {
+        mMapController = MapController(this)
         mMapView = mRoot.findViewById(R.id.map_view)
         mBack = mRoot.findViewById(R.id.map_back)
         mBackLayout = mRoot.findViewById(R.id.map_back_layout)
         mSignButton = mRoot.findViewById(R.id.btn_sign_scan)
+        mLocateButton = mRoot.findViewById(R.id.btn_locate)
+        mMapView.let {
+            if (it != null) {
+                mMapController.setMapView(it)
+            }
+        }
     }
 
     private fun initEvents() {
+        mMapController.initMapEvent()
         mSignButton.setOnClickListener {
             (activity as BaseFragmentActivity?)?.apply {
                 setFragmentAnimation(R.anim.slide_right_in, R.anim.slide_left_out)

@@ -1,5 +1,6 @@
 package com.carson.gdufs_sign_system.detail.controller
 
+import android.Manifest
 import android.content.Intent
 import android.util.Log
 import android.view.View
@@ -10,6 +11,7 @@ import com.carson.gdufs_sign_system.detail.DetailActivity
 import com.carson.gdufs_sign_system.detail.DetailFragment
 import com.carson.gdufs_sign_system.detail.IViewCallback
 import com.carson.gdufs_sign_system.sign.SignActivity
+import com.carson.gdufs_sign_system.utils.PermissionUtils
 
 class DetailController(detailFragment: DetailFragment, private val mIView: IViewCallback): BaseController<DetailFragment>(detailFragment),
     NestedScrollView.OnScrollChangeListener, View.OnClickListener {
@@ -19,10 +21,22 @@ class DetailController(detailFragment: DetailFragment, private val mIView: IView
                 (mFragment?.activity as DetailActivity?)?.onBackPressed()
             }
             R.id.detail_sign_fab -> {
-                (mFragment?.activity as DetailActivity?)?.apply {
-                    val toSign = Intent(this, SignActivity::class.java)
-                    startActivity(toSign)
-                    overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out)
+                mFragment?.let {
+                    PermissionUtils.getInstance().with(it).requestCode(PermissionUtils.CODE_MULTI)
+                        .permissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        .request(object : PermissionUtils.PermissionCallback {
+                            override fun denied() {
+                                PermissionUtils.getInstance().showDialog()
+                            }
+
+                            override fun granted() {
+                                (mFragment?.activity as DetailActivity?)?.apply {
+                                    val toSign = Intent(this, SignActivity::class.java)
+                                    startActivity(toSign)
+                                    overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out)
+                                }
+                            }
+                        })
                 }
             }
         }

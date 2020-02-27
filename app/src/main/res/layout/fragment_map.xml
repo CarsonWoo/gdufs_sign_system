@@ -31,6 +31,17 @@
         app:layout_constraintTop_toBottomOf="@id/map_back_layout"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <ImageView
+        android:id="@+id/btn_locate"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/bg_circle_solid_white"
+        android:src="@drawable/signin_locate"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="60dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
     <Button
         android:id="@+id/btn_sign_scan"
         android:layout_width="120dp"
