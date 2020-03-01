@@ -22,7 +22,7 @@ class MainActivity: BaseFragmentActivity(), TabSelector.OnTabSelectListener {
         setContentView(getContentViewResId())
         mTabSelector = findViewById(R.id.tab_selector)
         mTabSelector.setSelectListener(this)
-        StatusBarUtil.setStatusBarColor(this, resources.getColor(R.color.colorCommonBackground))
+        StatusBarUtil.setStatusBarColor(this, resources.getColor(R.color.transparent))
         StatusBarUtil.setStatusBarDarkTheme(this, true)
     }
 
@@ -39,7 +39,7 @@ class MainActivity: BaseFragmentActivity(), TabSelector.OnTabSelectListener {
     override fun onTabSelected(position: Int) {
         when (position) {
             0 -> {
-                StatusBarUtil.setStatusBarColor(this, resources.getColor(R.color.colorCommonBackground))
+                StatusBarUtil.setStatusBarColor(this, resources.getColor(R.color.transparent))
                 StatusBarUtil.setStatusBarDarkTheme(this, true)
                 hide(mUserFragment?.fragmentString())
                 show(mHomeFragment?.fragmentString())

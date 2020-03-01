@@ -3,6 +3,7 @@ package com.carson.gdufs_sign_system.detail
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseActivity
 import com.carson.gdufs_sign_system.utils.StatusBarUtil
@@ -26,6 +27,8 @@ class DetailActivity : BaseActivity() {
                     .add(R.id.detail_container, it, it.fragmentString()).commit()
             }
         }
+        val params = findViewById<FrameLayout>(R.id.detail_container).layoutParams as FrameLayout.LayoutParams
+        params.topMargin = StatusBarUtil.getStatusBarHeight(this)
         StatusBarUtil.setStatusBarColor(this, resources.getColor(R.color.colorCyan))
         StatusBarUtil.setStatusBarDarkTheme(this, false)
     }

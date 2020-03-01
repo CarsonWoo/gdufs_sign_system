@@ -14,6 +14,7 @@ class LoginActivity : BaseFragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getContentViewResId())
+
     }
 
     override fun getFragmentList(): MutableList<BaseFragment> {

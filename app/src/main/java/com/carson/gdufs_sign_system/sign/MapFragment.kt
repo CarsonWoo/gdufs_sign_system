@@ -18,7 +18,12 @@ import com.carson.gdufs_sign_system.utils.StatusBarUtil
 import com.tencent.tencentmap.mapsdk.map.MapView
 import com.tencent.tencentmap.mapsdk.map.TencentMap
 
-class MapFragment : BaseFragment() {
+class MapFragment : BaseFragment(), IViewCallback {
+    override fun onFabShow() {
+        mSignButton.setBackgroundResource(R.drawable.button_solid_cyan_style)
+        mSignButton.isEnabled = true
+        mSignButton.isClickable = true
+    }
 
     companion object {
         private const val FRAGMENT_TAG = "Map"
@@ -43,7 +48,10 @@ class MapFragment : BaseFragment() {
     ): View? {
         mRoot = inflater.inflate(R.layout.fragment_map, container, false)
         PermissionUtils.getInstance().with(this).permissions(Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_WIFI_STATE,
+            Manifest.permission.CHANGE_WIFI_STATE, Manifest.permission.CHANGE_NETWORK_STATE,
+            Manifest.permission.ACCESS_NETWORK_STATE)
             .requestCode(PermissionUtils.CODE_MULTI).request(object: PermissionUtils.PermissionCallback {
                 override fun denied() {
                     PermissionUtils.getInstance().showDialog()
@@ -64,7 +72,7 @@ class MapFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         mMapView?.onCreate(savedInstanceState)
         activity?.apply {
-            StatusBarUtil.setStatusBarColor(this, resources.getColor(R.color.colorCyan))
+            StatusBarUtil.setStatusBarColor(this, resources.getColor(R.color.transparent))
             StatusBarUtil.setStatusBarDarkTheme(this, false)
         }
     }
@@ -107,7 +115,7 @@ class MapFragment : BaseFragment() {
      */
 
     private fun initViews() {
-        mMapController = MapController(this)
+        mMapController = MapController(this, this)
         mMapView = mRoot.findViewById(R.id.map_view)
         mBack = mRoot.findViewById(R.id.map_back)
         mBackLayout = mRoot.findViewById(R.id.map_back_layout)
@@ -129,6 +137,9 @@ class MapFragment : BaseFragment() {
                 hide(this@MapFragment)
                 show("SignSuccess")
             }
+        }
+        mLocateButton.setOnClickListener {
+            mMapController.registerLocationEvent()
         }
     }
 

@@ -5,12 +5,20 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <com.tencent.tencentmap.mapsdk.map.MapView
+        android:id="@+id/map_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
     <LinearLayout
         android:id="@+id/map_back_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorCyan"
-        android:paddingTop="10dp"
+        android:background="@color/transparent"
+        android:paddingTop="30dp"
         android:paddingBottom="10dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent">
@@ -24,13 +32,6 @@
 
     </LinearLayout>
 
-    <com.tencent.tencentmap.mapsdk.map.MapView
-        android:id="@+id/map_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/map_back_layout"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
     <ImageView
         android:id="@+id/btn_locate"
         android:layout_width="36dp"
@@ -38,16 +39,18 @@
         android:background="@drawable/bg_circle_solid_white"
         android:src="@drawable/signin_locate"
         android:layout_marginStart="30dp"
-        android:layout_marginBottom="60dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/btn_sign_scan"
+        app:layout_constraintBottom_toBottomOf="@id/btn_sign_scan" />
 
     <Button
         android:id="@+id/btn_sign_scan"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_solid_cyan_style"
+        android:background="@drawable/bg_round_rect_gray"
         android:text="@string/sign_scan_face"
+        android:clickable="false"
+        android:enabled="false"
         android:textColor="@color/colorWhite"
         android:gravity="center"
         android:layout_marginBottom="40dp"

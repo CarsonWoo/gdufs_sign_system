@@ -3,6 +3,7 @@ package com.carson.gdufs_sign_system.utils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -46,6 +47,10 @@ class PermissionUtils private constructor() {
             }
             checkNotNull(mInstance) { "instance should not be null" }
             return mInstance!!
+        }
+
+        fun isGranted(permission: String, context: Context): Boolean {
+            return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
         }
     }
 
