@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.base.BaseFragmentActivity
+import com.carson.gdufs_sign_system.utils.PermissionUtils
 
 class SignActivity : BaseFragmentActivity() {
 
@@ -31,6 +32,15 @@ class SignActivity : BaseFragmentActivity() {
 
     override fun getContentViewResId(): Int {
         return R.layout.activity_sign
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        PermissionUtils.getInstance().onRequestPermissionResult(requestCode, permissions, grantResults)
     }
 
     override fun onBackPressed() {
