@@ -1,5 +1,6 @@
 package com.carson.gdufs_sign_system.main.home
 
+import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,6 +20,8 @@ import com.carson.gdufs_sign_system.main.adapter.HomeBannerAdapter
 import com.carson.gdufs_sign_system.main.adapter.HomeSignItemAdapter
 import com.carson.gdufs_sign_system.main.controller.HomeController
 import com.carson.gdufs_sign_system.main.model.SignItem
+import com.carson.gdufs_sign_system.scan.ScanActivity
+import com.carson.gdufs_sign_system.utils.PermissionUtils
 import com.carson.gdufs_sign_system.widget.BannerDot
 import com.carson.gdufs_sign_system.widget.CircleImageView
 
@@ -49,6 +52,7 @@ class HomeFragment: BaseFragment() {
     ): View? {
         mRoot = inflater.inflate(R.layout.fragment_home, container, false)
         initViews()
+        initEvents()
         return mRoot
     }
 
@@ -61,8 +65,6 @@ class HomeFragment: BaseFragment() {
         mViewPager = mRoot.findViewById(R.id.view_pager)
         mBannerDot = mRoot.findViewById(R.id.banner_dot)
         mRecyclerview = mRoot.findViewById(R.id.home_recyclerview)
-
-
 
         // banner
         mPagerAdapter = mHomeController.getBannerAdapter()
@@ -77,13 +79,37 @@ class HomeFragment: BaseFragment() {
 
     }
 
+    private fun initEvents() {
+        mScan.setOnClickListener {
+            PermissionUtils.getInstance()
+                .with(this)
+                .permissions(Manifest.permission.CAMERA)
+                .requestCode(PermissionUtils.CODE_CAMERA)
+                .request(object : PermissionUtils.PermissionCallback {
+                    override fun denied() {
+                        PermissionUtils.getInstance().showDialog()
+                    }
+
+                    override fun granted() {
+                        activity?.let {
+                            Intent(it, ScanActivity::class.java).apply {
+                                startActivity(this)
+                                it.overridePendingTransition(R.anim.slide_right_in, R.anim.scale_out)
+                            }
+                        }
+                    }
+                })
+        }
+    }
+
     fun onRefresh() {
         // TODO 刷新操作
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         mHomeController.onDestroy()
+        PermissionUtils.getInstance().destroy()
+        super.onDestroy()
     }
 
     override fun onBackPressed(): Boolean {

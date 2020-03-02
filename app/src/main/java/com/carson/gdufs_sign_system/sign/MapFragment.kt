@@ -107,6 +107,8 @@ class MapFragment : BaseFragment(), IViewCallback {
 
     override fun onDestroy() {
         mMapView?.onDestroy()
+        mMapController.onDestroy()
+        PermissionUtils.getInstance().destroy()
         super.onDestroy()
     }
 

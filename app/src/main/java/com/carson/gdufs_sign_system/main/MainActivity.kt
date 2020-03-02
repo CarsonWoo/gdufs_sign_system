@@ -8,6 +8,7 @@ import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.base.BaseFragmentActivity
 import com.carson.gdufs_sign_system.main.home.HomeFragment
 import com.carson.gdufs_sign_system.main.user.UserFragment
+import com.carson.gdufs_sign_system.utils.PermissionUtils
 import com.carson.gdufs_sign_system.utils.StatusBarUtil
 import com.carson.gdufs_sign_system.widget.TabSelector
 
@@ -80,6 +81,15 @@ class MainActivity: BaseFragmentActivity(), TabSelector.OnTabSelectListener {
             mUserFragment = UserFragment.newInstance()
         }
         return mutableListOf(mHomeFragment!!, mUserFragment!!)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        PermissionUtils.getInstance().onRequestPermissionResult(requestCode, permissions, grantResults)
     }
 
 }
