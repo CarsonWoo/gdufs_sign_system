@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
+import com.carson.gdufs_sign_system.utils.Const
 
 class SignSuccessFragment: BaseFragment() {
 
@@ -27,12 +28,21 @@ class SignSuccessFragment: BaseFragment() {
     ): View? {
         mRoot = inflater.inflate(R.layout.fragment_sign_success, container, false)
         initViews()
+        initEvents()
         return mRoot
     }
 
     private fun initViews() {
         mSignTime = mRoot.findViewById(R.id.sign_time)
         mBtnComplete = mRoot.findViewById(R.id.btn_complete)
+
+        mSignTime.text = Const.getCurrentTime()
+    }
+
+    private fun initEvents() {
+        mBtnComplete.setOnClickListener {
+            (activity as SignActivity?)?.onBackPressed()
+        }
     }
 
     override fun fragmentString(): String {

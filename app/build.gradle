@@ -45,4 +45,5 @@ dependencies {
     // 腾讯定位sdk
     implementation 'com.tencent.map.geolocation:TencentLocationSdk-openplatform:7.2.4'
     implementation files('libs/TencentMapSDK_Raster_v_1.3.4.1.jar')
+    implementation files('libs/aip-java-sdk-4.1.0.jar')
 }

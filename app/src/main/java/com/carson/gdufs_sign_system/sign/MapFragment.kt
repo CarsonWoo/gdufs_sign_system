@@ -141,6 +141,9 @@ class MapFragment : BaseFragment(), IViewCallback {
         mLocateButton.setOnClickListener {
             mMapController.registerLocationEvent()
         }
+        mBack.setOnClickListener {
+            (activity as SignActivity?)?.onBackPressed()
+        }
     }
 
     override fun fragmentString(): String {

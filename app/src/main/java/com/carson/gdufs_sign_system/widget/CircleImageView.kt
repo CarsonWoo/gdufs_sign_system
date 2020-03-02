@@ -4,11 +4,8 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
-import android.view.View
-import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import com.carson.gdufs_sign_system.R
 
@@ -18,6 +15,7 @@ class CircleImageView: AppCompatImageView {
     private var mRadius = 0
     private var mRealSize = 0
     private var mBorderColor: Int = 0
+    private var mBorderWidth: Float = 1F
     private val mBorderPaint: Paint by lazy { Paint(Paint.ANTI_ALIAS_FLAG) }
     private lateinit var mMatrix: Matrix
 
@@ -30,6 +28,10 @@ class CircleImageView: AppCompatImageView {
         typedArray?.apply {
             if (hasValue(R.styleable.CircleImageView_borderColor)) {
                 mBorderColor = getColor(R.styleable.CircleImageView_borderColor, Color.WHITE)
+            }
+            if (hasValue(R.styleable.CircleImageView_borderWidth)) {
+                mBorderWidth = getDimension(R.styleable.CircleImageView_borderWidth, 1F)
+                Log.e(TAG, "width = $mBorderWidth")
             }
             recycle()
         }
@@ -58,24 +60,32 @@ class CircleImageView: AppCompatImageView {
             mPaint.color = drawable.color
             canvas.drawCircle(paddingLeft + mRealSize.toFloat() / 2, paddingTop + mRealSize.toFloat() / 2,
                 mRadius.toFloat(), mPaint)
+            if (mBorderColor != 0) {
+                setBorderColor(mBorderColor)
+                mBorderPaint.style = Paint.Style.STROKE
+                mBorderPaint.strokeWidth = mBorderWidth
+                canvas.drawCircle(paddingLeft + mRealSize.toFloat() / 2, paddingTop + mRealSize.toFloat() / 2,
+                    mRadius.toFloat() - mBorderWidth, mBorderPaint)
+            }
             return
         }
         if (drawable is BitmapDrawable) {
-            mPaint.shader = initBitmapShaer(drawable)
+            mPaint.shader = initBitmapShader(drawable)
             canvas.drawCircle(paddingLeft + mRealSize.toFloat() / 2, paddingTop + mRealSize.toFloat() / 2,
                 mRadius.toFloat(), mPaint)
             if (mBorderColor != 0) {
                 setBorderColor(mBorderColor)
                 mBorderPaint.style = Paint.Style.STROKE
+                mBorderPaint.strokeWidth = mBorderWidth
                 canvas.drawCircle(paddingLeft + mRealSize.toFloat() / 2, paddingTop + mRealSize.toFloat() / 2,
-                    mRadius.toFloat(), mBorderPaint)
+                    mRadius.toFloat() - mBorderWidth, mBorderPaint)
             }
             return
         }
         super.onDraw(canvas)
     }
 
-    private fun initBitmapShaer(bitmapDrawable: BitmapDrawable): BitmapShader {
+    private fun initBitmapShader(bitmapDrawable: BitmapDrawable): BitmapShader {
         val bitmap = bitmapDrawable.bitmap
         val bitmapShader = BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
         // 缩放比
