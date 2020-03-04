@@ -3,9 +3,11 @@ package com.carson.gdufs_sign_system.scan
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.WindowManager
+import android.widget.FrameLayout
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseActivity
 import com.carson.gdufs_sign_system.utils.PermissionUtils
+import com.carson.gdufs_sign_system.utils.StatusBarUtil
 
 class ScanActivity: BaseActivity() {
 
@@ -24,7 +26,11 @@ class ScanActivity: BaseActivity() {
                 .add(R.id.scan_container, it, it.fragmentString()).commit()
         }
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        val params = findViewById<FrameLayout>(R.id.scan_container).layoutParams as FrameLayout.LayoutParams
+        params.topMargin = StatusBarUtil.getStatusBarHeight(this)
+        StatusBarUtil.setStatusBarColor(this, resources.getColor(R.color.colorCyan))
+        StatusBarUtil.setStatusBarDarkTheme(this, false)
     }
 
     override fun getContentViewResId(): Int {

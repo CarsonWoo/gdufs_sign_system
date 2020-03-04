@@ -34,4 +34,9 @@
         <attr name="textureRadius" format="float"/>
     </declare-styleable>
 
+    <declare-styleable name="CircleTextureBorderView">
+        <attr name="circleTextureWidth" format="dimension" />
+        <attr name="circleTextureBorderColor" format="color" />
+    </declare-styleable>
+
 </resources>

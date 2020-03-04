@@ -19,8 +19,4 @@ class AipFaceObject private constructor() {
             return mClient!!
         }
     }
-
-    fun detectFace(img: String, options: HashMap<String, String>): JSONObject {
-        return mClient!!.detect(img, options)
-    }
 }

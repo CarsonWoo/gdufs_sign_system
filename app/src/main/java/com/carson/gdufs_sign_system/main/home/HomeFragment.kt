@@ -83,8 +83,9 @@ class HomeFragment: BaseFragment() {
         mScan.setOnClickListener {
             PermissionUtils.getInstance()
                 .with(this)
-                .permissions(Manifest.permission.CAMERA)
-                .requestCode(PermissionUtils.CODE_CAMERA)
+                .permissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)
+                .requestCode(PermissionUtils.CODE_MULTI)
                 .request(object : PermissionUtils.PermissionCallback {
                     override fun denied() {
                         PermissionUtils.getInstance().showDialog()

@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Outline
 import android.graphics.Rect
 import android.util.AttributeSet
+import android.util.Log
 import android.view.TextureView
 import android.view.View
 import android.view.ViewOutlineProvider
@@ -27,10 +28,10 @@ class RoundTextureView: TextureView {
             }
         }
         a.recycle()
+
         outlineProvider = object: ViewOutlineProvider() {
             override fun getOutline(view: View?, outline: Outline?) {
-                val rect = view?.let { Rect(0, 0, it.measuredWidth, it.measuredWidth) }
-                rect?.apply { outline?.setRoundRect(this, mRadius) }
+                outline?.setOval(0, 0, measuredWidth, measuredWidth)
             }
         }
         clipToOutline = true
@@ -43,11 +44,11 @@ class RoundTextureView: TextureView {
 
     fun setRadius(radius: Float) {
         this.mRadius = radius
+
     }
 
     fun turnRound() {
         invalidateOutline()
     }
-
 
 }

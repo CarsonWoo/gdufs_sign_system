@@ -4,25 +4,28 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.Matrix
-import android.graphics.Point
-import android.graphics.RectF
-import android.graphics.SurfaceTexture
+import android.graphics.*
 import android.hardware.camera2.*
+import android.media.Image
 import android.media.ImageReader
 import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
+import android.util.Range
 import android.util.Size
 import android.view.Surface
 import android.view.TextureView
 import androidx.core.content.ContextCompat
+import java.io.File
+import java.io.FileOutputStream
 import java.lang.Exception
 import java.lang.NullPointerException
 import java.lang.RuntimeException
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.locks.ReentrantLock
 import kotlin.Comparator
 import kotlin.collections.ArrayList
 import kotlin.math.abs
@@ -256,6 +259,32 @@ class CameraHelper private constructor(builder: Builder) {
 
     private var mImageReader: ImageReader? = null
 
+    private val mOnImageAvailableListener = object: ImageReader.OnImageAvailableListener {
+
+        private val lock = ReentrantLock()
+
+        override fun onImageAvailable(reader: ImageReader?) {
+            // 这里做保存工作
+            Log.e(TAG, "onImageAvailable")
+            val image = reader?.acquireNextImage()
+            // Y : U : V = 4 : 2 : 2
+            if (cameraListener != null && image?.format == ImageFormat.JPEG) {
+                val planes = image.planes
+                // 加锁保证y,u,v来源于同一个Image
+                lock.lock()
+                val byteBuffer = planes[0].buffer
+
+                val byteArray = ByteArray(byteBuffer.remaining())
+                byteBuffer.get(byteArray)
+
+                cameraListener?.onPreview(byteArray)
+
+                lock.unlock()
+            }
+            image?.close()
+        }
+    }
+
     /**
      * {@link CaptureRequest.Builder} for the camera preview
      */
@@ -366,6 +395,9 @@ class CameraHelper private constructor(builder: Builder) {
             get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
         map ?: return false
         mPreviewSize = getBestSupportedSize(ArrayList<Size>(map.getOutputSizes(SurfaceTexture::class.java).asList()))
+        mImageReader = ImageReader.newInstance(mPreviewSize!!.width, mPreviewSize!!.height,
+            ImageFormat.JPEG, 2)
+        mImageReader?.setOnImageAvailableListener(mOnImageAvailableListener, mBackgroundHandler)
 
         // noinspection ConstantConditions
         characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION)?.let {
@@ -416,6 +448,9 @@ class CameraHelper private constructor(builder: Builder) {
             mCameraDevice = null
 
             cameraListener?.onCameraClosed()
+
+            mImageReader?.close()
+            mImageReader = null
         } catch (e: InterruptedException) {
             cameraListener?.onCameraError(e)
         } finally {
@@ -463,13 +498,18 @@ class CameraHelper private constructor(builder: Builder) {
             mPreviewRequestBuilder =
                 mCameraDevice?.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
 
+            // 自动对焦
             mPreviewRequestBuilder?.set(CaptureRequest.CONTROL_AF_MODE,
                 CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE)
+
+            // 增加曝光度
+            mPreviewRequestBuilder?.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, getRange())
 
             mPreviewRequestBuilder?.addTarget(surface)
 
             // Here, we create a CameraCaptureSession for camera preview.
-            mCameraDevice?.createCaptureSession(listOf(surface), mCaptureStateCallback, mBackgroundHandler)
+            mCameraDevice?.createCaptureSession(listOf(surface, mImageReader?.surface),
+                mCaptureStateCallback, mBackgroundHandler)
         } catch (e: CameraAccessException) {
             e.printStackTrace()
         }
@@ -503,6 +543,52 @@ class CameraHelper private constructor(builder: Builder) {
         }
         Log.i(TAG, "configureTransform: ${getCameraOri(rotation, mCameraId)}  ${rotation * 90}")
         mTextureView?.setTransform(matrix)
+    }
+
+    fun takePhoto() {
+        // 一定要在这里加 不然回调不了 如果在上面加 会导致一直在capture
+        mImageReader?.let {
+            mPreviewRequestBuilder?.addTarget(it.surface)
+        }
+
+        // 这里保存时要选sensorOrientation(照相机的方向)
+        mPreviewRequestBuilder?.set(CaptureRequest.JPEG_ORIENTATION, mSensorOrientation)
+
+        // 设置对焦触发器为空闲状态
+        mPreviewRequestBuilder?.set(CaptureRequest.CONTROL_AF_TRIGGER, CaptureRequest.CONTROL_AF_TRIGGER_IDLE)
+
+        mCaptureSession?.stopRepeating()
+        // 开始拍照
+        mPreviewRequestBuilder?.let {
+            mCaptureSession?.capture(it.build(), null, mBackgroundHandler)
+        }
+    }
+
+    private fun getRange(): Range<Int>? {
+        val mCameraManager = mContext?.getSystemService(Context.CAMERA_SERVICE) as CameraManager?
+        var chars: CameraCharacteristics? = null
+        try {
+            chars = mCameraManager?.getCameraCharacteristics(mCameraId)
+        } catch (e: CameraAccessException) {
+            e.printStackTrace()
+        }
+        val ranges = chars?.get(CameraCharacteristics.CONTROL_AE_AVAILABLE_TARGET_FPS_RANGES)
+
+        var result : Range<Int>? = null
+
+        ranges?.let {
+            it.forEach { range ->
+                if (range.lower < 10) {
+                    return@forEach
+                }
+                if (result == null) {
+                    result = range
+                } else if (range.lower <= 15 && (range.upper - range.lower) > result!!.upper.minus(result!!.lower)) {
+                    result = range
+                }
+            }
+        }
+        return result
     }
 
 }
