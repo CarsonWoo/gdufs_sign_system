@@ -1,12 +1,7 @@
 package com.carson.gdufs_sign_system.login
 
 
-import android.Manifest
-import android.app.Activity
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -14,13 +9,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.login.controller.LoginController
-import com.carson.gdufs_sign_system.utils.PermissionUtils
 
 class LoginFragment : BaseFragment(), View.OnClickListener,
     View.OnKeyListener {

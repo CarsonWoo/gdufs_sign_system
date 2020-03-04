@@ -1,13 +1,9 @@
 package com.carson.gdufs_sign_system.login
 
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
-import androidx.core.app.ActivityCompat
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.base.BaseFragmentActivity
-import com.carson.gdufs_sign_system.utils.PermissionUtils
 
 class LoginActivity : BaseFragmentActivity() {
 

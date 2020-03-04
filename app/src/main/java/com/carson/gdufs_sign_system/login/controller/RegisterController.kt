@@ -10,7 +10,7 @@ import com.carson.gdufs_sign_system.base.BaseController
 import com.carson.gdufs_sign_system.base.BaseFragmentActivity
 import com.carson.gdufs_sign_system.login.LoginActivity
 import com.carson.gdufs_sign_system.login.RegisterFragment
-import com.carson.gdufs_sign_system.main.MainActivity
+import com.carson.gdufs_sign_system.student.main.MainActivity
 
 class RegisterController(mFragment: RegisterFragment?): BaseController<RegisterFragment?>(mFragment) {
 

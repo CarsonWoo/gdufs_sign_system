@@ -41,20 +41,20 @@
 
         <meta-data android:name="TencentMapSDK" android:value="6DWBZ-AWUKG-WX4QP-IGCIO-O6K76-2XFME" />
 
-        <activity android:name=".login.LoginActivity"
+        <activity android:name="com.carson.gdufs_sign_system.login.LoginActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".main.MainActivity"
+        <activity android:name="com.carson.gdufs_sign_system.student.main.MainActivity"
             android:windowSoftInputMode="adjustPan|stateHidden">
 
         </activity>
-        <activity android:name=".detail.DetailActivity" />
-        <activity android:name=".sign.SignActivity" />
-        <activity android:name=".scan.ScanActivity" />
+        <activity android:name="com.carson.gdufs_sign_system.student.detail.DetailActivity" />
+        <activity android:name="com.carson.gdufs_sign_system.student.sign.SignActivity" />
+        <activity android:name="com.carson.gdufs_sign_system.student.scan.ScanActivity" />
     </application>
 
 </manifest>
