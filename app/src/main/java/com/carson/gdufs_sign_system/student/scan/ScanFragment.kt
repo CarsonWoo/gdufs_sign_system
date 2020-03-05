@@ -3,6 +3,7 @@ package com.carson.gdufs_sign_system.student.scan
 import android.Manifest
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.*
 import com.carson.gdufs_sign_system.R
@@ -25,18 +26,17 @@ class ScanFragment : BaseFragment(), ViewTreeObserver.OnGlobalLayoutListener, IV
 
     private var mController: ScanController? = null
 
-    private var mEnterType = Const.SCAN_ENTER_COMPARE
-
     companion object {
 
         private const val TAG = "ScanFragment"
 
         private const val FRAGMENT_TAG = "Scan"
 
-        fun newInstance() = ScanFragment().apply {
-            val extras = arguments
-            extras?.apply {
-                mEnterType = getInt(Const.SCAN_ENTER_FLAG, Const.SCAN_ENTER_COMPARE)
+        fun newInstance(enterType: Int): ScanFragment {
+            return ScanFragment().apply {
+                arguments = Bundle().apply arg@{
+                    putInt(Const.SCAN_ENTER_FLAG, enterType)
+                }
             }
         }
     }
@@ -54,7 +54,6 @@ class ScanFragment : BaseFragment(), ViewTreeObserver.OnGlobalLayoutListener, IV
     }
 
     private fun initViews() {
-
         mBack = mRoot.findViewById(R.id.scan_back)
         mTextureView = mRoot.findViewById(R.id.face_preview)
         mTextureBorder = mRoot.findViewById(R.id.face_border)
@@ -80,10 +79,14 @@ class ScanFragment : BaseFragment(), ViewTreeObserver.OnGlobalLayoutListener, IV
         }
         mBtnSubmit.setOnClickListener {
             // 点击提交
-            mController?.onSubmitButtonClick(it, mEnterType)
+            // click 的同时把可点击态取消
+            mBtnSubmit.isEnabled = false
+            Log.e(TAG, "onClickSubmitButton")
+            mController?.onSubmitButtonClick(it, arguments?.getInt(Const.SCAN_ENTER_FLAG) ?: Const.SCAN_ENTER_COMPARE)
         }
 
         mTextureView.setOnClickListener {
+            mBtnSubmit.isEnabled = true
             mController?.setResumePreview()
         }
 

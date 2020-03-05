@@ -18,12 +18,9 @@ class ScanActivity: BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(getContentViewResId())
         if (mScanFragment == null) {
-            mScanFragment = ScanFragment.newInstance()
-        }
-        mScanFragment?.arguments = Bundle().apply {
-            this@ScanActivity.intent.extras?.let {
-                this@apply.putInt(Const.SCAN_ENTER_FLAG, it.getInt(Const.SCAN_ENTER_FLAG, Const.SCAN_ENTER_COMPARE))
-            }
+            var enterFlag = this.intent.extras?.getInt(Const.SCAN_ENTER_FLAG, Const.SCAN_ENTER_COMPARE)
+            if (enterFlag == null) enterFlag = Const.SCAN_ENTER_COMPARE
+            mScanFragment = ScanFragment.newInstance(enterFlag)
         }
         mScanFragment?.let {
             it.allowEnterTransitionOverlap = true

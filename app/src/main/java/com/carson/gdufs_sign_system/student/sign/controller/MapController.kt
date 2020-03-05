@@ -35,6 +35,9 @@ class MapController(mapFragment: MapFragment, private val mView: IViewCallback) 
     private var mLatLng: LatLng? = null
     private var mPositionMarker: Marker? = null
 
+    // 23.114335 & 113.214641  我家定位
+    private val mTestLatLng = LatLng(23.114, 113.21)
+
     fun setMapView(mapView: MapView) {
         this.mMapView = mapView
     }
@@ -45,7 +48,11 @@ class MapController(mapFragment: MapFragment, private val mView: IViewCallback) 
         val mMap = mMapView?.map
         mMap?.setOnMapCameraChangeListener(this)
         mMap?.isSatelliteEnabled = true
-        mMap?.setCenter(Const.GDUFS_LATLNG)
+//        mMap?.setCenter(Const.GDUFS_LATLNG)
+        /**
+         * test
+         */
+        mMap?.setCenter(mTestLatLng)
 //        mMap?.setZoom(16)
 
         // uiSettings
@@ -54,7 +61,11 @@ class MapController(mapFragment: MapFragment, private val mView: IViewCallback) 
         uiSettings?.setZoomGesturesEnabled(true)
 
         mSchoolMarkerView = mMap?.addMarker(MarkerOptions())?.apply {
-            position = Const.GDUFS_LATLNG
+            /**
+             * test
+             */
+            position = mTestLatLng
+//            position = Const.GDUFS_LATLNG
             title = Const.GDUFS_STR
             setAnchor(0.5f, 0.5f)
             setIcon(BitmapDescriptorFactory.fromResource(R.drawable.signin_location))
@@ -63,7 +74,11 @@ class MapController(mapFragment: MapFragment, private val mView: IViewCallback) 
 
         // add circle
         mCircleView = mMap?.addCircle(CircleOptions())?.apply {
-            center = Const.GDUFS_LATLNG
+            /**
+             * test
+             */
+            center = mTestLatLng
+            //            center = Const.GDUFS_LATLNG
             radius = 500.0
             fillColor = mFragment?.resources?.getColor(R.color.alphaColorCyan)?: Color.CYAN
             strokeColor = Color.parseColor("#7FFFFFFF")
@@ -117,7 +132,11 @@ class MapController(mapFragment: MapFragment, private val mView: IViewCallback) 
         Log.e(TAG, "onCameraChangeFinish: position = ${position?.target?.latitude}, ${position?.target?.longitude}")
         if (mLatLng?.let { mCircleView?.contains(it) } == true) {
             // 如果在签到点中
-            mMapView?.map?.animateCamera(CameraUpdateFactory.newLatLngZoom(Const.GDUFS_LATLNG, 15F))
+//            mMapView?.map?.animateCamera(CameraUpdateFactory.newLatLngZoom(Const.GDUFS_LATLNG, 15F))
+            /**
+             * test
+             */
+            mMapView?.map?.animateCamera(CameraUpdateFactory.newLatLngZoom(mTestLatLng, 15F))
             mSchoolMarkerView?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.signin_location))
         } else {
             // 不在签到点 做些什么？

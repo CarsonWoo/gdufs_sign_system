@@ -3,6 +3,9 @@ package com.carson.gdufs_sign_system.student.scan.controller
 import android.content.Context
 import android.graphics.Point
 import android.hardware.camera2.CameraDevice
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.util.Log
 import android.util.Size
 import android.view.View
@@ -35,6 +38,19 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback)
     private var mFileName: String = ""
 
     private var mEnterType = Const.SCAN_ENTER_COMPARE
+
+    private val mHandler = object: Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message?) {
+            super.handleMessage(msg)
+            if (msg?.what == 1) {
+                // 处理返回
+                (mFragment.activity as ScanActivity?)?.apply {
+                    setResult(Const.RESULT_CODE_COMPARE_SUCCESS, null)
+                    onBackPressed()
+                }
+            }
+        }
+    }
 
     companion object {
         private const val TAG = "ScanController"
@@ -134,10 +150,7 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback)
                 // 进行比对
                 if (matchFace(postImage, authImage)) {
                     // 比对成功
-                    (mFragment?.activity as ScanActivity?)?.apply {
-                        setResult(Const.RESULT_CODE_COMPARE_SUCCESS, null)
-                        onBackPressed()
-                    }
+                    mHandler.sendEmptyMessageDelayed(1, 2 * 1000L)
                 }
             } else {
                 // 进行提交
@@ -229,6 +242,7 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback)
     override fun onDestroy() {
         mCameraHelper?.release()
         PermissionUtils.getInstance().destroy()
+        mHandler.removeCallbacksAndMessages(null)
         super.onDestroy()
     }
 

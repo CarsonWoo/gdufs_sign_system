@@ -61,7 +61,7 @@ class MainController(private var activity: MainActivity?): TabSelector.OnTabSele
         when (position) {
             0 -> {
                 activity?.let {
-                    StatusBarUtil.setStatusBarColor(it, it.resources.getColor(R.color.transparent))
+                    StatusBarUtil.setStatusBarColor(it, it.resources.getColor(R.color.colorWhite))
                     StatusBarUtil.setStatusBarDarkTheme(it, true)
                 }
                 if (mHomeFragment == null) {
