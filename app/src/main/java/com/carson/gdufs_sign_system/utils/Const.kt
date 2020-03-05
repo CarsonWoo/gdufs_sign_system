@@ -14,6 +14,14 @@ object Const {
     val GDUFS_LATLNG = LatLng(23.06554767726593, 113.39734911918642)
     val GDUFS_STR = "广东外语外贸大学"
 
+    const val SCAN_ENTER_FLAG = "scan_enter_flag"
+    const val SCAN_ENTER_SUBMIT = 0x2001  // 进行提交人像
+    const val SCAN_ENTER_COMPARE = 0X2002 // 进行比对人像
+
+    const val REQUEST_CODE_FROM_MAP_TO_SCAN_COMPARE = 0x3001   // 从mapfragment去scanfragment比对人脸
+
+    const val RESULT_CODE_COMPARE_SUCCESS = 0x4001   // 人脸比对成功的结果码
+
     fun getCurrentTime(): String {
         val mCalender = Calendar.getInstance()
         val mCurrentTime = mCalender.get(Calendar.HOUR_OF_DAY).toString() + ":" +

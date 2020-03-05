@@ -6,6 +6,7 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseActivity
+import com.carson.gdufs_sign_system.utils.Const
 import com.carson.gdufs_sign_system.utils.PermissionUtils
 import com.carson.gdufs_sign_system.utils.StatusBarUtil
 
@@ -18,6 +19,11 @@ class ScanActivity: BaseActivity() {
         setContentView(getContentViewResId())
         if (mScanFragment == null) {
             mScanFragment = ScanFragment.newInstance()
+        }
+        mScanFragment?.arguments = Bundle().apply {
+            this@ScanActivity.intent.extras?.let {
+                this@apply.putInt(Const.SCAN_ENTER_FLAG, it.getInt(Const.SCAN_ENTER_FLAG, Const.SCAN_ENTER_COMPARE))
+            }
         }
         mScanFragment?.let {
             it.allowEnterTransitionOverlap = true

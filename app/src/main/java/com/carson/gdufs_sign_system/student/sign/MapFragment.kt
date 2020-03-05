@@ -1,6 +1,7 @@
 package com.carson.gdufs_sign_system.student.sign
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,9 @@ import android.widget.LinearLayout
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.base.BaseFragmentActivity
+import com.carson.gdufs_sign_system.student.scan.ScanActivity
 import com.carson.gdufs_sign_system.student.sign.controller.MapController
+import com.carson.gdufs_sign_system.utils.Const
 import com.carson.gdufs_sign_system.utils.PermissionUtils
 import com.carson.gdufs_sign_system.utils.StatusBarUtil
 import com.tencent.tencentmap.mapsdk.map.MapView
@@ -132,10 +135,11 @@ class MapFragment : BaseFragment(), IViewCallback {
 
     private fun initEvents() {
         mSignButton.setOnClickListener {
-            (activity as BaseFragmentActivity?)?.apply {
-                setFragmentAnimation(R.anim.slide_right_in, R.anim.slide_left_out)
-                hide(this@MapFragment)
-                show("SignSuccess")
+            Intent(context, ScanActivity::class.java).apply {
+                // 默认这里先都是compare
+                putExtra(Const.SCAN_ENTER_FLAG, Const.SCAN_ENTER_COMPARE)
+                startActivityForResult(this, Const.REQUEST_CODE_FROM_MAP_TO_SCAN_COMPARE)
+                activity?.overridePendingTransition(R.anim.slide_right_in, R.anim.scale_out)
             }
         }
         mLocateButton.setOnClickListener {
@@ -143,6 +147,22 @@ class MapFragment : BaseFragment(), IViewCallback {
         }
         mBack.setOnClickListener {
             (activity as SignActivity?)?.onBackPressed()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            Const.REQUEST_CODE_FROM_MAP_TO_SCAN_COMPARE -> {
+                if (resultCode == Const.RESULT_CODE_COMPARE_SUCCESS) {
+                    // 比对成功
+                    (activity as BaseFragmentActivity?)?.apply {
+                        setFragmentAnimation(R.anim.slide_right_in, R.anim.slide_left_out)
+                        hide(this@MapFragment)
+                        show("SignSuccess")
+                    }
+                }
+            }
         }
     }
 

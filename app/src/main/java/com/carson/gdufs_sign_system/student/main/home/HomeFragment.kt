@@ -18,6 +18,7 @@ import com.carson.gdufs_sign_system.student.main.adapter.HomeBannerAdapter
 import com.carson.gdufs_sign_system.student.main.adapter.HomeSignItemAdapter
 import com.carson.gdufs_sign_system.student.main.controller.HomeController
 import com.carson.gdufs_sign_system.student.scan.ScanActivity
+import com.carson.gdufs_sign_system.utils.Const
 import com.carson.gdufs_sign_system.utils.PermissionUtils
 import com.carson.gdufs_sign_system.widget.BannerDot
 import com.carson.gdufs_sign_system.widget.CircleImageView
@@ -91,6 +92,8 @@ class HomeFragment: BaseFragment() {
                     override fun granted() {
                         activity?.let {
                             Intent(it, ScanActivity::class.java).apply {
+                                // 先暂时从这里控制submit与否
+                                putExtra(Const.SCAN_ENTER_FLAG, Const.SCAN_ENTER_SUBMIT)
                                 startActivity(this)
                                 it.overridePendingTransition(R.anim.slide_right_in, R.anim.scale_out)
                             }

@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="@string/sign"
+                android:text="@string/face_scan"
                 android:textSize="@dimen/mini_text_size"
                 android:textColor="@color/colorCyan" />
 

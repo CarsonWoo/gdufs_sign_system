@@ -27,7 +27,6 @@ class MapController(mapFragment: MapFragment, private val mView: IViewCallback) 
     companion object {
         private const val TAG = "MapController"
 
-        private const val MSG_CHANGE_ICON = 0x1000
     }
 
     private var mMapView: MapView? = null
@@ -35,18 +34,6 @@ class MapController(mapFragment: MapFragment, private val mView: IViewCallback) 
     private var mSchoolMarkerView: Marker? = null
     private var mLatLng: LatLng? = null
     private var mPositionMarker: Marker? = null
-
-    // 用来控制icon闪烁
-    private val mHandler = object : Handler(mFragment?.activity?.mainLooper) {
-        override fun handleMessage(msg: Message?) {
-            super.handleMessage(msg)
-            when (msg?.what) {
-                MSG_CHANGE_ICON -> {
-                    mSchoolMarkerView?.setIcon(BitmapDescriptorFactory.fromBitmap(msg.obj as Bitmap))
-                }
-            }
-        }
-    }
 
     fun setMapView(mapView: MapView) {
         this.mMapView = mapView
@@ -133,7 +120,7 @@ class MapController(mapFragment: MapFragment, private val mView: IViewCallback) 
             mMapView?.map?.animateCamera(CameraUpdateFactory.newLatLngZoom(Const.GDUFS_LATLNG, 15F))
             mSchoolMarkerView?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.signin_location))
         } else {
-            // 不在的话就闪烁
+            // 不在签到点 做些什么？
         }
     }
 

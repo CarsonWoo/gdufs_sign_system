@@ -34,13 +34,17 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback)
 
     private var mFileName: String = ""
 
+    private var mEnterType = Const.SCAN_ENTER_COMPARE
+
     companion object {
         private const val TAG = "ScanController"
 
         private const val CAMERA_ID = CameraHelper.CAMERA_ID_FRONT
     }
 
-    fun onSubmitButtonClick(view: View) {
+    fun onSubmitButtonClick(view: View, enterType: Int) {
+        mEnterType = enterType
+        Log.e(TAG, "mEnterType = $mEnterType")
         mFragment?.activity?.apply {
             mIsTakingPhoto = true
             mIView.onSwitchShadowText("提交数据中...")
@@ -54,8 +58,9 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback)
 
     fun setResumePreview() {
         this.mIsTakingPhoto = false
-        mIView.onSwitchText("请将人脸放入取景框中")
-        mIView.onSwitchShadowText("请点击拍照")
+        switchText("请将人脸放入取景框中", "请点击按钮拍照")
+//        mIView.onSwitchText("请将人脸放入取景框中")
+//        mIView.onSwitchShadowText("请点击拍照")
         // 先stop再start 重置一下参数
         mCameraHelper?.stop()
         mCameraHelper?.start()
@@ -94,7 +99,7 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback)
             .build()
         Log.e(TAG, "mCameraHelper = $mCameraHelper is null ? -> ${mCameraHelper == null}")
         mCameraHelper?.start()
-        mIView.onSwitchShadowText("请点击按钮拍照")
+        switchText("请将人脸放入取景框中", "请点击按钮拍照")
     }
 
     // 保存完capture的图片之后
@@ -105,8 +110,7 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback)
 
         // 这里和ImageSaver还处于同一子线程中 无需再开启另一线程 但主线程的UI还是得用runOnUiThread
         mFragment?.activity?.runOnUiThread {
-            mIView.onSwitchText("检测人脸数据中...")
-            mIView.onSwitchShadowText("检测人脸中...")
+            switchText("检测人脸数据中...", "检测人脸中...")
         }
 
         val postImage = Base64Util.encode(bytes)
@@ -125,7 +129,22 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback)
             ?.getString("/storage/emulated/0/Android/data/com.carson.gdufs_sign_system/files/signPhoto/IMG_20200304_2152051.jpg", "")
 
         if (detectFace(postImage)) {
-            val b = matchFace(postImage, authImage)
+            // 检测成功
+            if (mEnterType == Const.SCAN_ENTER_COMPARE) {
+                // 进行比对
+                if (matchFace(postImage, authImage)) {
+                    // 比对成功
+                    (mFragment?.activity as ScanActivity?)?.apply {
+                        setResult(Const.RESULT_CODE_COMPARE_SUCCESS, null)
+                        onBackPressed()
+                    }
+                }
+            } else {
+                // 进行提交
+                switchText("提交数据中...", "")
+                // todo post to server
+                // 假设提交成功
+            }
         }
     }
 
@@ -171,7 +190,8 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback)
     ) {
         Log.i(TAG, "onPreview: ")
         mFragment?.activity?.runOnUiThread {
-            mIView.onSwitchText("识别图片中...")
+//            mIView.onSwitchText("识别图片中...")
+            switchText("识别图片中", "")
         }
         val sdf = SimpleDateFormat("yyyyMMdd_HHmmsss", Locale.US)
         val fileName = "IMG_" + sdf.format(Date()) + ".jpg"
@@ -212,6 +232,17 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback)
         super.onDestroy()
     }
 
+    private fun switchText(content: String, shadowContent: String) {
+        mFragment?.activity?.runOnUiThread {
+            if (content.isNotEmpty()) {
+                mIView.onSwitchText(content)
+            }
+            if (shadowContent.isNotEmpty()) {
+                mIView.onSwitchShadowText(shadowContent)
+            }
+        }
+    }
+
     private fun detectFace(postImage: String): Boolean {
         var bSuccess = false
         // 人脸检测
@@ -238,8 +269,9 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback)
         }
 
         mFragment?.activity?.runOnUiThread {
-            mIView.onSwitchText(mText)
-            mIView.onSwitchShadowText(mShadowText)
+            switchText(mText, mShadowText)
+//            mIView.onSwitchText(mText)
+//            mIView.onSwitchShadowText(mShadowText)
         }
         return bSuccess
     }
@@ -283,8 +315,9 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback)
         }
 
         mFragment?.activity?.runOnUiThread {
-            mIView.onSwitchShadowText(mShadowText)
-            mIView.onSwitchText(mText)
+            switchText(mText, mShadowText)
+//            mIView.onSwitchShadowText(mShadowText)
+//            mIView.onSwitchText(mText)
         }
 
 

@@ -8,6 +8,7 @@ import android.widget.*
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.student.scan.controller.ScanController
+import com.carson.gdufs_sign_system.utils.Const
 import com.carson.gdufs_sign_system.utils.PermissionUtils
 import com.carson.gdufs_sign_system.widget.CircleTextureBorderView
 import com.carson.gdufs_sign_system.widget.RoundTextureView
@@ -24,6 +25,8 @@ class ScanFragment : BaseFragment(), ViewTreeObserver.OnGlobalLayoutListener, IV
 
     private var mController: ScanController? = null
 
+    private var mEnterType = Const.SCAN_ENTER_COMPARE
+
     companion object {
 
         private const val TAG = "ScanFragment"
@@ -31,7 +34,10 @@ class ScanFragment : BaseFragment(), ViewTreeObserver.OnGlobalLayoutListener, IV
         private const val FRAGMENT_TAG = "Scan"
 
         fun newInstance() = ScanFragment().apply {
-
+            val extras = arguments
+            extras?.apply {
+                mEnterType = getInt(Const.SCAN_ENTER_FLAG, Const.SCAN_ENTER_COMPARE)
+            }
         }
     }
 
@@ -74,7 +80,7 @@ class ScanFragment : BaseFragment(), ViewTreeObserver.OnGlobalLayoutListener, IV
         }
         mBtnSubmit.setOnClickListener {
             // 点击提交
-            mController?.onSubmitButtonClick(it)
+            mController?.onSubmitButtonClick(it, mEnterType)
         }
 
         mTextureView.setOnClickListener {

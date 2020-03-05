@@ -21,6 +21,7 @@
     <string name="student">学生</string>
     <string name="clazz">班级</string>
     <string name="search_hint">请输入要找的签到活动</string>
+    <string name="face_scan">人脸扫描</string>
 
     <!--  个人页  -->
     <string name="signed_activity">已签到活动</string>
