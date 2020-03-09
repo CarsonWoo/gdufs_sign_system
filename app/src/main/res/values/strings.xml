@@ -49,5 +49,6 @@
     <string name="home_detail_transition_cover">home_transition_cover</string>
     <string name="manage_sign_title">签到管理</string>
     <string name="manage_post_sign">发布签到活动</string>
+    <string name="manage_lookup_my_sign">查看我发布的签到</string>
 
 </resources>
