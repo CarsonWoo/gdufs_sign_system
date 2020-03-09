@@ -1,0 +1,28 @@
+launch {
+            mIView.onShowText("开始请求网络", 0)
+//            val result = withContext(Dispatchers.IO) {
+////                mCall.getListRepos("defunkt").execute()
+////            }
+////            Log.e("ManageController", "result = $result")
+////            if (result.isSuccessful) {
+////                result.body()?.forEach {
+////                    mIView.onShowText(it.fullName + "\n", 1)
+////                }
+////            }
+            val result = withContext(Dispatchers.IO) {
+                call.execute()
+            }
+            Log.e("ManageController", "result = ${result.body()?.string()}")
+        }
+
+        private lateinit var mJob: Job
+
+            private var mCall: TestService
+
+            override val coroutineContext: CoroutineContext
+                get() = mJob + Dispatchers.Main
+
+            init {
+                mJob = Job()
+                mCall = NetUtils.getRetrofitClient("https://api.github.com/", TestService::class.java)
+            }

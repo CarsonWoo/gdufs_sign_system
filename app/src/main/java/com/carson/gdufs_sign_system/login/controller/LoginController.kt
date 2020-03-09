@@ -10,6 +10,7 @@ import com.carson.gdufs_sign_system.base.BaseController
 import com.carson.gdufs_sign_system.base.BaseFragmentActivity
 import com.carson.gdufs_sign_system.login.LoginActivity
 import com.carson.gdufs_sign_system.login.LoginFragment
+import com.carson.gdufs_sign_system.manager.ManageActivity
 import com.carson.gdufs_sign_system.student.main.MainActivity
 
 class LoginController(mFragment: LoginFragment?): BaseController<LoginFragment?>(mFragment) {
@@ -36,10 +37,16 @@ class LoginController(mFragment: LoginFragment?): BaseController<LoginFragment?>
     }
 
     private fun jumpToMain() {
+//        (mFragment?.activity as BaseActivity?)?.let {
+//            val toMain = Intent(it, MainActivity::class.java)
+//            // set data bundle
+//            it.startActivity(toMain)
+//            it.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out)
+//            it.finish(LoginActivity::class.java.name)
+//        }
         (mFragment?.activity as BaseActivity?)?.let {
-            val toMain = Intent(it, MainActivity::class.java)
-            // set data bundle
-            it.startActivity(toMain)
+            val toManage = Intent(it, ManageActivity::class.java)
+            it.startActivity(toManage)
             it.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out)
             it.finish(LoginActivity::class.java.name)
         }

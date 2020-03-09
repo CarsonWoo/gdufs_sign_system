@@ -73,10 +73,6 @@ class CircleTextureBorderView : View {
             (measuredHeight.toFloat() + mTextureViewWidth / 2) / 2 + mTextHeight * 1.5F, mTextPaint)
     }
 
-    fun turnRound() {
-        invalidate()
-    }
-
     fun setTipsText(str: String) {
         this.mTipsText = str
         postInvalidate()

@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.carson.gdufs_sign_system.R
+import com.carson.gdufs_sign_system.utils.Const
 import com.carson.gdufs_sign_system.utils.StatusBarUtil
 
 /**

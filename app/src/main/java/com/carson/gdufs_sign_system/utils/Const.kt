@@ -22,6 +22,8 @@ object Const {
 
     const val RESULT_CODE_COMPARE_SUCCESS = 0x4001   // 人脸比对成功的结果码
 
+    const val BASE_URL = "http://111.230.181.17:8888"
+
     fun getCurrentTime(): String {
         val mCalender = Calendar.getInstance()
         val mCurrentTime = mCalender.get(Calendar.HOUR_OF_DAY).toString() + ":" +
