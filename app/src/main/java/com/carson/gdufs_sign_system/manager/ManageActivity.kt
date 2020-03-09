@@ -6,11 +6,9 @@ import android.widget.Button
 import android.widget.TextView
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseActivity
+import com.carson.gdufs_sign_system.utils.StatusBarUtil
 
 class ManageActivity : BaseActivity(), IViewCallback {
-
-    private lateinit var mTv: TextView
-    private lateinit var mBtn: Button
 
     private lateinit var mController: ManageController
 
@@ -21,28 +19,21 @@ class ManageActivity : BaseActivity(), IViewCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getContentViewResId())
+        StatusBarUtil.setStatusBarColor(this, resources.getColor(R.color.colorCyan))
+        StatusBarUtil.setStatusBarDarkTheme(this, false)
         initView()
         initEvent()
     }
 
     private fun initView() {
-        mTv = findViewById(R.id.tv_test)
-        mBtn = findViewById(R.id.btn_test)
         mController = ManageController(this, this)
     }
 
     private fun initEvent() {
-        mBtn.setOnClickListener {
-            mController.requestNetwork()
-        }
     }
 
     override fun onShowText(str: String, type: Int) {
-        if (type == 0) {
-            mTv.text = str
-        } else {
-            mTv.append(str)
-        }
+
     }
 
     override fun onDestroy() {

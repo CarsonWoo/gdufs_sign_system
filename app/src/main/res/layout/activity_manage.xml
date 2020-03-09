@@ -7,18 +7,100 @@
     android:layout_height="match_parent"
     tools:context=".manager.ManageActivity">
 
-    <Button
-        android:id="@+id/btn_test"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="test" />
-
-    <TextView
-        android:id="@+id/tv_test"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/manage_top_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/btn_test" />
+        android:paddingTop="15dp"
+        android:paddingBottom="8dp"
+        android:background="@color/colorCyan"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/manage_sign_title"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/mega_text_size"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/signup_back"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <RelativeLayout
+        android:id="@+id/manage_post_sign"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:elevation="2dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/bg_selector_round_rect_white2gray"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        app:layout_constraintTop_toBottomOf="@id/manage_top_bar">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:drawableStart="@drawable/scan"
+            android:drawableEnd="@drawable/arrow_right"
+            android:text="@string/manage_post_sign"
+            android:textSize="@dimen/normal_text_size"
+            android:drawablePadding="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="20dp"
+            />
+
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/manage_lookup_sign"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:elevation="2dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/bg_selector_round_rect_white2gray"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        app:layout_constraintTop_toBottomOf="@id/manage_post_sign">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:drawableStart="@drawable/scan"
+            android:drawableEnd="@drawable/arrow_right"
+            android:text="@string/manage_post_sign"
+            android:textSize="@dimen/normal_text_size"
+            android:drawablePadding="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="20dp"
+            />
+
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
