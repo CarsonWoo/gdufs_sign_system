@@ -18,14 +18,14 @@ class RegisterController(mFragment: RegisterFragment?): BaseController<RegisterF
         private const val TAG = "RegisterController"
     }
 
-    fun register(username: String?, password: String?, code: String?) {
+    fun register(username: String?, password: String?, code: String?, studentId: String?) {
         if (mFragment?.activity == null) {
             Log.e(TAG, "activity is null do not do register.")
             return
         }
         // 注册操作
         Log.i(TAG, "register")
-        if (isEmpty(username) || isEmpty(password)) {
+        if (isEmpty(username) || isEmpty(password) || isEmpty(studentId)) {
             Toast.makeText(mFragment?.activity, "please confirm the username & password are both filled.", Toast.LENGTH_SHORT).show()
             return
         }

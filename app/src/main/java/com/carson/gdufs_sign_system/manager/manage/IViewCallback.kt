@@ -1,4 +1,4 @@
-package com.carson.gdufs_sign_system.manager
+package com.carson.gdufs_sign_system.manager.manage
 
 interface IViewCallback {
 

@@ -1,8 +1,6 @@
-package com.carson.gdufs_sign_system.manager
+package com.carson.gdufs_sign_system.manager.manage
 
 import android.app.Activity
-import android.util.Log
-import com.carson.gdufs_sign_system.base.ApiService
 import kotlinx.coroutines.*
 import java.lang.ref.WeakReference
 import kotlin.coroutines.CoroutineContext

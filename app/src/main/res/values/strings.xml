@@ -5,6 +5,8 @@
     <string name="back_confirm_toast">再按一次退出app</string>
     <!--  登录  -->
     <string name="phone_number">手机号</string>
+    <string name="student_id">学工号</string>
+    <string name="phone_number_or_student_id">手机号/学工号</string>
     <string name="password">密码</string>
     <string name="forget_password">忘记密码?</string>
     <string name="login">登录</string>
@@ -47,8 +49,14 @@
     <!--  util  -->
     <string name="test_long_string">哈哈哈 哈哈哈啊爱看的舒服就是打开放得开方式登录森林砍伐奥克兰两款手机来扩大到了开发撒旦拉萨的看见路上看到案例的历史拉山口是多少了来上课啦流口水的拉萨德累斯顿老师楼上的就是上课阿拉十九点看\ndslkfj势力扩大解放奥地利开发加萨洛克发生了打开\nd\nd\n\f\nf\n\nf\n\nfn\f\nf\fn\fn\fn\fn\</string>
     <string name="home_detail_transition_cover">home_transition_cover</string>
+
+    <!--  管理页  -->
     <string name="manage_sign_title">签到管理</string>
     <string name="manage_post_sign">发布签到活动</string>
     <string name="manage_lookup_my_sign">查看我发布的签到</string>
+    <string name="new_sign_setting">新的签到设置</string>
+    <string name="sign_activity_name">签到活动名称</string>
+    <string name="sign_people_num">允许签到人数</string>
+    <string name="please_fill_people_num">请填写人数</string>
 
 </resources>

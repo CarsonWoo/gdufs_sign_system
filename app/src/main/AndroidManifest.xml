@@ -26,7 +26,8 @@
         android:supportsRtl="true"
         android:theme="@style/CustomTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".manager.ManageActivity"></activity>
+        <activity android:name=".manager.post.PostActivity"></activity>
+        <activity android:name=".manager.manage.ManageActivity" />
 
         <meta-data
             android:name="TencentMapSDK"
@@ -43,7 +44,7 @@
         </activity>
         <activity
             android:name=".student.main.MainActivity"
-            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity android:name=".student.detail.DetailActivity" />
         <activity android:name=".student.sign.SignActivity" />
         <activity android:name=".student.scan.ScanActivity" />

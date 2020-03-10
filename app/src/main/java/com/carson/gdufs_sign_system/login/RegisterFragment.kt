@@ -28,6 +28,7 @@ class RegisterFragment : BaseFragment(), View.OnClickListener {
     private lateinit var mEditCode: EditText
     private lateinit var mBtnGetCode: Button
     private lateinit var mBtnRegister: Button
+    private lateinit var mEditStudentId: EditText
 
     private val mRegisterController =
         RegisterController(this)
@@ -54,7 +55,7 @@ class RegisterFragment : BaseFragment(), View.OnClickListener {
             }
             R.id.btn_register -> {
                 if (validPassword()) {
-                    mRegisterController.register(mEditUsername.text.toString(), mEditPassword.text.toString(), mEditCode.text.toString())
+                    mRegisterController.register(mEditUsername.text.toString(), mEditPassword.text.toString(), mEditCode.text.toString(), mEditStudentId.text.toString())
 //                    mLoginController?.register(mEditUsername.text.toString(), mEditPassword.text.toString(), mEditCode.text.toString())
                 } else {
                     Toast.makeText(context, "invalid password confirm.", Toast.LENGTH_SHORT).show()
@@ -76,6 +77,7 @@ class RegisterFragment : BaseFragment(), View.OnClickListener {
         mEditUsername = mContainer.findViewById(R.id.et_username)
         mEditPassword = mContainer.findViewById(R.id.et_password)
         mEditConfirmPwd = mContainer.findViewById(R.id.et_confirm_password)
+        mEditStudentId = mContainer.findViewById(R.id.et_student_id)
         mEditCode = mContainer.findViewById(R.id.et_code)
         mBtnGetCode = mContainer.findViewById(R.id.btn_get_code)
         mBtnRegister = mContainer.findViewById(R.id.btn_register)

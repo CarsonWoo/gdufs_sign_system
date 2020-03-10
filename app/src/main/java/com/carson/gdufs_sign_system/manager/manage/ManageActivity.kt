@@ -1,14 +1,12 @@
-package com.carson.gdufs_sign_system.manager
+package com.carson.gdufs_sign_system.manager.manage
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseActivity
+import com.carson.gdufs_sign_system.login.LoginActivity
 import com.carson.gdufs_sign_system.utils.StatusBarUtil
 
 class ManageActivity : BaseActivity(), IViewCallback {
@@ -41,7 +39,7 @@ class ManageActivity : BaseActivity(), IViewCallback {
                 .setMessage("确定退出登录么")
                 .setPositiveButton("确定") {
                     dialog, _ ->
-                    Log.i(TAG, "logout")
+                    doLogout()
                     dialog.dismiss()
                 }
                 .setNegativeButton("取消") {
@@ -50,6 +48,15 @@ class ManageActivity : BaseActivity(), IViewCallback {
                 .setCancelable(true)
                 .show()
         }
+    }
+
+    private fun doLogout() {
+        Intent(this, LoginActivity::class.java)
+            .apply {
+                startActivity(this)
+                overridePendingTransition(R.anim.slide_right_out, R.anim.slide_left_in)
+                finish(ManageActivity::class.java.name)
+            }
     }
 
     override fun onShowText(str: String, type: Int) {
