@@ -56,7 +56,14 @@
     <string name="manage_lookup_my_sign">查看我发布的签到</string>
     <string name="new_sign_setting">新的签到设置</string>
     <string name="sign_activity_name">签到活动名称</string>
-    <string name="sign_people_num">允许签到人数</string>
+    <string name="sign_people_group">允许签到人群</string>
     <string name="please_fill_people_num">请填写人数</string>
+    <string name="sign_start_time">签到开始时间</string>
+    <string name="sign_end_time">签到结束时间</string>
+    <string name="sign_place">签到地点设置</string>
+    <string name="sign_basic_info">签到基本信息设置</string>
+    <string name="select_sign_place">签到地点选择</string>
+    <string name="post_sign_activity">发起签到</string>
+    <string name="lookup_my_sign_activity">查看我的签到活动</string>
 
 </resources>

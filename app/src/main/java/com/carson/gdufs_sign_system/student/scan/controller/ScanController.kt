@@ -272,7 +272,7 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback)
             // 检测成功
             bSuccess = true
             val detectBean = Gson().fromJson<DetectFaceBean>(detectRes.getJSONObject("result").toString(), DetectFaceBean::class.java)
-            Log.e(TAG, "detect beauty=${detectBean.face_list[0].beauty} and expression=${detectBean.face_list[0].expression.type}")
+            Log.e(TAG, "detect beauty=${detectBean.face_list[0].beauty} and expression=${detectBean.face_list[0].expression.type} and age = ${detectBean.face_list[0].age}")
             mText = "\n性别：${if (detectBean.face_list[0].gender.type == "male") "男" else "女"}" +
                     "\n年龄：${detectBean.face_list[0].age.toInt()}" +
                     "\n打分：${detectBean.face_list[0].beauty.toInt()}"

@@ -26,7 +26,8 @@
         android:supportsRtl="true"
         android:theme="@style/CustomTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".manager.post.PostActivity"></activity>
+        <activity android:name=".manager.lookup.LookupActivity"></activity>
+        <activity android:name=".manager.post.PostActivity" />
         <activity android:name=".manager.manage.ManageActivity" />
 
         <meta-data

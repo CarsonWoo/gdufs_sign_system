@@ -61,57 +61,172 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp">
 
-            <EditText
-                android:id="@+id/et_activity_name"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="@string/sign_activity_name"
+                android:text="@string/sign_basic_info"
+                android:textColor="@color/colorDeepGray"
                 android:textSize="@dimen/normal_text_size"
-                android:lines="1"
-                android:drawableStart="@drawable/student_card"
-                android:drawablePadding="8dp"
-                android:theme="@style/EditTextUnderlineStyle"
-                android:layout_marginLeft="60dp"
-                android:layout_marginRight="60dp"
-                android:layout_marginTop="50dp"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginTop="30dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/basic_sign_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="60dp"
-                android:layout_marginEnd="60dp"
-                android:orientation="horizontal"
-                android:gravity="start"
-                android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@id/et_activity_name">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorDeepGray"
-                    android:text="@string/sign_people_num"
-                    android:textSize="@dimen/normal_text_size"
-                    android:drawablePadding="10dp"
-                    android:drawableStart="@drawable/register_user" />
+                android:background="@drawable/bg_round_rect_white"
+                android:layout_marginTop="70dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:paddingBottom="30dp"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <EditText
-                    android:layout_width="120dp"
+                    android:id="@+id/et_activity_name"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:theme="@style/EditTextUnderlineStyle"
-                    android:lines="1"
+                    android:hint="@string/sign_activity_name"
                     android:textSize="@dimen/normal_text_size"
-                    android:hint="@string/please_fill_people_num"
-                    android:inputType="number"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="5dp" />
+                    android:lines="1"
+                    android:drawableStart="@drawable/selector_student_card"
+                    android:drawablePadding="8dp"
+                    android:theme="@style/EditTextUnderlineStyle"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginRight="60dp"
+                    android:layout_marginTop="30dp"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
+                <EditText
+                    android:id="@+id/et_start_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/sign_start_time"
+                    android:textSize="@dimen/normal_text_size"
+                    android:lines="1"
+                    android:drawableStart="@drawable/selector_time"
+                    android:drawablePadding="8dp"
+                    android:theme="@style/EditTextUnderlineStyle"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginRight="60dp"
+                    android:layout_marginTop="20dp"
+                    android:inputType="datetime"
+                    app:layout_constraintTop_toBottomOf="@id/et_activity_name" />
 
-<!--     todo  继续编写       -->
+                <EditText
+                    android:id="@+id/et_end_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/sign_end_time"
+                    android:textSize="@dimen/normal_text_size"
+                    android:lines="1"
+                    android:drawableStart="@drawable/selector_time"
+                    android:drawablePadding="8dp"
+                    android:theme="@style/EditTextUnderlineStyle"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginRight="60dp"
+                    android:layout_marginTop="20dp"
+                    android:inputType="datetime"
+                    app:layout_constraintTop_toBottomOf="@id/et_start_time" />
+
+                <LinearLayout
+                    android:id="@+id/sign_student_clazz"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="start"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginEnd="60dp"
+                    android:layout_marginTop="30dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/et_end_time">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorDeepGray"
+                        android:text="@string/sign_people_group"
+                        android:textSize="@dimen/normal_text_size"
+                        android:drawablePadding="10dp"
+                        android:drawableStart="@drawable/register_user" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/normal_text_size"
+                        android:layout_marginTop="10dp"
+                        android:text="计算机3班、计算机5班" />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!--      签到地点      -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sign_place"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/normal_text_size"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@id/basic_sign_info"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/sign_detail_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_round_rect_white"
+                android:layout_marginTop="60dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:paddingBottom="20dp"
+                app:layout_constraintTop_toBottomOf="@id/basic_sign_info">
+
+                <TextView
+                    android:id="@+id/sign_place"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_locate"
+                    android:hint="@string/select_sign_place"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/normal_text_size"
+                    android:drawablePadding="8dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="60dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.tencent.tencentmap.mapsdk.map.MapView
+                    android:id="@+id/post_map_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/sign_place" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Button
+                android:id="@+id/btn_post"
+                android:layout_width="120dp"
+                android:layout_height="36dp"
+                android:background="@drawable/button_solid_cyan_style"
+                android:textColor="@color/colorWhite"
+                android:text="@string/post_sign_activity"
+                android:layout_marginTop="30dp"
+                app:layout_constraintTop_toBottomOf="@id/sign_detail_info"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

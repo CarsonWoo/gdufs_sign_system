@@ -3,10 +3,13 @@ package com.carson.gdufs_sign_system.manager.manage
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseActivity
 import com.carson.gdufs_sign_system.login.LoginActivity
+import com.carson.gdufs_sign_system.manager.post.PostActivity
 import com.carson.gdufs_sign_system.utils.StatusBarUtil
 
 class ManageActivity : BaseActivity(), IViewCallback {
@@ -14,6 +17,8 @@ class ManageActivity : BaseActivity(), IViewCallback {
     private lateinit var mController: ManageController
 
     private lateinit var mLogoutButton: ImageView
+
+    private lateinit var mPostSign: RelativeLayout
 
     override fun getContentViewResId(): Int {
         return R.layout.activity_manage
@@ -30,6 +35,7 @@ class ManageActivity : BaseActivity(), IViewCallback {
 
     private fun initView() {
         mLogoutButton = findViewById(R.id.btn_logout)
+        mPostSign = findViewById(R.id.manage_post_sign)
         mController = ManageController(this, this)
     }
 
@@ -47,6 +53,12 @@ class ManageActivity : BaseActivity(), IViewCallback {
                 }
                 .setCancelable(true)
                 .show()
+        }
+        mPostSign.setOnClickListener {
+            Intent(this, PostActivity::class.java).apply {
+                startActivity(this)
+                overridePendingTransition(R.anim.slide_right_in, R.anim.scale_out)
+            }
         }
     }
 
