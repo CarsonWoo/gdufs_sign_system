@@ -12,8 +12,29 @@ import com.carson.gdufs_sign_system.login.LoginActivity
 import com.carson.gdufs_sign_system.login.LoginFragment
 import com.carson.gdufs_sign_system.manager.manage.ManageActivity
 import com.carson.gdufs_sign_system.student.main.MainActivity
+import com.carson.gdufs_sign_system.utils.ApiService
+import com.carson.gdufs_sign_system.utils.Const
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import java.io.UnsupportedEncodingException
+import java.lang.Exception
+import java.net.URLDecoder
+import kotlin.coroutines.CoroutineContext
 
-class LoginController(mFragment: LoginFragment?): BaseController<LoginFragment?>(mFragment) {
+class LoginController(mFragment: LoginFragment?): BaseController<LoginFragment?>(mFragment), CoroutineScope {
+
+    private var mJob: Job = Job()
+
+    override val coroutineContext: CoroutineContext
+        get() = mJob + Dispatchers.Main
 
     companion object {
         private const val TAG = "LoginController"
@@ -31,9 +52,61 @@ class LoginController(mFragment: LoginFragment?): BaseController<LoginFragment?>
             return
         }
 
-        // 跳转
-        jumpToMain()
+        doServerLogin(username!!, password!!)
+//        val retrofit = Retrofit.Builder()
+//            .baseUrl(Const.BASE_URL)
+//            .client(OkHttpClient.Builder()
+//                .addInterceptor(HttpLoggingInterceptor(
+//                    HttpLoggingInterceptor.Logger {
+//                        try {
+//                            val text = URLDecoder.decode(it, "UTF-8")
+//                            Log.e("OKHttp-----", text)
+//                        } catch (e: UnsupportedEncodingException) {
+//                            e.printStackTrace()
+//                            Log.e("OKHttp-----", it)
+//                        }
+//                    }
+//                ).setLevel(HttpLoggingInterceptor.Level.BODY)).build())
+//            .build()
+//        val service = retrofit.create(ApiService::class.java)
+//        val call = service.login(username!!, password!!)
+//        call.enqueue(object : Callback<ResponseBody> {
+//            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+//                Log.e(TAG, "failure ${t.message}")
+//            }
+//
+//            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+//                Log.i(TAG, "response = ${response.body()?.string()}")
+//            }
+//
+//        })
 
+        // 跳转
+//        jumpToMain()
+
+    }
+
+    private fun doServerLogin(username: String, password: String) {
+        mJob.cancel()
+
+        mJob = executeRequest(
+            request = {
+                Log.i(TAG, "do Login request")
+                val result = mApiService.login(username, password).execute()
+                if (result.isSuccessful) {
+                    return@executeRequest result.body()
+                } else {
+                    throw Exception(result.message())
+                }
+            },
+            onSuccess = {
+                Log.i(TAG, "success")
+                Log.i(TAG, it.string())
+            },
+            onFail = {
+                Log.e(TAG, it.message)
+            }
+        )
     }
 
     private fun jumpToMain() {
@@ -62,4 +135,8 @@ class LoginController(mFragment: LoginFragment?): BaseController<LoginFragment?>
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mJob?.cancel()
+    }
 }

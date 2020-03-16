@@ -1,13 +1,18 @@
 package com.carson.gdufs_sign_system.base
 
 import android.util.Log
+import com.carson.gdufs_sign_system.utils.ApiService
 import com.carson.gdufs_sign_system.utils.Const
 import kotlinx.coroutines.*
 import java.lang.Exception
 
 abstract class BaseController<T: BaseFragment?>(protected var mFragment: T?) {
 
-    protected val mApiService = ApiService.getInstance(Const.BASE_URL, true)
+    protected var mApiService = ApiService.getInstance(Const.BASE_URL, false)
+
+    protected fun needGsonConverter(needGson: Boolean) {
+        mApiService = ApiService.getInstance(Const.BASE_URL, needGson)
+    }
 
     protected fun <E> executeRequest(request: suspend () -> E?, onSuccess: (E) -> Unit = {},
                                      onFail: (Throwable) -> Unit = {}): Job {

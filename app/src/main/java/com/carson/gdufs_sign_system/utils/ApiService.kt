@@ -1,6 +1,10 @@
-package com.carson.gdufs_sign_system.base
+package com.carson.gdufs_sign_system.utils
 
-import com.carson.gdufs_sign_system.utils.NetUtils
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.POST
 
 interface ApiService {
 
@@ -16,10 +20,15 @@ interface ApiService {
                 mInstance = NetUtils.getRetrofitClient(url, ApiService::class.java, needGsonConverter).also { mInstance = it }
                 mInstance!!
             } else {
-                mInstance ?: synchronized(ApiService::class.java) {
+                mInstance ?: synchronized(
+                    ApiService::class.java) {
                     mInstance ?: NetUtils.getRetrofitClient(url, ApiService::class.java, needGsonConverter).also { mInstance = it }
                 }
             }
     }
+
+    @FormUrlEncoded
+    @POST("Login")
+    fun login(@Field("username") username: String, @Field("password") password: String): Call<ResponseBody>
 
 }
