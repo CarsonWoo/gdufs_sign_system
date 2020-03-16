@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseActivity
 import com.carson.gdufs_sign_system.login.LoginActivity
+import com.carson.gdufs_sign_system.manager.lookup.LookupActivity
 import com.carson.gdufs_sign_system.manager.post.PostActivity
 import com.carson.gdufs_sign_system.utils.StatusBarUtil
 
@@ -19,6 +20,8 @@ class ManageActivity : BaseActivity(), IViewCallback {
     private lateinit var mLogoutButton: ImageView
 
     private lateinit var mPostSign: RelativeLayout
+
+    private lateinit var mLookupSign: RelativeLayout
 
     override fun getContentViewResId(): Int {
         return R.layout.activity_manage
@@ -36,6 +39,7 @@ class ManageActivity : BaseActivity(), IViewCallback {
     private fun initView() {
         mLogoutButton = findViewById(R.id.btn_logout)
         mPostSign = findViewById(R.id.manage_post_sign)
+        mLookupSign = findViewById(R.id.manage_lookup_sign)
         mController = ManageController(this, this)
     }
 
@@ -60,13 +64,18 @@ class ManageActivity : BaseActivity(), IViewCallback {
                 overridePendingTransition(R.anim.slide_right_in, R.anim.scale_out)
             }
         }
+        mLookupSign.setOnClickListener {
+            Intent(this, LookupActivity::class.java).apply {
+                startActivity(this)
+                overridePendingTransition(R.anim.slide_right_in, R.anim.scale_out)
+            }
+        }
     }
 
     private fun doLogout() {
         Intent(this, LoginActivity::class.java)
             .apply {
                 startActivity(this)
-                overridePendingTransition(R.anim.slide_right_out, R.anim.slide_left_in)
                 finish(ManageActivity::class.java.name)
             }
     }

@@ -65,5 +65,8 @@
     <string name="select_sign_place">签到地点选择</string>
     <string name="post_sign_activity">发起签到</string>
     <string name="lookup_my_sign_activity">查看我的签到活动</string>
+    <string name="lookup_total_detail">详情</string>
+    <string name="lookup_end_time">结束时间</string>
+    <string name="logout">退出登录</string>
 
 </resources>

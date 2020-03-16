@@ -7,6 +7,9 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.util.AttributeSet
+import android.util.Log
+import android.view.View
+import android.view.ViewOutlineProvider
 import android.widget.ImageView
 import com.carson.gdufs_sign_system.R
 
@@ -49,7 +52,13 @@ class RoundImageView : ImageView {
             }
         }
         a?.recycle()
-        mMatrix = Matrix()
+//        mMatrix = Matrix()
+        outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(view: View?, outline: Outline?) {
+                outline?.setRoundRect(0, 0, width, height, mBorderRadius.toFloat())
+            }
+        }
+        clipToOutline = true
     }
 
     @SuppressLint("DrawAllocation")
@@ -76,34 +85,37 @@ class RoundImageView : ImageView {
         mBorderRadius = radius
     }
 
-    override fun onDraw(canvas: Canvas?) {
-        val drawable = drawable
-        if (drawable == null) {
-            super.onDraw(canvas)
-            return
-        }
-        if (drawable is ColorDrawable) {
-            mPaint.color = drawable.color
-            if (mBorderRadius != 0) {
-                // 直接画圆角
-                canvas?.drawRoundRect(mRectF, mBorderRadius.toFloat(), mBorderRadius.toFloat(), mPaint)
-            } else {
-                // 明天再整
-                super.onDraw(canvas)
-            }
-            return
-        }
-        if (drawable is BitmapDrawable) {
-            mPaint.shader = getBitmapShader(drawable)
-            if (mBorderRadius != 0) {
-                canvas?.drawRoundRect(mRectF, mBorderRadius.toFloat(), mBorderRadius.toFloat(), mPaint)
-            } else {
-                super.onDraw(canvas)
-            }
-            return
-        }
-        super.onDraw(canvas)
-    }
+//    override fun onDraw(canvas: Canvas?) {
+//        val drawable = drawable
+//        if (drawable == null) {
+//            Log.e("RoundImageView", "drawable is null")
+//            super.onDraw(canvas)
+//            return
+//        }
+//        if (drawable is ColorDrawable) {
+//            Log.e("RoundImageView", "color")
+//            mPaint.color = drawable.color
+//            if (mBorderRadius != 0) {
+//                // 直接画圆角
+//                canvas?.drawRoundRect(mRectF, mBorderRadius.toFloat(), mBorderRadius.toFloat(), mPaint)
+//            } else {
+//                // 明天再整
+//                super.onDraw(canvas)
+//            }
+//            return
+//        }
+//        if (drawable is BitmapDrawable) {
+//            Log.e("RoundImageView", "bitmap")
+//            mPaint.shader = getBitmapShader(drawable)
+//            if (mBorderRadius != 0) {
+//                canvas?.drawRoundRect(mRectF, mBorderRadius.toFloat(), mBorderRadius.toFloat(), mPaint)
+//            } else {
+//                super.onDraw(canvas)
+//            }
+//            return
+//        }
+//        super.onDraw(canvas)
+//    }
 
     private fun getBitmapShader(drawable: BitmapDrawable): Shader {
         val bitmap = drawable.bitmap

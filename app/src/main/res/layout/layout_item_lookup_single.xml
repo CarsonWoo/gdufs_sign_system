@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lookup_single_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_round_rect_white"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp">
+
+    <com.carson.gdufs_sign_system.widget.RoundImageView
+        android:id="@+id/lookup_single_portrait"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:radius="24dp"
+        android:src="@drawable/icon_student"
+        android:layout_marginStart="20dp" />
+
+    <TextView
+        android:id="@+id/lookup_single_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/lookup_single_portrait"
+        android:hint="用户名"
+        android:textColorHint="@color/colorBlack"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/normal_text_size"
+        android:layout_marginStart="20dp" />
+
+    <TextView
+        android:id="@+id/lookup_single_clazz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lookup_single_username"
+        android:layout_toEndOf="@id/lookup_single_portrait"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="20dp"
+        android:hint="软工1603班"
+        android:textColor="@color/colorGray"
+        android:textColorHint="@color/colorGray" />
+
+    <TextView
+        android:id="@+id/lookup_single_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/status_unpass"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:drawablePadding="8dp"
+        android:layout_marginEnd="20dp"
+        android:focusable="true"
+        android:text="未签到"
+        android:gravity="center" />
+
+
+</RelativeLayout>

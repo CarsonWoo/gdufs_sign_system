@@ -1,5 +1,6 @@
 package com.carson.gdufs_sign_system.student.main.user
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.carson.gdufs_sign_system.R
+import com.carson.gdufs_sign_system.base.BaseActivity
 import com.carson.gdufs_sign_system.base.BaseFragment
+import com.carson.gdufs_sign_system.base.LifeCallbackManager
+import com.carson.gdufs_sign_system.login.LoginActivity
+import com.carson.gdufs_sign_system.student.main.MainActivity
 import com.carson.gdufs_sign_system.student.main.adapter.UserSignItemAdapter
 import com.carson.gdufs_sign_system.student.main.controller.UserController
 import com.carson.gdufs_sign_system.widget.CircleImageView
@@ -31,6 +36,7 @@ class UserFragment: BaseFragment() {
     private lateinit var mDarkMode: RelativeLayout
     private lateinit var mScan: RelativeLayout
     private lateinit var mSetting: RelativeLayout
+    private lateinit var mLogout: RelativeLayout
 
     private lateinit var mAdapter: UserSignItemAdapter
 
@@ -43,6 +49,7 @@ class UserFragment: BaseFragment() {
     ): View? {
         mRoot = inflater.inflate(R.layout.fragment_user, container, false)
         initViews()
+        initEvents()
         return mRoot
     }
 
@@ -58,6 +65,7 @@ class UserFragment: BaseFragment() {
         mDarkMode = mRoot.findViewById(R.id.dark_mode)
         mScan = mRoot.findViewById(R.id.scan)
         mSetting = mRoot.findViewById(R.id.setting)
+        mLogout = mRoot.findViewById(R.id.logout)
 
         context?.let {
             Glide.with(it).load("https://file.ourbeibei.com/l_e/user/portrait/002bd4ec-438e-4e8a-a07d-7527c29b10fc.jpg").into(mAvatarView)
@@ -68,6 +76,16 @@ class UserFragment: BaseFragment() {
         mRecyclerview.adapter = mAdapter
         mRecyclerview.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         mRecyclerview.setHasFixedSize(true)
+    }
+
+    private fun initEvents() {
+        mLogout.setOnClickListener {
+            Intent(activity, LoginActivity::class.java).apply {
+                startActivity(this)
+                (activity as BaseActivity?)?.finish(MainActivity::class.java.name)
+//                activity?.overridePendingTransition(R.anim.slide_right_out, R.anim.slide_left_in)
+            }
+        }
     }
 
     fun onRefresh() {
