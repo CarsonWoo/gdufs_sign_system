@@ -1,7 +1,10 @@
 package com.carson.gdufs_sign_system.utils
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import com.tencent.mapsdk.raster.model.LatLng
+import java.lang.ref.WeakReference
 import java.util.*
 
 object Const {
@@ -30,5 +33,10 @@ object Const {
                 mCalender.get(Calendar.MINUTE).toString() + ":" + mCalender.get(Calendar.SECOND)
         Log.i(TAG, mCurrentTime)
         return mCurrentTime
+    }
+
+    fun getSharedPreference(contextRef: WeakReference<Context?>, key: String?): SharedPreferences? {
+        key ?: return null
+        return contextRef.get()?.getSharedPreferences(key, Context.MODE_PRIVATE)
     }
 }

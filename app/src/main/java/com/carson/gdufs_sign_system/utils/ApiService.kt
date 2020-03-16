@@ -1,5 +1,6 @@
 package com.carson.gdufs_sign_system.utils
 
+import com.carson.gdufs_sign_system.model.LoginResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Field
@@ -29,6 +30,6 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("Login")
-    fun login(@Field("username") username: String, @Field("password") password: String): Call<ResponseBody>
+    fun login(@Field("username") username: String, @Field("password") password: String): Call<LoginResponse>
 
 }

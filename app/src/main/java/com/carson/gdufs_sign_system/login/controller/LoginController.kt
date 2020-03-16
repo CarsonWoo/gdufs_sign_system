@@ -26,6 +26,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import java.io.UnsupportedEncodingException
 import java.lang.Exception
+import java.lang.ref.WeakReference
 import java.net.URLDecoder
 import kotlin.coroutines.CoroutineContext
 
@@ -89,9 +90,10 @@ class LoginController(mFragment: LoginFragment?): BaseController<LoginFragment?>
     private fun doServerLogin(username: String, password: String) {
         mJob.cancel()
 
+        needGsonConverter(true)
+
         mJob = executeRequest(
             request = {
-                Log.i(TAG, "do Login request")
                 val result = mApiService.login(username, password).execute()
                 if (result.isSuccessful) {
                     return@executeRequest result.body()
@@ -100,8 +102,15 @@ class LoginController(mFragment: LoginFragment?): BaseController<LoginFragment?>
                 }
             },
             onSuccess = {
-                Log.i(TAG, "success")
-                Log.i(TAG, it.string())
+                Log.i(TAG, "status: ${it.status} msg: ${it.msg} identity: ${it.identity} " +
+                        "authImageBase: ${it.authImageBase} userId: ${it.userId}")
+                if (it.status == "200") {
+                    // 还要记录sp
+//                    val mSharedPreferences = Const.getSharedPreference(WeakReference(mFragment?.context), it.userId)
+                    jumpToMain(it.identity)
+                } else {
+                    Toast.makeText(mFragment?.context, it.msg, Toast.LENGTH_SHORT).show()
+                }
             },
             onFail = {
                 Log.e(TAG, it.message)
@@ -109,21 +118,26 @@ class LoginController(mFragment: LoginFragment?): BaseController<LoginFragment?>
         )
     }
 
-    private fun jumpToMain() {
-        // to student
-//        (mFragment?.activity as BaseActivity?)?.let {
-//            val toMain = Intent(it, MainActivity::class.java)
-//            // set data bundle
-//            it.startActivity(toMain)
-//            it.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out)
-//            it.finish(LoginActivity::class.java.name)
-//        }
-        // to manager
+    private fun jumpToMain(identity: String) {
+        if (identity == "0") {
+            // 学生端
+            // to student
         (mFragment?.activity as BaseActivity?)?.let {
-            val toManage = Intent(it, ManageActivity::class.java)
-            it.startActivity(toManage)
+            val toMain = Intent(it, MainActivity::class.java)
+            // set data bundle
+            it.startActivity(toMain)
             it.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out)
             it.finish(LoginActivity::class.java.name)
+        }
+        } else {
+            // 管理端
+            // to manager
+            (mFragment?.activity as BaseActivity?)?.let {
+                val toManage = Intent(it, ManageActivity::class.java)
+                it.startActivity(toManage)
+                it.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out)
+                it.finish(LoginActivity::class.java.name)
+            }
         }
     }
 
