@@ -26,6 +26,22 @@ android {
         checkReleaseBuilds false
         abortOnError false
     }
+
+    signingConfigs {
+        config {
+            File strFile = new File("../../../keystore/sign_system.jks")
+            storeFile file(strFile)
+            storePassword "123456"
+            keyPassword "123456"
+            keyAlias "key0"
+        }
+        debug {
+
+        }
+        release {
+
+        }
+    }
 }
 
 dependencies {

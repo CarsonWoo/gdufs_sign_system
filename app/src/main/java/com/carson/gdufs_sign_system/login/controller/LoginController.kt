@@ -63,26 +63,34 @@ class LoginController(mFragment: LoginFragment?): BaseController<LoginFragment?>
 
         mJob = executeRequest(
             request = {
-                val result = mApiService.login(username, password).execute()
-                if (result.isSuccessful) {
-                    return@executeRequest result.body()
-                } else {
-                    throw Exception(result.message())
-                }
+                /*val result = */mApiService.login(username, password).execute()
+//                if (result.isSuccessful) {
+//                    return@executeRequest result.body()
+//                } else {
+////                    throw Exception(result.message())
+//                    return@executeRequest result.body()
+//                }
             },
-            onSuccess = {
-                Log.i(TAG, "status: ${it.status} msg: ${it.msg} identity: ${it.identity} " +
-                        "authImageBase: ${it.authImageBase} userId: ${it.userId}")
-                if (it.status == Const.Net.RESPONSE_SUCCESS) {
-                    // 还要记录sp
+            onSuccess = {res ->
+                if (res.isSuccessful) {
+                    res.body()?.let {
+                        Log.i(TAG, "status: ${it.status} msg: ${it.msg} identity: ${it.identity} " +
+                                "authImageBase: ${it.authImageBase} userId: ${it.userId}")
+                        if (it.status == Const.Net.RESPONSE_SUCCESS) {
+                            // 还要记录sp
 //                    val mSharedPreferences = Const.getSharedPreference(WeakReference(mFragment?.context), it.userId)
-                    jumpToMain(it.identity)
+                            jumpToMain(it.identity)
+                        } else {
+                            Toast.makeText(mFragment?.context, it.msg, Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 } else {
-                    Toast.makeText(mFragment?.context, it.msg, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(mFragment?.context, res.message(), Toast.LENGTH_SHORT).show()
                 }
             },
             onFail = {
                 Log.e(TAG, it.message)
+                Toast.makeText(mFragment?.context, it.message, Toast.LENGTH_SHORT).show()
             }
         )
     }

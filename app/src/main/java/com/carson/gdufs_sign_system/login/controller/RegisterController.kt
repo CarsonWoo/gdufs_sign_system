@@ -62,27 +62,30 @@ class RegisterController(mFragment: RegisterFragment?, private val mIViewCallbac
 
         mJob = executeRequest(
             request = {
-                val result = mApiService.register(userId, phoneNumber, clazz, password).execute()
-                if (result.isSuccessful) {
-                    result.body()
-                } else {
-                    throw Exception(result.message())
-                }
+                mApiService.register(userId, phoneNumber, clazz, password).execute()
             },
-            onSuccess = {
-                if (it.status == Const.Net.RESPONSE_SUCCESS) {
-                    (mFragment?.activity as BaseFragmentActivity?)?.apply {
-                        setFragmentAnimation(R.anim.slide_left_in, R.anim.slide_right_out )
-                        hide("Register")
-                        show("Login")
-                        mIViewCallback.onRegisterSuccess()
+            onSuccess = {res ->
+                if (res.isSuccessful) {
+                    res.body()?.let {
+                        if (it.status == Const.Net.RESPONSE_SUCCESS) {
+                            (mFragment?.activity as BaseFragmentActivity?)?.apply {
+                                setFragmentAnimation(R.anim.slide_left_in, R.anim.slide_right_out )
+                                hide("Register")
+                                show("Login")
+                                mIViewCallback.onRegisterSuccess()
+                            }
+                        } else {
+                            Log.e(TAG, it.msg)
+                            Toast.makeText(mFragment?.context, it.msg, Toast.LENGTH_SHORT).show()
+                        }
                     }
                 } else {
-                    Log.e(TAG, it.msg)
+                    Toast.makeText(mFragment?.context, res.message(), Toast.LENGTH_SHORT).show()
                 }
             },
             onFail = {
                 Log.e(TAG, it.message)
+                Toast.makeText(mFragment?.context, it.message, Toast.LENGTH_SHORT).show()
             }
         )
     }

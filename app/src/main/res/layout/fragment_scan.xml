@@ -24,10 +24,10 @@
             app:layout_constraintStart_toStartOf="parent" />
     </LinearLayout>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/face_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
         android:layout_marginTop="50dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +38,10 @@
             android:id="@+id/face_preview"
             android:layout_width="300dp"
             android:layout_height="300dp"
-            android:layout_gravity="center" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <com.carson.gdufs_sign_system.widget.CircleTextureBorderView
             android:id="@+id/face_border"
@@ -46,9 +49,12 @@
             app:circleTextureBorderColor="@color/colorCyan"
             android:layout_width="300dp"
             android:layout_height="300dp"
-            android:layout_gravity="center" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextSwitcher
         android:id="@+id/face_scan_text"

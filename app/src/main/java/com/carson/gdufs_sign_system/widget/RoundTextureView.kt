@@ -9,6 +9,7 @@ import android.view.TextureView
 import android.view.View
 import android.view.ViewOutlineProvider
 import com.carson.gdufs_sign_system.R
+import kotlin.math.abs
 import kotlin.math.min
 
 class RoundTextureView: TextureView {
@@ -24,14 +25,21 @@ class RoundTextureView: TextureView {
                 // 默认为圆形
                 a.getFloat(R.styleable.RoundTextureView_textureRadius, measuredWidth.toFloat() / 2)
             } else {
-                measuredWidth.toFloat() / 2
+                min(measuredWidth, measuredHeight).toFloat() / 2
             }
         }
         a.recycle()
 
         outlineProvider = object: ViewOutlineProvider() {
             override fun getOutline(view: View?, outline: Outline?) {
-                outline?.setOval(0, 0, measuredWidth, measuredWidth)
+                val rect = if (measuredWidth <= measuredHeight) {
+                    Rect(0, (measuredHeight - measuredWidth) / 2, measuredWidth, (measuredHeight + measuredWidth) / 2)
+                } else {
+                    Rect((measuredWidth - measuredHeight) / 2, 0, measuredHeight, (measuredHeight + measuredWidth) / 2)
+                }
+//                Log.e("RoundTextureView", "rect left = ${rect.left} top = ${rect.top} width = ${rect.width()} height = ${rect.height()}")
+                outline?.setRoundRect(rect, mRadius)
+
             }
         }
         clipToOutline = true
