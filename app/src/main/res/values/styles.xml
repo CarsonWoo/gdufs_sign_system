@@ -39,4 +39,9 @@
         <attr name="circleTextureBorderColor" format="color" />
     </declare-styleable>
 
+    <style name="PopupAnimation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/anim_popup_enter</item>
+        <item name="android:windowExitAnimation">@anim/anim_popup_exit</item>
+    </style>
+
 </resources>

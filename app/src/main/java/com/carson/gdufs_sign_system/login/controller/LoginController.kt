@@ -54,37 +54,6 @@ class LoginController(mFragment: LoginFragment?): BaseController<LoginFragment?>
         }
 
         doServerLogin(username!!, password!!)
-//        val retrofit = Retrofit.Builder()
-//            .baseUrl(Const.BASE_URL)
-//            .client(OkHttpClient.Builder()
-//                .addInterceptor(HttpLoggingInterceptor(
-//                    HttpLoggingInterceptor.Logger {
-//                        try {
-//                            val text = URLDecoder.decode(it, "UTF-8")
-//                            Log.e("OKHttp-----", text)
-//                        } catch (e: UnsupportedEncodingException) {
-//                            e.printStackTrace()
-//                            Log.e("OKHttp-----", it)
-//                        }
-//                    }
-//                ).setLevel(HttpLoggingInterceptor.Level.BODY)).build())
-//            .build()
-//        val service = retrofit.create(ApiService::class.java)
-//        val call = service.login(username!!, password!!)
-//        call.enqueue(object : Callback<ResponseBody> {
-//            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-//                Log.e(TAG, "failure ${t.message}")
-//            }
-//
-//            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-//                Log.i(TAG, "response = ${response.body()?.string()}")
-//            }
-//
-//        })
-
-        // 跳转
-//        jumpToMain()
-
     }
 
     private fun doServerLogin(username: String, password: String) {
@@ -104,7 +73,7 @@ class LoginController(mFragment: LoginFragment?): BaseController<LoginFragment?>
             onSuccess = {
                 Log.i(TAG, "status: ${it.status} msg: ${it.msg} identity: ${it.identity} " +
                         "authImageBase: ${it.authImageBase} userId: ${it.userId}")
-                if (it.status == "200") {
+                if (it.status == Const.Net.RESPONSE_SUCCESS) {
                     // 还要记录sp
 //                    val mSharedPreferences = Const.getSharedPreference(WeakReference(mFragment?.context), it.userId)
                     jumpToMain(it.identity)

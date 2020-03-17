@@ -27,6 +27,12 @@ object Const {
 
     const val BASE_URL = "http://111.230.181.17:8888/myWeb/"
 
+    object Net {
+        const val RESPONSE_SUCCESS = "200"
+        const val RESPONSE_CLIENT_ERROR = "400"
+        const val RESPONSE_SERVER_ERROR = "500"
+    }
+
     fun getCurrentTime(): String {
         val mCalender = Calendar.getInstance()
         val mCurrentTime = mCalender.get(Calendar.HOUR_OF_DAY).toString() + ":" +

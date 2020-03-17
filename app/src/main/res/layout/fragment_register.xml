@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/register_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -21,6 +22,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/phone_number"
         android:textSize="@dimen/normal_text_size"
+        android:textColor="@color/colorBlack"
         android:drawableStart="@drawable/register_user"
         android:maxLines="1"
         android:drawablePadding="8dp"
@@ -32,49 +34,21 @@
         app:layout_constraintTop_toBottomOf="@id/ic_logo" />
 
     <EditText
-        android:id="@+id/et_code"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/auth_code"
-        android:textSize="@dimen/normal_text_size"
-        android:theme="@style/EditTextUnderlineStyle"
-        android:drawableLeft="@drawable/register_key"
-        android:maxLines="1"
-        android:drawablePadding="8dp"
-        android:inputType="number"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintTop_toBottomOf="@id/et_username"
-        app:layout_constraintLeft_toLeftOf="@id/et_username"
-        app:layout_constraintRight_toLeftOf="@id/btn_get_code" />
-
-    <Button
-        android:id="@+id/btn_get_code"
-        android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:textSize="@dimen/mini_text_size"
-        android:background="@drawable/button_solid_cyan_style"
-        android:textColor="@color/colorWhite"
-        android:text="@string/get_code"
-        app:layout_constraintBaseline_toBaselineOf="@id/et_code"
-        app:layout_constraintRight_toRightOf="@id/et_username" />
-
-    <EditText
         android:id="@+id/et_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/password"
         android:textSize="@dimen/normal_text_size"
+        android:textColor="@color/colorBlack"
         android:theme="@style/EditTextUnderlineStyle"
-        android:drawableLeft="@drawable/register_password"
+        android:drawableStart="@drawable/register_password"
         android:drawablePadding="8dp"
         android:maxLines="1"
         android:inputType="textPassword"
         android:layout_marginLeft="60dp"
         android:layout_marginRight="60dp"
         android:layout_marginTop="30dp"
-        app:layout_constraintTop_toBottomOf="@id/et_code" />
+        app:layout_constraintTop_toBottomOf="@id/et_username" />
 
     <EditText
         android:id="@+id/et_confirm_password"
@@ -82,8 +56,9 @@
         android:layout_height="wrap_content"
         android:hint="@string/confirm_password"
         android:textSize="@dimen/normal_text_size"
+        android:textColor="@color/colorBlack"
         android:theme="@style/EditTextUnderlineStyle"
-        android:drawableLeft="@drawable/register_password"
+        android:drawableStart="@drawable/register_password"
         android:drawablePadding="8dp"
         android:maxLines="1"
         android:inputType="textPassword"
@@ -98,15 +73,31 @@
         android:layout_height="wrap_content"
         android:hint="@string/student_id"
         android:textSize="@dimen/normal_text_size"
+        android:textColor="@color/colorBlack"
         android:theme="@style/EditTextUnderlineStyle"
         android:drawableStart="@drawable/student_card"
         android:drawablePadding="8dp"
         android:maxLines="1"
-        android:inputType="textPassword"
+        android:inputType="number"
         android:layout_marginLeft="60dp"
         android:layout_marginRight="60dp"
         android:layout_marginTop="30dp"
         app:layout_constraintTop_toBottomOf="@id/et_confirm_password" />
+
+    <TextView
+        android:id="@+id/et_clazz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/select_clazz"
+        android:textSize="@dimen/normal_text_size"
+        android:textColor="@color/colorBlack"
+        android:drawableStart="@drawable/student_card"
+        android:drawablePadding="8dp"
+        android:maxLines="1"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintTop_toBottomOf="@id/et_student_id" />
 
     <Button
         android:id="@+id/btn_register"
@@ -119,6 +110,6 @@
         android:layout_marginTop="60dp"
         app:layout_constraintLeft_toLeftOf="@id/et_username"
         app:layout_constraintRight_toRightOf="@id/et_username"
-        app:layout_constraintTop_toBottomOf="@id/et_student_id" />
+        app:layout_constraintTop_toBottomOf="@id/et_clazz" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
