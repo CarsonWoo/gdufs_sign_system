@@ -82,7 +82,8 @@ class ScanFragment : BaseFragment(), ViewTreeObserver.OnGlobalLayoutListener, IV
             // click 的同时把可点击态取消
             mBtnSubmit.isEnabled = false
             Log.e(TAG, "onClickSubmitButton")
-            mController?.onSubmitButtonClick(it, arguments?.getInt(Const.SCAN_ENTER_FLAG) ?: Const.SCAN_ENTER_COMPARE)
+            mController?.onSubmitButtonClick(it, arguments?.getInt(Const.SCAN_ENTER_FLAG)
+                ?: Const.SCAN_ENTER_COMPARE)
         }
 
         mTextureView.setOnClickListener {

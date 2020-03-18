@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="220dp">
+
+    <RelativeLayout
+        android:id="@+id/date_picker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="10dp">
+
+        <Button
+            android:id="@+id/btn_time_picker_previous_date"
+            android:layout_width="70dp"
+            android:layout_height="25dp"
+            android:background="@drawable/button_solid_cyan_style"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/mini_text_size"
+            android:text="@string/previous_day"
+            android:gravity="center"
+            android:layout_marginStart="50dp" />
+
+        <Button
+            android:id="@+id/btn_time_picker_next_date"
+            android:layout_width="70dp"
+            android:layout_height="25dp"
+            android:background="@drawable/button_solid_cyan_style"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/mini_text_size"
+            android:text="@string/next_day"
+            android:gravity="center"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="50dp" />
+
+        <TextView
+            android:id="@+id/time_picker_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="2019-02-02"
+            android:textSize="@dimen/normal_text_size"
+            android:gravity="center"
+            android:textColor="@color/colorBlack"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/date_picker"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <com.carson.gdufs_sign_system.widget.PickerScrollView
+            android:id="@+id/time_picker_hour"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+
+        <com.carson.gdufs_sign_system.widget.PickerScrollView
+            android:id="@+id/time_picker_minute"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+        <com.carson.gdufs_sign_system.widget.PickerScrollView
+            android:id="@+id/time_picker_second"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

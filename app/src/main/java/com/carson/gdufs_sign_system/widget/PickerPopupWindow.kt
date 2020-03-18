@@ -2,7 +2,6 @@ package com.carson.gdufs_sign_system.widget
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.Gravity
@@ -13,14 +12,13 @@ import android.widget.PopupWindow
 import android.widget.TextView
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.utils.ScreenUtils
-import java.lang.RuntimeException
 import java.lang.ref.WeakReference
 
 class PickerPopupWindow(
     private val contextRef: WeakReference<Context>,
     private val anchorView: ViewGroup,
     private val dataList: MutableList<String>,
-    private val mListener: OnConfirmPickListener): View.OnClickListener, PickerScrollView.onSelectListener {
+    private val mListener: OnConfirmPickListener): View.OnClickListener, PickerScrollView.OnSelectListener {
 
     private lateinit var mContentView: View
     private lateinit var mPopupWindow: PopupWindow

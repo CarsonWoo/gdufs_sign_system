@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.util.Log
 import com.tencent.mapsdk.raster.model.LatLng
 import java.lang.ref.WeakReference
+import java.text.SimpleDateFormat
 import java.util.*
 
 object Const {
@@ -31,6 +32,18 @@ object Const {
         const val RESPONSE_SUCCESS = "200"
         const val RESPONSE_CLIENT_ERROR = "400"
         const val RESPONSE_SERVER_ERROR = "500"
+    }
+
+    private const val SIMPLE_DATE_FORMAT = "yyyy-MM-dd"
+
+    fun getCurrentDate(): String {
+        val sdf = SimpleDateFormat(SIMPLE_DATE_FORMAT, Locale.US)
+        return sdf.format(Date())
+    }
+
+    fun getSpecDate(date: Date): String {
+        val sdf = SimpleDateFormat(SIMPLE_DATE_FORMAT, Locale.US)
+        return sdf.format(date)
     }
 
     fun getCurrentTime(): String {

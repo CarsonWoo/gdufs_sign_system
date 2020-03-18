@@ -1,6 +1,5 @@
 package com.carson.gdufs_sign_system.widget
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -15,6 +14,7 @@ import com.carson.gdufs_sign_system.R
 import java.util.ArrayList
 import java.util.Timer
 import java.util.TimerTask
+import kotlin.math.abs
 import kotlin.math.pow
 
 /**
@@ -46,23 +46,28 @@ class PickerScrollView : View {
      */
     private var mMoveLen = 0f
     private var isInit = false
-    private var mSelectListener: onSelectListener? = null
+    private var mSelectListener: OnSelectListener? = null
     private var timer: Timer? = null
     private var mTask: MyTimerTask? = null
+
+    private val mRectPaint: Paint by lazy { Paint(Paint.ANTI_ALIAS_FLAG) }
+
+    private var isDrawSelectedRect = false
 
     private val updateHandler = object : Handler(Looper.getMainLooper()) {
 
         override fun handleMessage(msg: Message) {
-            if (Math.abs(mMoveLen) < SPEED) {
+            if (abs(mMoveLen) < SPEED) {
                 mMoveLen = 0f
                 if (mTask != null) {
                     mTask!!.cancel()
                     mTask = null
                     performSelect()
                 }
-            } else
-            // 这里mMoveLen / Math.abs(mMoveLen)是为了保有mMoveLen的正负号，以实现上滚或下滚
-                mMoveLen = mMoveLen - mMoveLen / Math.abs(mMoveLen) * SPEED
+            } else {
+                // 这里mMoveLen / Math.abs(mMoveLen)是为了保有mMoveLen的正负号，以实现上滚或下滚
+                mMoveLen -= mMoveLen / Math.abs(mMoveLen) * SPEED
+            }
             invalidate()
         }
 
@@ -76,7 +81,7 @@ class PickerScrollView : View {
         init()
     }
 
-    fun setOnSelectListener(listener: onSelectListener) {
+    fun setOnSelectListener(listener: OnSelectListener) {
         mSelectListener = listener
     }
 
@@ -89,6 +94,10 @@ class PickerScrollView : View {
         mDataList = datas
         mCurrentSelected = datas.size / 2
         invalidate()
+    }
+
+    fun setDrawSelectedRect(isDraw: Boolean) {
+        this.isDrawSelectedRect = isDraw
     }
 
     /**
@@ -161,6 +170,10 @@ class PickerScrollView : View {
         mOtherTextPaint!!.style = Paint.Style.FILL
         mOtherTextPaint!!.textAlign = Paint.Align.CENTER
         mOtherTextPaint!!.color = resources.getColor(R.color.colorGray)
+
+        mRectPaint.style = Paint.Style.STROKE
+        mRectPaint.color = resources.getColor(R.color.colorCyan)
+        mRectPaint.strokeWidth = 1.5F
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -199,6 +212,11 @@ class PickerScrollView : View {
         while (mCurrentSelected + i < mDataList!!.size) {
             drawOtherText(canvas, i, 1)
             i++
+        }
+
+        if (isDrawSelectedRect) {
+            canvas.drawRect(0F, y - mMaxTextSize, measuredWidth.toFloat(),
+                mMaxTextSize + y, mRectPaint)
         }
     }
 
@@ -258,11 +276,11 @@ class PickerScrollView : View {
         if (mMoveLen > MARGIN_ALPHA * mMinTextSize / 2) {
             // 往下滑超过离开距离
             moveTailToHead()
-            mMoveLen = mMoveLen - MARGIN_ALPHA * mMinTextSize
+            mMoveLen -= MARGIN_ALPHA * mMinTextSize
         } else if (mMoveLen < -MARGIN_ALPHA * mMinTextSize / 2) {
             // 往上滑超过离开距离
             moveHeadToTail()
-            mMoveLen = mMoveLen + MARGIN_ALPHA * mMinTextSize
+            mMoveLen += MARGIN_ALPHA * mMinTextSize
         }
 
         mLastDownY = event.y
@@ -271,7 +289,7 @@ class PickerScrollView : View {
 
     private fun doUp(event: MotionEvent) {
         // 抬起手后mCurrentSelected的位置由当前位置move到中间选中位置
-        if (Math.abs(mMoveLen) < 0.0001) {
+        if (abs(mMoveLen) < 0.0001) {
             mMoveLen = 0f
             return
         }
@@ -292,7 +310,7 @@ class PickerScrollView : View {
 
     }
 
-    interface onSelectListener {
+    interface OnSelectListener {
         fun onSelect(item: String)
     }
 

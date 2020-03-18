@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.carson.gdufs_sign_system.R
@@ -14,7 +15,11 @@ import com.carson.gdufs_sign_system.utils.StatusBarUtil
 import com.tencent.tencentmap.mapsdk.map.MapView
 import java.lang.ref.WeakReference
 
-class PostActivity : BaseActivity() {
+class PostActivity : BaseActivity(), IViewCallback, View.OnClickListener {
+
+    private enum class SELECTTYPE {
+        START_TIME, END_TIME
+    }
 
     private lateinit var mBackView: ImageView
     private lateinit var mPostView: ImageView
@@ -28,6 +33,10 @@ class PostActivity : BaseActivity() {
     private lateinit var mBtnPost: Button
 
     private lateinit var mPostController: PostController
+
+    private lateinit var mContainer: CoordinatorLayout
+
+    private var mSelectType = SELECTTYPE.START_TIME
 
     override fun getContentViewResId(): Int = R.layout.activity_post
 
@@ -52,8 +61,9 @@ class PostActivity : BaseActivity() {
         mSignPlace = findViewById(R.id.sign_place)
         mMapView = findViewById(R.id.post_map_view)
         mBtnPost = findViewById(R.id.btn_post)
+        mContainer = findViewById(R.id.post_container)
 
-        mPostController = PostController(WeakReference(this))
+        mPostController = PostController(WeakReference(this), this)
 
         PermissionUtils.getInstance().with(this).permissions(Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -72,6 +82,42 @@ class PostActivity : BaseActivity() {
     private fun initEvents() {
         mPostController.setupMap(mMapView)
         mPostController.registerLocation()
+        mSignClazzLayout.setOnClickListener(this)
+        mEtStartTime.setOnClickListener(this)
+        mEtEndTime.setOnClickListener(this)
+        mBackView.setOnClickListener(this)
+        mBtnPost.setOnClickListener(this)
+        mPostView.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.et_start_time -> {
+                mSelectType = SELECTTYPE.START_TIME
+                mPostController.initPopupWindow(mContainer)
+            }
+            R.id.et_end_time -> {
+                mSelectType = SELECTTYPE.END_TIME
+                mPostController.initPopupWindow(mContainer)
+            }
+            R.id.sign_student_clazz_layout -> {
+                // popup the multi choice selector
+            }
+            R.id.post_back -> {
+                onBackPressed()
+            }
+            R.id.top_post, R.id.btn_post -> {
+                // post the sign activity
+            }
+        }
+    }
+
+    override fun onShowSelectedText(text: String) {
+        if (mSelectType == SELECTTYPE.START_TIME) {
+            mEtStartTime.setText(text)
+        } else if (mSelectType == SELECTTYPE.END_TIME) {
+            mEtEndTime.setText(text)
+        }
     }
 
     override fun onRequestPermissionsResult(

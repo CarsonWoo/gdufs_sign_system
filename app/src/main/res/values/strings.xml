@@ -71,6 +71,8 @@
     <string name="select_clazz">班级选择</string>
     <string name="cancel">取消</string>
     <string name="confirm">确定</string>
+    <string name="previous_day">前一天</string>
+    <string name="next_day">后一天</string>
 
     <string-array name="static_class_name">
         <item>计算机大类1班</item>

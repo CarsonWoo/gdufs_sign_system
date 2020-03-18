@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/post_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -109,6 +110,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/sign_start_time"
                     android:textSize="@dimen/normal_text_size"
+                    android:focusable="false"
                     android:lines="1"
                     android:drawableStart="@drawable/selector_time"
                     android:drawablePadding="8dp"
@@ -125,6 +127,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/sign_end_time"
                     android:textSize="@dimen/normal_text_size"
+                    android:focusable="false"
                     android:lines="1"
                     android:drawableStart="@drawable/selector_time"
                     android:drawablePadding="8dp"

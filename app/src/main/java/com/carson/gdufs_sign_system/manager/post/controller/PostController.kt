@@ -2,9 +2,19 @@ package com.carson.gdufs_sign_system.manager.post.controller
 
 import android.Manifest
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.widget.PopupWindow
+import android.widget.TextView
 import com.carson.gdufs_sign_system.R
+import com.carson.gdufs_sign_system.manager.post.IViewCallback
 import com.carson.gdufs_sign_system.utils.PermissionUtils
+import com.carson.gdufs_sign_system.utils.ScreenUtils
+import com.carson.gdufs_sign_system.widget.TimePickerView
 import com.tencent.map.geolocation.*
 import com.tencent.mapsdk.raster.model.BitmapDescriptorFactory
 import com.tencent.mapsdk.raster.model.LatLng
@@ -13,13 +23,15 @@ import com.tencent.tencentmap.mapsdk.map.CameraUpdateFactory
 import com.tencent.tencentmap.mapsdk.map.MapView
 import java.lang.ref.WeakReference
 
-class PostController(private val context: WeakReference<Context>) : TencentLocationListener {
+class PostController(private val context: WeakReference<Context>, private val mIView: IViewCallback) : TencentLocationListener {
 
     companion object {
         private const val TAG = "PostController"
     }
 
     private lateinit var mMapView: MapView
+
+    private var mPopupWindow: PopupWindow? = null
 
     private var mLatLng: LatLng? = null
 
@@ -92,4 +104,26 @@ class PostController(private val context: WeakReference<Context>) : TencentLocat
             }
         }
     }
+
+    fun initPopupWindow(anchorView: ViewGroup) {
+        if (mPopupWindow == null) {
+            val contentView = LayoutInflater.from(context.get()).inflate(R.layout.layout_popup_time_picker,
+                anchorView, false)
+            val timePicker = contentView.findViewById<TimePickerView>(R.id.popup_time_picker)
+            mPopupWindow = PopupWindow(contentView).apply {
+                width = ScreenUtils.getScreenWidth(context.get()!!)
+                height = ScreenUtils.dip2px(context.get()!!, 260F)
+                elevation = ScreenUtils.dip2px_5(context.get()!!).toFloat()
+                animationStyle = R.style.PopupAnimation
+                setBackgroundDrawable(ColorDrawable(Color.WHITE))
+                isOutsideTouchable = true
+            }
+            contentView.findViewById<TextView>(R.id.popup_confirm).setOnClickListener {
+                mIView.onShowSelectedText(timePicker.getResult())
+                mPopupWindow?.dismiss()
+            }
+        }
+        mPopupWindow?.showAtLocation(anchorView, Gravity.BOTTOM, 0, 0)
+    }
+
 }
