@@ -1,8 +1,6 @@
 package com.carson.gdufs_sign_system.manager.post
 
 import android.Manifest
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -18,7 +16,7 @@ import java.lang.ref.WeakReference
 class PostActivity : BaseActivity(), IViewCallback, View.OnClickListener {
 
     private enum class SELECTTYPE {
-        START_TIME, END_TIME
+        START_TIME, END_TIME, CLAZZ
     }
 
     private lateinit var mBackView: ImageView
@@ -94,14 +92,16 @@ class PostActivity : BaseActivity(), IViewCallback, View.OnClickListener {
         when (v?.id) {
             R.id.et_start_time -> {
                 mSelectType = SELECTTYPE.START_TIME
-                mPostController.initPopupWindow(mContainer)
+                mPostController.initPopupPickerWindow(mContainer)
             }
             R.id.et_end_time -> {
                 mSelectType = SELECTTYPE.END_TIME
-                mPostController.initPopupWindow(mContainer)
+                mPostController.initPopupPickerWindow(mContainer)
             }
             R.id.sign_student_clazz_layout -> {
                 // popup the multi choice selector
+                mSelectType = SELECTTYPE.CLAZZ
+                mPostController.initPopupMultiChoiceWindow(mContainer)
             }
             R.id.post_back -> {
                 onBackPressed()
@@ -113,10 +113,10 @@ class PostActivity : BaseActivity(), IViewCallback, View.OnClickListener {
     }
 
     override fun onShowSelectedText(text: String) {
-        if (mSelectType == SELECTTYPE.START_TIME) {
-            mEtStartTime.setText(text)
-        } else if (mSelectType == SELECTTYPE.END_TIME) {
-            mEtEndTime.setText(text)
+        when (mSelectType) {
+            SELECTTYPE.START_TIME -> mEtStartTime.setText(text)
+            SELECTTYPE.END_TIME -> mEtEndTime.setText(text)
+            SELECTTYPE.CLAZZ -> mSignClazz.text = text
         }
     }
 

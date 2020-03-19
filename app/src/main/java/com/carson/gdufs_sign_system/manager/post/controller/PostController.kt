@@ -3,6 +3,7 @@ package com.carson.gdufs_sign_system.manager.post.controller
 import android.Manifest
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.Gravity
@@ -10,8 +11,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.TextView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.manager.post.IViewCallback
+import com.carson.gdufs_sign_system.manager.post.adapter.PopupMultiItem
+import com.carson.gdufs_sign_system.manager.post.adapter.PopupMultiItemAdapter
 import com.carson.gdufs_sign_system.utils.PermissionUtils
 import com.carson.gdufs_sign_system.utils.ScreenUtils
 import com.carson.gdufs_sign_system.widget.TimePickerView
@@ -32,6 +38,8 @@ class PostController(private val context: WeakReference<Context>, private val mI
     private lateinit var mMapView: MapView
 
     private var mPopupWindow: PopupWindow? = null
+
+    private var mPopupMultiChoiceWindow: PopupWindow? = null
 
     private var mLatLng: LatLng? = null
 
@@ -105,7 +113,7 @@ class PostController(private val context: WeakReference<Context>, private val mI
         }
     }
 
-    fun initPopupWindow(anchorView: ViewGroup) {
+    fun initPopupPickerWindow(anchorView: ViewGroup) {
         if (mPopupWindow == null) {
             val contentView = LayoutInflater.from(context.get()).inflate(R.layout.layout_popup_time_picker,
                 anchorView, false)
@@ -124,6 +132,50 @@ class PostController(private val context: WeakReference<Context>, private val mI
             }
         }
         mPopupWindow?.showAtLocation(anchorView, Gravity.BOTTOM, 0, 0)
+    }
+
+    fun initPopupMultiChoiceWindow(anchorView: ViewGroup) {
+        if (mPopupMultiChoiceWindow == null) {
+            val contentView = LayoutInflater.from(context.get()).inflate(R.layout.layout_popup_recyclerview,
+                anchorView, false)
+            val recyclerView = contentView.findViewById<RecyclerView>(R.id.popup_recyclerview)
+            mPopupMultiChoiceWindow = PopupWindow(contentView).apply {
+                width = ScreenUtils.getScreenWidth(context.get()!!)
+                height = ScreenUtils.dip2px(context.get()!!, 250F)
+                elevation = ScreenUtils.dip2px_5(context.get()!!).toFloat()
+                animationStyle = R.style.PopupAnimation
+                setBackgroundDrawable(ColorDrawable(Color.WHITE))
+                isOutsideTouchable = true
+            }
+            // init recyclerview
+            val dataList = mutableListOf<PopupMultiItem>()
+            val clazzArray = context.get()!!.resources
+                .getStringArray(R.array.static_class_name)
+            clazzArray.forEach {
+                dataList.add(PopupMultiItem(it, false))
+            }
+            val adapter = PopupMultiItemAdapter(dataList)
+            recyclerView.adapter = adapter
+            val gridLayoutManager = GridLayoutManager(context.get()!!,
+                ScreenUtils.getScreenWidth(context.get()!!))
+            val mPaint = Paint()
+            mPaint.textSize = ScreenUtils.dip2px(context.get()!!, 12F).toFloat()
+            gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    val textWidth = mPaint.measureText(clazzArray[position]) + ScreenUtils.dip2px(context.get()!!, 48F)
+                    return if (textWidth > ScreenUtils.getScreenWidth(context.get()!!))
+                        ScreenUtils.getScreenWidth(context.get()!!) else textWidth.toInt()
+                }
+            }
+            recyclerView.layoutManager = gridLayoutManager
+
+            // init widget
+            contentView.findViewById<TextView>(R.id.popup_confirm).setOnClickListener {
+                mIView.onShowSelectedText(adapter.getResult())
+                mPopupMultiChoiceWindow?.dismiss()
+            }
+        }
+        mPopupMultiChoiceWindow?.showAtLocation(anchorView, Gravity.BOTTOM, 0, 0)
     }
 
 }

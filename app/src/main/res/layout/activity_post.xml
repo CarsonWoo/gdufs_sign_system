@@ -147,6 +147,8 @@
                     android:layout_marginStart="60dp"
                     android:layout_marginEnd="60dp"
                     android:layout_marginTop="30dp"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/et_end_time">
@@ -162,12 +164,12 @@
 
                     <TextView
                         android:id="@+id/sign_student_clazz"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/normal_text_size"
                         android:layout_marginTop="10dp"
-                        android:text="计算机3班、计算机5班" />
+                        />
 
                 </LinearLayout>
 
