@@ -1,6 +1,8 @@
 package com.carson.gdufs_sign_system.manager.post
 
 import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -17,6 +19,11 @@ class PostActivity : BaseActivity(), IViewCallback, View.OnClickListener {
 
     private enum class SELECTTYPE {
         START_TIME, END_TIME, CLAZZ
+    }
+
+    companion object {
+        private const val TAG = "PostActivity"
+        private const val REQUEST_TO_SEARCH = 0x1001
     }
 
     private lateinit var mBackView: ImageView
@@ -86,6 +93,7 @@ class PostActivity : BaseActivity(), IViewCallback, View.OnClickListener {
         mBackView.setOnClickListener(this)
         mBtnPost.setOnClickListener(this)
         mPostView.setOnClickListener(this)
+        mSignPlace.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -109,6 +117,10 @@ class PostActivity : BaseActivity(), IViewCallback, View.OnClickListener {
             R.id.top_post, R.id.btn_post -> {
                 // post the sign activity
             }
+            R.id.sign_place -> {
+                val toChoosePlace = Intent(this, SearchLocationActivity::class.java)
+                startActivityForResult(toChoosePlace, REQUEST_TO_SEARCH)
+            }
         }
     }
 
@@ -117,6 +129,16 @@ class PostActivity : BaseActivity(), IViewCallback, View.OnClickListener {
             SELECTTYPE.START_TIME -> mEtStartTime.setText(text)
             SELECTTYPE.END_TIME -> mEtEndTime.setText(text)
             SELECTTYPE.CLAZZ -> mSignClazz.text = text
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_TO_SEARCH && resultCode == Activity.RESULT_OK) {
+            // 设置签到位置
+            data?.let {
+                mSignPlace.text = data.getStringExtra("address")
+            }
         }
     }
 

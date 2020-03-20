@@ -47,7 +47,6 @@ class MapController(mapFragment: MapFragment, private val mView: IViewCallback) 
 
         val mMap = mMapView?.map
         mMap?.setOnMapCameraChangeListener(this)
-        mMap?.isSatelliteEnabled = true
 //        mMap?.setCenter(Const.GDUFS_LATLNG)
         /**
          * test
