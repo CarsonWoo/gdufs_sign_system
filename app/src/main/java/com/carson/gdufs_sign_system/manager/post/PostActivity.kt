@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -23,7 +24,7 @@ class PostActivity : BaseActivity(), IViewCallback, View.OnClickListener {
 
     companion object {
         private const val TAG = "PostActivity"
-        private const val REQUEST_TO_SEARCH = 0x1001
+        const val REQUEST_TO_SEARCH = 0x1001
     }
 
     private lateinit var mBackView: ImageView
@@ -118,8 +119,7 @@ class PostActivity : BaseActivity(), IViewCallback, View.OnClickListener {
                 // post the sign activity
             }
             R.id.sign_place -> {
-                val toChoosePlace = Intent(this, SearchLocationActivity::class.java)
-                startActivityForResult(toChoosePlace, REQUEST_TO_SEARCH)
+                mPostController.navigateToPickLocation()
             }
         }
     }
@@ -135,9 +135,11 @@ class PostActivity : BaseActivity(), IViewCallback, View.OnClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_TO_SEARCH && resultCode == Activity.RESULT_OK) {
+            Log.e(TAG, "onBackData address=${data?.getStringExtra("address")}")
             // 设置签到位置
             data?.let {
-                mSignPlace.text = data.getStringExtra("address")
+                mPostController.animateMap(it)
+                mSignPlace.text = it.getStringExtra("address")
             }
         }
     }

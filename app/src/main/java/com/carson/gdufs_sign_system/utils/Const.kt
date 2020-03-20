@@ -35,8 +35,9 @@ object Const {
     }
 
     object SearchApi {
-        const val SEARCH_MAP_API = "https://apis.map.qq.com/tools/locpicker?search=1&type=0&policy" +
-                "=1&mapdraggable=1&key=6DWBZ-AWUKG-WX4QP-IGCIO-O6K76-2XFME&referer=人人签"
+        const val SEARCH_MAP_API = "https://apis.map.qq.com/tools/locpicker?search=1&type=0&" +
+                "&backurl=http://callback&zoom=15&policy" +
+                "=1&mapdraggable=1&key=6DWBZ-AWUKG-WX4QP-IGCIO-O6K76-2XFME&referer=sign_system"
     }
 
     private const val SIMPLE_DATE_FORMAT = "yyyy-MM-dd"

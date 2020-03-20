@@ -2,6 +2,7 @@ package com.carson.gdufs_sign_system.manager.post.controller
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
@@ -13,15 +14,17 @@ import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.manager.post.IViewCallback
+import com.carson.gdufs_sign_system.manager.post.PostActivity
+import com.carson.gdufs_sign_system.manager.post.SearchLocationActivity
 import com.carson.gdufs_sign_system.manager.post.adapter.PopupMultiItem
 import com.carson.gdufs_sign_system.manager.post.adapter.PopupMultiItemAdapter
 import com.carson.gdufs_sign_system.utils.PermissionUtils
 import com.carson.gdufs_sign_system.utils.ScreenUtils
 import com.carson.gdufs_sign_system.widget.TimePickerView
 import com.tencent.map.geolocation.*
+import com.tencent.mapsdk.raster.model.BitmapDescriptor
 import com.tencent.mapsdk.raster.model.BitmapDescriptorFactory
 import com.tencent.mapsdk.raster.model.LatLng
 import com.tencent.mapsdk.raster.model.MarkerOptions
@@ -47,15 +50,13 @@ class PostController(private val context: WeakReference<Context>, private val mI
         this.mMapView = mMapView
     }
 
-    fun setMapEvent(location: TencentLocation) {
+    private fun initMapEvent(location: TencentLocation) {
         mMapView ?: return
 
         val mMap = mMapView.map
         val uiSettings = mMapView.uiSettings
         uiSettings.setScrollGesturesEnabled(false)
         uiSettings.setZoomGesturesEnabled(false)
-
-        val locationList = location.poiList
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(mLatLng))
         mMap.setZoom(15)
@@ -66,6 +67,21 @@ class PostController(private val context: WeakReference<Context>, private val mI
             setAnchor(0.5F, 0.5F)
         }
 
+    }
+
+    fun animateMap(data: Intent) {
+        val mMap = mMapView.map
+
+        val latLng = LatLng(data.getDoubleExtra("lat", mLatLng?.latitude!!),
+            data.getDoubleExtra("lng", mLatLng?.longitude!!))
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng))
+        mMap.addMarker(MarkerOptions()).apply {
+            setIcon(BitmapDescriptorFactory.fromResource(R.drawable.signin_location))
+            title = data.getStringExtra("address")
+            position = latLng
+            setAnchor(0.5F, 0.5F)
+        }
     }
 
     fun registerLocation() {
@@ -84,7 +100,7 @@ class PostController(private val context: WeakReference<Context>, private val mI
 //            refreshMap(location)
             location?.let {
                 mLatLng = LatLng(it.latitude, it.longitude)
-                setMapEvent(it)
+                initMapEvent(it)
             }
         } else {
             // 定位失败
@@ -176,6 +192,17 @@ class PostController(private val context: WeakReference<Context>, private val mI
             }
         }
         mPopupMultiChoiceWindow?.showAtLocation(anchorView, Gravity.BOTTOM, 0, 0)
+    }
+
+    fun navigateToPickLocation() {
+        val toChoosePlace = Intent(context.get(), SearchLocationActivity::class.java).apply {
+            putExtra("lat", mLatLng?.latitude)
+            putExtra("lng", mLatLng?.longitude)
+        }
+        (context.get() as PostActivity?)?.apply {
+            startActivityForResult(toChoosePlace, PostActivity.REQUEST_TO_SEARCH)
+            overridePendingTransition(R.anim.slide_right_in, R.anim.scale_out)
+        }
     }
 
 }
