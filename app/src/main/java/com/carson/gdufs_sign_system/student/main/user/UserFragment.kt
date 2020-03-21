@@ -9,16 +9,16 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseActivity
 import com.carson.gdufs_sign_system.base.BaseFragment
-import com.carson.gdufs_sign_system.base.LifeCallbackManager
 import com.carson.gdufs_sign_system.login.LoginActivity
 import com.carson.gdufs_sign_system.student.main.MainActivity
 import com.carson.gdufs_sign_system.student.main.adapter.UserSignItemAdapter
 import com.carson.gdufs_sign_system.student.main.controller.UserController
-import com.carson.gdufs_sign_system.widget.CircleImageView
+import com.carson.gdufs_sign_system.utils.Const
+import com.carson.gdufs_sign_system.widget.RoundImageView
+import java.lang.ref.WeakReference
 
 class UserFragment: BaseFragment() {
     override fun fragmentString(): String {
@@ -26,7 +26,7 @@ class UserFragment: BaseFragment() {
     }
 
     private lateinit var mRoot: View
-    private lateinit var mAvatarView: CircleImageView
+    private lateinit var mAvatarView: RoundImageView
     private lateinit var mUsername: TextView
     private lateinit var mEditInfo: TextView
     private lateinit var mStudentId: TextView
@@ -67,10 +67,6 @@ class UserFragment: BaseFragment() {
         mSetting = mRoot.findViewById(R.id.setting)
         mLogout = mRoot.findViewById(R.id.logout)
 
-        context?.let {
-            Glide.with(it).load("https://file.ourbeibei.com/l_e/user/portrait/002bd4ec-438e-4e8a-a07d-7527c29b10fc.jpg").into(mAvatarView)
-        }
-
         // recyclerview
         mAdapter = mUserController.getUserItemAdapter()
         mRecyclerview.adapter = mAdapter
@@ -80,16 +76,17 @@ class UserFragment: BaseFragment() {
 
     private fun initEvents() {
         mLogout.setOnClickListener {
+            Const.getSharedPreference(WeakReference(context))?.edit()?.clear()?.apply()
+            Const.removePrefKey()
             Intent(activity, LoginActivity::class.java).apply {
                 startActivity(this)
                 (activity as BaseActivity?)?.finish(MainActivity::class.java.name)
-//                activity?.overridePendingTransition(R.anim.slide_right_out, R.anim.slide_left_in)
             }
         }
     }
 
     fun onRefresh() {
-        // TODO 刷新操作
+
     }
 
     override fun onDestroy() {

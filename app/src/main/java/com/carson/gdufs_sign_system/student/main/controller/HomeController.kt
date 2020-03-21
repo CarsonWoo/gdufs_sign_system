@@ -1,6 +1,7 @@
 package com.carson.gdufs_sign_system.student.main.controller
 
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseController
@@ -12,8 +13,25 @@ import com.carson.gdufs_sign_system.student.main.adapter.HomeBannerAdapter
 import com.carson.gdufs_sign_system.student.main.adapter.HomeSignItemAdapter
 import com.carson.gdufs_sign_system.student.main.home.HomeFragment
 import com.carson.gdufs_sign_system.student.main.model.SignItem
+import com.carson.gdufs_sign_system.utils.Const
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import java.lang.ref.WeakReference
+import kotlin.coroutines.CoroutineContext
 
-class HomeController(homeFragment: HomeFragment): BaseController<HomeFragment>(homeFragment), HomeBannerAdapter.OnBannerItemClickListener {
+class HomeController(homeFragment: HomeFragment): BaseController<HomeFragment>(homeFragment),
+    HomeBannerAdapter.OnBannerItemClickListener, CoroutineScope {
+
+    companion object {
+        private const val TAG = "HomeController"
+    }
+
+    private var mJob = Job()
+
+    override val coroutineContext: CoroutineContext
+        get() = mJob + Dispatchers.Main
+
     private lateinit var mBannerAdapter: HomeBannerAdapter
     private lateinit var mItemAdapter: HomeSignItemAdapter
 
@@ -71,6 +89,31 @@ class HomeController(homeFragment: HomeFragment): BaseController<HomeFragment>(h
             startActivity(toDetail)
             overridePendingTransition(R.anim.slide_right_in, R.anim.scale_out)
         }
+    }
+
+    fun loadData() {
+        mJob.cancel()
+
+        needGsonConverter(true)
+
+        mJob = executeRequest(
+            request = {
+                mApiService.getHomeData(Const.getSharedPreference(WeakReference(mFragment?.context))
+                    ?.getString(Const.PreferenceKeys.USER_ID, "")).execute()
+            },
+            onSuccess = { res ->
+                if (res.isSuccessful) {
+                    res.body()?.let {
+                        Log.i(TAG, it.bannerList.size.toString() + " " + it.signingList.size)
+                    }
+                } else {
+                    Log.e(TAG, res.message())
+                }
+            },
+            onFail = {
+                Log.e(TAG, it.message)
+            }
+        )
     }
 
 }

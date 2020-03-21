@@ -5,13 +5,14 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseActivity
 import com.carson.gdufs_sign_system.login.LoginActivity
 import com.carson.gdufs_sign_system.manager.lookup.LookupActivity
 import com.carson.gdufs_sign_system.manager.post.PostActivity
+import com.carson.gdufs_sign_system.utils.Const
 import com.carson.gdufs_sign_system.utils.StatusBarUtil
+import java.lang.ref.WeakReference
 
 class ManageActivity : BaseActivity(), IViewCallback {
 
@@ -73,6 +74,8 @@ class ManageActivity : BaseActivity(), IViewCallback {
     }
 
     private fun doLogout() {
+        Const.getSharedPreference(WeakReference(this))?.edit()?.clear()?.apply()
+        Const.removePrefKey()
         Intent(this, LoginActivity::class.java)
             .apply {
                 startActivity(this)

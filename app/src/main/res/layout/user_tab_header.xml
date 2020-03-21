@@ -12,13 +12,13 @@
     app:layout_constraintTop_toTopOf="parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.carson.gdufs_sign_system.widget.CircleImageView
+    <com.carson.gdufs_sign_system.widget.RoundImageView
         android:id="@+id/avatar"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:src="@drawable/icon_student"
         app:borderColor="@color/colorWhite"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
         android:layout_marginStart="20dp" />
 
     <TextView

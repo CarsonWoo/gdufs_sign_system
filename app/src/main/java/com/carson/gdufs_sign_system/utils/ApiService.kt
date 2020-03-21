@@ -1,12 +1,12 @@
 package com.carson.gdufs_sign_system.utils
 
 import com.carson.gdufs_sign_system.model.CommonResponse
+import com.carson.gdufs_sign_system.model.HomeResponse
 import com.carson.gdufs_sign_system.model.LoginResponse
+import com.carson.gdufs_sign_system.model.PersonalResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ApiService {
 
@@ -31,11 +31,20 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("Login")
-    fun login(@Field("username") username: String, @Field("password") password: String): Call<LoginResponse>
+    fun login(@Field("username") username: String,
+              @Field("password") password: String): Call<LoginResponse>
 
     @FormUrlEncoded
     @POST("Register")
-    fun register(@Field("username") userId: String, @Field("phoneNumber") phoneNumber: String,
-                 @Field("class") clazz: String, @Field("password") password: String): Call<CommonResponse>
+    fun register(@Field("username") userId: String,
+                 @Field("phoneNumber") phoneNumber: String,
+                 @Field("class") clazz: String,
+                 @Field("password") password: String): Call<CommonResponse>
+
+    @GET("Home")
+    fun getHomeData(@Query("username") username: String?): Call<HomeResponse>
+
+    @GET("Personal")
+    fun getPersonalData(@Query("username") username: String?): Call<PersonalResponse>
 
 }

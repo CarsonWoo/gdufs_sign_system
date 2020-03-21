@@ -57,6 +57,7 @@ class CircleImageView: AppCompatImageView {
             return
         }
         if (drawable is ColorDrawable) {
+            Log.e(TAG, "colorDrawable")
             mPaint.color = drawable.color
             canvas.drawCircle(paddingLeft + mRealSize.toFloat() / 2, paddingTop + mRealSize.toFloat() / 2,
                 mRadius.toFloat(), mPaint)
@@ -70,6 +71,7 @@ class CircleImageView: AppCompatImageView {
             return
         }
         if (drawable is BitmapDrawable) {
+            Log.e(TAG, "BitmapDrawable")
             mPaint.shader = initBitmapShader(drawable)
             canvas.drawCircle(paddingLeft + mRealSize.toFloat() / 2, paddingTop + mRealSize.toFloat() / 2,
                 mRadius.toFloat(), mPaint)

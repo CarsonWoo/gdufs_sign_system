@@ -11,6 +11,8 @@ import java.util.*
 object Const {
     private const val TAG = "Const"
 
+    private var mPrefKey: String? = null
+
     const val BAIDU_APP_ID = "18644686"
     const val BAIDU_API_KEY = "onWXf91wuRB0dlzpCrjQmrPr"
     const val BAIDU_SECRET_KEY = "OAa6QLg4rL37duCgVX1bLaY5E3kgNmZo"
@@ -42,6 +44,11 @@ object Const {
 
     private const val SIMPLE_DATE_FORMAT = "yyyy-MM-dd"
 
+    object PreferenceKeys {
+        const val USER_ID = "userId"
+        const val AUTH_IMAGE = "authImage"
+    }
+
     fun getCurrentDate(): String {
         val sdf = SimpleDateFormat(SIMPLE_DATE_FORMAT, Locale.US)
         return sdf.format(Date())
@@ -60,8 +67,16 @@ object Const {
         return mCurrentTime
     }
 
-    fun getSharedPreference(contextRef: WeakReference<Context?>, key: String?): SharedPreferences? {
-        key ?: return null
-        return contextRef.get()?.getSharedPreferences(key, Context.MODE_PRIVATE)
+    fun getSharedPreference(contextRef: WeakReference<Context?>): SharedPreferences? {
+        mPrefKey?: return null
+        return contextRef.get()?.getSharedPreferences(mPrefKey, Context.MODE_PRIVATE)
+    }
+
+    fun setUpPrefKey(key: String) {
+        mPrefKey = key
+    }
+
+    fun removePrefKey() {
+        mPrefKey = null
     }
 }

@@ -22,6 +22,7 @@ import com.carson.gdufs_sign_system.utils.Const
 import com.carson.gdufs_sign_system.utils.PermissionUtils
 import com.carson.gdufs_sign_system.widget.BannerDot
 import com.carson.gdufs_sign_system.widget.CircleImageView
+import com.carson.gdufs_sign_system.widget.RoundImageView
 
 class HomeFragment: BaseFragment() {
     override fun fragmentString(): String {
@@ -29,7 +30,7 @@ class HomeFragment: BaseFragment() {
     }
 
     private lateinit var mRoot: View
-    private lateinit var mAvatar: CircleImageView
+    private lateinit var mAvatar: RoundImageView
     private lateinit var mUsername: TextView
     private lateinit var mScan: LinearLayout
     private lateinit var mSearchBar: EditText
@@ -101,6 +102,7 @@ class HomeFragment: BaseFragment() {
                     }
                 })
         }
+        mHomeController.loadData()
     }
 
     fun onRefresh() {

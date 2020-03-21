@@ -12,3 +12,25 @@ data class LoginResponse(
     val authImageBase: String,
     val userId: String
 )
+
+data class HomeResponse(
+    val bannerList: MutableList<String>,
+    val signingList: MutableList<SignBean>
+)
+
+data class PersonalResponse(
+    val userId: String,
+    val userClass: String,
+    val signedList: MutableList<SignBean>
+)
+
+data class SignBean(
+    val id: Long,
+    val signingTime: String,
+    val status: String,
+    val name: String,
+    val startTime: String,
+    val endTime: String,
+    val num: Int,
+    val picUrl: String
+)

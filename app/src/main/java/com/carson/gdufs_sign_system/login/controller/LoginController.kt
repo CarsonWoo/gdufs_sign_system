@@ -78,7 +78,14 @@ class LoginController(mFragment: LoginFragment?): BaseController<LoginFragment?>
                                 "authImageBase: ${it.authImageBase} userId: ${it.userId}")
                         if (it.status == Const.Net.RESPONSE_SUCCESS) {
                             // 还要记录sp
-//                    val mSharedPreferences = Const.getSharedPreference(WeakReference(mFragment?.context), it.userId)
+                            Const.setUpPrefKey(it.userId)
+                            val mSharedPreferences =
+                                Const.getSharedPreference(WeakReference(mFragment?.context))
+                            mSharedPreferences?.edit()?.apply {
+                                putString(Const.PreferenceKeys.USER_ID, it.userId)
+                                putString(Const.PreferenceKeys.AUTH_IMAGE, it.authImageBase)
+                                apply()
+                            }
                             jumpToMain(it.identity)
                         } else {
                             Toast.makeText(mFragment?.context, it.msg, Toast.LENGTH_SHORT).show()
