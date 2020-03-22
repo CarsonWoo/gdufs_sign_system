@@ -106,7 +106,7 @@ class HomeFragment: BaseFragment() {
     }
 
     fun onRefresh() {
-        // TODO 刷新操作
+        mHomeController.loadData()
     }
 
     override fun onDestroy() {

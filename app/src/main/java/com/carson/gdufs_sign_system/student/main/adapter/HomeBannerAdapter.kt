@@ -1,5 +1,8 @@
 package com.carson.gdufs_sign_system.student.main.adapter
 
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +14,7 @@ import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.utils.ScreenUtils
 import com.carson.gdufs_sign_system.widget.BannerDot
 import com.carson.gdufs_sign_system.widget.RoundImageView
+import java.util.*
 import kotlin.math.abs
 
 class HomeBannerAdapter(bannerList: MutableList<String>) : PagerAdapter(),
@@ -18,10 +22,10 @@ class HomeBannerAdapter(bannerList: MutableList<String>) : PagerAdapter(),
 
     companion object {
         const val TAG = "HomeBannerAdapter"
+        private const val MSG_INFINITE = 200
     }
 
-    private val mBannerList: MutableList<String> = bannerList
-    private val mImgList = ArrayList<RoundImageView>()
+    private var mBannerList: MutableList<String> = bannerList
     private var mSize: Int = 0
     private var mBannerDot: BannerDot? = null
     private lateinit var mViewPager: ViewPager
@@ -30,10 +34,34 @@ class HomeBannerAdapter(bannerList: MutableList<String>) : PagerAdapter(),
 
     private var mBannerClickListener: OnBannerItemClickListener? = null
 
+    private val mHandler = object : Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message?) {
+            super.handleMessage(msg)
+            when (msg?.what) {
+                MSG_INFINITE -> {
+                    Log.e(TAG, "mCurrentPosition = ${mViewPager.currentItem}")
+                    mViewPager.setCurrentItem(mViewPager.currentItem + 1, true)
+                    sendEmptyMessageDelayed(MSG_INFINITE, 5 * 1000L)
+                }
+            }
+        }
+    }
+
     init {
         mSize = mBannerList.size
-        mBannerList.add(0, bannerList[mSize - 1])
-        mBannerList.add(bannerList[0])
+        if (mBannerList.size > 0) {
+            mBannerList.add(0, bannerList[mSize - 1])
+            mBannerList.add(bannerList[0])
+        }
+    }
+
+    fun setData(list: MutableList<String>) {
+        this.mSize = list.size
+        this.mBannerList = list
+        mBannerList.add(0, mBannerList[mSize - 1])
+        mBannerList.add(mBannerList[0])
+        mBannerDot?.initParam(mSize)
+        mBannerDot?.isSupportInfinite(true)
     }
 
     fun setBannerClickListener(listener: OnBannerItemClickListener) {
@@ -46,6 +74,10 @@ class HomeBannerAdapter(bannerList: MutableList<String>) : PagerAdapter(),
         mBannerDot?.isSupportInfinite(true)
     }
 
+    fun onDestroy() {
+        mHandler.removeCallbacksAndMessages(MSG_INFINITE)
+    }
+
     fun setUpWithViewPager(viewPager: ViewPager) {
         this.mViewPager = viewPager
         mViewPager.pageMargin = ScreenUtils.dip2px_10(viewPager.context)
@@ -54,6 +86,7 @@ class HomeBannerAdapter(bannerList: MutableList<String>) : PagerAdapter(),
         mViewPager.setPageTransformer(true, AlphaTransformer())
         mViewPager.addOnPageChangeListener(this@HomeBannerAdapter)
         mViewPager.setCurrentItem(1, false)
+        mHandler.sendEmptyMessageDelayed(MSG_INFINITE, 5 * 1000L)
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
@@ -85,6 +118,11 @@ class HomeBannerAdapter(bannerList: MutableList<String>) : PagerAdapter(),
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return view == `object`
+    }
+
+    override fun getItemPosition(`object`: Any): Int {
+        // 强制更新
+        return POSITION_NONE
     }
 
     override fun getCount(): Int {

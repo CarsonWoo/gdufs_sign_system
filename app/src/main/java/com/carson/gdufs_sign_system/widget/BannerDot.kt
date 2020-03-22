@@ -46,7 +46,9 @@ class BannerDot : LinearLayout {
     fun initParam(size: Int) {
         this.mSize = size
         context?.let {
-            initViews(it)
+            if (mSize > 0) {
+                initViews(it)
+            }
         }
     }
 

@@ -20,7 +20,7 @@ import com.carson.gdufs_sign_system.utils.Const
 import com.carson.gdufs_sign_system.widget.RoundImageView
 import java.lang.ref.WeakReference
 
-class UserFragment: BaseFragment() {
+class UserFragment: BaseFragment(), IViewCallback {
     override fun fragmentString(): String {
         return FRAGMENT_TAG
     }
@@ -54,7 +54,7 @@ class UserFragment: BaseFragment() {
     }
 
     private fun initViews() {
-        mUserController = UserController(this)
+        mUserController = UserController(this, this)
         mAvatarView = mRoot.findViewById(R.id.avatar)
         mUsername = mRoot.findViewById(R.id.username)
         mEditInfo = mRoot.findViewById(R.id.edit_info)
@@ -83,10 +83,23 @@ class UserFragment: BaseFragment() {
                 (activity as BaseActivity?)?.finish(MainActivity::class.java.name)
             }
         }
+        mUserController.loadPersonalData()
     }
 
     fun onRefresh() {
+        mUserController.loadPersonalData()
+    }
 
+    override fun onDataLoaded(
+        username: String,
+        studentId: String,
+        clazz: String,
+        signedNum: String
+    ) {
+        mActivityNum.text = signedNum
+        mUsername.text = username
+        mStudentId.text = studentId
+        mClassId.text = clazz
     }
 
     override fun onDestroy() {

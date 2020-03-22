@@ -9,11 +9,17 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.carson.gdufs_sign_system.R
+import com.carson.gdufs_sign_system.model.SignBean
 import com.carson.gdufs_sign_system.student.main.model.SignItem
 import com.carson.gdufs_sign_system.utils.ScreenUtils
 
-class UserSignItemAdapter(private val mList: MutableList<SignItem>):
+class UserSignItemAdapter(private var mList: MutableList<SignBean>):
     RecyclerView.Adapter<UserSignItemAdapter.UserItemViewHolder>() {
+
+    fun setData(list: MutableList<SignBean>) {
+        mList = list
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserItemViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.home_sign_item, parent, false)
         return UserItemViewHolder(view)
@@ -48,18 +54,18 @@ class UserSignItemAdapter(private val mList: MutableList<SignItem>):
         val item = mList[position]
         Glide.with(holder.mPic.context).load(item.picUrl).into(holder.mPic)
         holder.apply {
-            mName.text = item.activityName
-            mDate.text = item.date
-            mPeopleNum.text = mPeopleNum.context.resources.getString(R.string.sign_people, item.signedPeople.toString())
+            mName.text = item.name
+            mDate.text = item.signingTime
+            mPeopleNum.text = mPeopleNum.context.resources.getString(R.string.sign_people, item.num.toString())
         }
     }
 
     inner class UserItemViewHolder(val mItemView: View): RecyclerView.ViewHolder(mItemView) {
-        val mPic = mItemView.findViewById<ImageView>(R.id.home_item_pic)
-        val mName = mItemView.findViewById<TextView>(R.id.home_item_activity_name)
-        val mDate = mItemView.findViewById<TextView>(R.id.home_item_sign_time)
-        val mPeopleNum = mItemView.findViewById<TextView>(R.id.home_item_sign_people)
-        val mBtnSign = mItemView.findViewById<Button>(R.id.btn_sign)
+        val mPic: ImageView = mItemView.findViewById(R.id.home_item_pic)
+        val mName: TextView = mItemView.findViewById(R.id.home_item_activity_name)
+        val mDate: TextView = mItemView.findViewById(R.id.home_item_sign_time)
+        val mPeopleNum: TextView = mItemView.findViewById(R.id.home_item_sign_people)
+        private val mBtnSign: Button = mItemView.findViewById(R.id.btn_sign)
 
         init {
             mBtnSign.visibility = View.GONE
