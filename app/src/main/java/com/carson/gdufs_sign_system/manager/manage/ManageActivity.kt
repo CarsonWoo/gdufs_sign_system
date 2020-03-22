@@ -75,7 +75,6 @@ class ManageActivity : BaseActivity(), IViewCallback {
 
     private fun doLogout() {
         Const.getSharedPreference(WeakReference(this))?.edit()?.clear()?.apply()
-        Const.removePrefKey()
         Intent(this, LoginActivity::class.java)
             .apply {
                 startActivity(this)

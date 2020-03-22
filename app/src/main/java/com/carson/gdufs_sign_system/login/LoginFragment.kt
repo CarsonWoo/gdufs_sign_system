@@ -2,6 +2,7 @@ package com.carson.gdufs_sign_system.login
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,8 @@ import android.widget.TextView
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.login.controller.LoginController
+import com.carson.gdufs_sign_system.utils.Const
+import java.lang.ref.WeakReference
 
 class LoginFragment : BaseFragment(), View.OnClickListener,
     View.OnKeyListener {
@@ -72,6 +75,16 @@ class LoginFragment : BaseFragment(), View.OnClickListener,
         mBtnRegister.setOnClickListener(this)
         mTvForgetPassword.setOnClickListener(this)
         mEditPassword.setOnKeyListener(this)
+
+        Log.e(TAG, Const.getSharedPreference(WeakReference(context))
+            ?.getString(Const.PreferenceKeys.USER_ID, ""))
+        if (Const.getSharedPreference(WeakReference(context))
+                ?.getString(Const.PreferenceKeys.USER_ID, "")?.isNotEmpty() == true) {
+
+            // 直接跳主页
+            mLoginController.jumpToMain(Const.getSharedPreference(WeakReference(context))
+                ?.getString(Const.PreferenceKeys.IDENTITY, "0"))
+        }
     }
 
     override fun onKey(v: View?, keyCode: Int, event: KeyEvent?): Boolean {

@@ -21,14 +21,24 @@ import com.carson.gdufs_sign_system.student.scan.ScanFragment
 import com.carson.gdufs_sign_system.utils.*
 import com.carson.gdufs_sign_system.widget.RoundTextureView
 import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import java.io.File
 import java.lang.Exception
+import java.lang.ref.WeakReference
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.coroutines.CoroutineContext
 
 class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback) :
     BaseController<ScanFragment>(mFragment),
-    CameraListener, ImageSaveCallback {
+    CameraListener, ImageSaveCallback, CoroutineScope {
+
+    private var mJob = Job()
+
+    override val coroutineContext: CoroutineContext
+        get() = mJob + Dispatchers.Main
 
     private lateinit var mTextureView: RoundTextureView
     private var mCameraHelper: CameraHelper? = null
@@ -141,8 +151,8 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback)
 //        val authByteArray = buf.array()
 //        Log.e(TAG, "authByteArray = ${authByteArray.size} and postByteArray = ${bytes.size}")
 
-        val authImage = mFragment?.context?.getSharedPreferences("u1001", Context.MODE_PRIVATE)
-            ?.getString("/storage/emulated/0/Android/data/com.carson.gdufs_sign_system/files/signPhoto/IMG_20200304_2152051.jpg", "")
+        val authImage = Const.getSharedPreference(WeakReference(mFragment?.context))
+            ?.getString(Const.PreferenceKeys.AUTH_IMAGE, "")
 
         if (detectFace(postImage)) {
             // 检测成功
@@ -155,8 +165,35 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback)
             } else {
                 // 进行提交
                 switchText("提交数据中...", "")
-                // todo post to server
-                // 假设提交成功
+                mJob.cancel()
+
+                needGsonConverter(true)
+
+                mJob = executeRequest(
+                    request = {
+                        mApiService.updateFaceResources(Const.getSharedPreference(WeakReference(mFragment?.context))
+                            ?.getString(Const.PreferenceKeys.USER_ID, ""),
+                            postImage).execute()
+                    },
+                    onSuccess = { res ->
+                        if (res.isSuccessful) {
+                            res.body()?.let {
+                                if (it.status == Const.Net.RESPONSE_SUCCESS) {
+                                    Toast.makeText(mFragment?.context, "上传成功",
+                                        Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Log.e(TAG, it.msg)
+                                }
+                            }
+                        } else {
+                            Log.e(TAG, res.message())
+                        }
+                    },
+                    onFail = {
+                        Log.e(TAG, it.message)
+                    }
+                )
+
             }
         }
     }

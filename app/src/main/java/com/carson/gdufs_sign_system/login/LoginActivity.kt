@@ -4,13 +4,14 @@ import android.os.Bundle
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.base.BaseFragmentActivity
+import com.carson.gdufs_sign_system.utils.Const
+import java.lang.ref.WeakReference
 
 class LoginActivity : BaseFragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getContentViewResId())
-
     }
 
     override fun getFragmentList(): MutableList<BaseFragment> {

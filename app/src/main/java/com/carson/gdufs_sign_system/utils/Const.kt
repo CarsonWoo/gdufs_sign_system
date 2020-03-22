@@ -11,7 +11,7 @@ import java.util.*
 object Const {
     private const val TAG = "Const"
 
-    private var mPrefKey: String? = null
+    private var mPrefKey = "GDUFS_SIGN_SYSTEM"
 
     const val BAIDU_APP_ID = "18644686"
     const val BAIDU_API_KEY = "onWXf91wuRB0dlzpCrjQmrPr"
@@ -47,6 +47,7 @@ object Const {
     object PreferenceKeys {
         const val USER_ID = "userId"
         const val AUTH_IMAGE = "authImage"
+        const val IDENTITY = "identity"
     }
 
     fun getCurrentDate(): String {
@@ -68,15 +69,6 @@ object Const {
     }
 
     fun getSharedPreference(contextRef: WeakReference<Context?>): SharedPreferences? {
-        mPrefKey?: return null
         return contextRef.get()?.getSharedPreferences(mPrefKey, Context.MODE_PRIVATE)
-    }
-
-    fun setUpPrefKey(key: String) {
-        mPrefKey = key
-    }
-
-    fun removePrefKey() {
-        mPrefKey = null
     }
 }

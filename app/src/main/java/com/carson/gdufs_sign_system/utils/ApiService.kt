@@ -47,4 +47,15 @@ interface ApiService {
     @GET("Personal")
     fun getPersonalData(@Query("username") username: String?): Call<PersonalResponse>
 
+    @FormUrlEncoded
+    @POST("UpdateFaceResources")
+    fun updateFaceResources(@Field("username") username: String?,
+                            @Field("faceResources") faceResources: String): Call<CommonResponse>
+
+    @FormUrlEncoded
+    @POST("Sign")
+    fun signIn(@Field("username") username: String?,
+               @Field("programId") programId: Long,
+               @Field("signTime") signTime: String): Call<CommonResponse>
+
 }

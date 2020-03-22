@@ -78,12 +78,12 @@ class LoginController(mFragment: LoginFragment?): BaseController<LoginFragment?>
                                 "authImageBase: ${it.authImageBase} userId: ${it.userId}")
                         if (it.status == Const.Net.RESPONSE_SUCCESS) {
                             // 还要记录sp
-                            Const.setUpPrefKey(it.userId)
                             val mSharedPreferences =
                                 Const.getSharedPreference(WeakReference(mFragment?.context))
                             mSharedPreferences?.edit()?.apply {
                                 putString(Const.PreferenceKeys.USER_ID, it.userId)
                                 putString(Const.PreferenceKeys.AUTH_IMAGE, it.authImageBase)
+                                putString(Const.PreferenceKeys.IDENTITY, it.identity)
                                 apply()
                             }
                             jumpToMain(it.identity)
@@ -102,7 +102,7 @@ class LoginController(mFragment: LoginFragment?): BaseController<LoginFragment?>
         )
     }
 
-    private fun jumpToMain(identity: String) {
+    fun jumpToMain(identity: String?) {
         if (identity == "0") {
             // 学生端
             // to student

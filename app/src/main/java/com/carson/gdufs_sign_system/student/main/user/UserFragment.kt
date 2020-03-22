@@ -77,7 +77,6 @@ class UserFragment: BaseFragment(), IViewCallback {
     private fun initEvents() {
         mLogout.setOnClickListener {
             Const.getSharedPreference(WeakReference(context))?.edit()?.clear()?.apply()
-            Const.removePrefKey()
             Intent(activity, LoginActivity::class.java).apply {
                 startActivity(this)
                 (activity as BaseActivity?)?.finish(MainActivity::class.java.name)
