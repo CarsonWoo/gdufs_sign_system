@@ -165,37 +165,45 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback)
             } else {
                 // 进行提交
                 switchText("提交数据中...", "")
-                mJob.cancel()
 
-                needGsonConverter(true)
-
-                mJob = executeRequest(
-                    request = {
-                        mApiService.updateFaceResources(Const.getSharedPreference(WeakReference(mFragment?.context))
-                            ?.getString(Const.PreferenceKeys.USER_ID, ""),
-                            postImage).execute()
-                    },
-                    onSuccess = { res ->
-                        if (res.isSuccessful) {
-                            res.body()?.let {
-                                if (it.status == Const.Net.RESPONSE_SUCCESS) {
-                                    Toast.makeText(mFragment?.context, "上传成功",
-                                        Toast.LENGTH_SHORT).show()
-                                } else {
-                                    Log.e(TAG, it.msg)
-                                }
-                            }
-                        } else {
-                            Log.e(TAG, res.message())
-                        }
-                    },
-                    onFail = {
-                        Log.e(TAG, it.message)
-                    }
-                )
+                doServerSubmit(postImage)
 
             }
         }
+    }
+
+    private fun doServerSubmit(postImage: String) {
+        mJob.cancel()
+
+        needGsonConverter(true)
+
+        mJob = executeRequest(
+            request = {
+                Log.e(TAG, "do request")
+                mApiService.updateFaceResources(Const.getSharedPreference(WeakReference(mFragment?.context))
+                    ?.getString(Const.PreferenceKeys.USER_ID, ""),
+                    postImage).execute()
+            },
+            onSuccess = { res ->
+                if (res.isSuccessful) {
+                    Log.e(TAG, "success")
+                    res.body()?.let {
+                        if (it.status == Const.Net.RESPONSE_SUCCESS) {
+                            Toast.makeText(mFragment?.context, "上传成功",
+                                Toast.LENGTH_SHORT).show()
+                            mIView.onSwitchText("上传成功")
+                        } else {
+                            Log.e(TAG, it.msg)
+                        }
+                    }
+                } else {
+                    Log.e(TAG, res.message())
+                }
+            },
+            onFail = {
+                Log.e(TAG, it.message)
+            }
+        )
     }
 
     // 保存图片失败
@@ -280,6 +288,7 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback)
         mCameraHelper?.release()
         PermissionUtils.getInstance().destroy()
         mHandler.removeCallbacksAndMessages(null)
+        mJob.cancel()
         super.onDestroy()
     }
 

@@ -2,6 +2,7 @@ package com.carson.gdufs_sign_system.student.detail.controller
 
 import android.Manifest
 import android.content.Intent
+import android.graphics.Color
 import android.util.Log
 import android.view.View
 import androidx.core.widget.NestedScrollView
@@ -12,9 +13,38 @@ import com.carson.gdufs_sign_system.student.detail.DetailFragment
 import com.carson.gdufs_sign_system.student.detail.IViewCallback
 import com.carson.gdufs_sign_system.student.sign.SignActivity
 import com.carson.gdufs_sign_system.utils.PermissionUtils
+import com.tencent.mapsdk.raster.model.BitmapDescriptorFactory
+import com.tencent.mapsdk.raster.model.CircleOptions
+import com.tencent.mapsdk.raster.model.LatLng
+import com.tencent.mapsdk.raster.model.MarkerOptions
+import com.tencent.tencentmap.mapsdk.map.MapView
 
-class DetailController(detailFragment: DetailFragment, private val mIView: IViewCallback): BaseController<DetailFragment>(detailFragment),
+class DetailController(detailFragment: DetailFragment, private val mIView: IViewCallback)
+    : BaseController<DetailFragment>(detailFragment),
     NestedScrollView.OnScrollChangeListener, View.OnClickListener {
+
+//    private var mMapView: MapView? = null
+
+    fun setupMapView(mapView: MapView, lat: Double, lng: Double, radius: Int) {
+//        this.mMapView = mapView
+        mapView.uiSettings.setZoomGesturesEnabled(false)
+
+        val map = mapView.map
+        map.setZoom(15)
+        map.setCenter(LatLng(lat, lng))
+        map.addMarker(MarkerOptions()).apply {
+            setIcon(BitmapDescriptorFactory.fromResource(R.drawable.signin_location))
+            setAnchor(0.5F, 0.5F)
+            position = LatLng(lat, lng)
+        }
+        map.addCircle(CircleOptions()).apply {
+            center = LatLng(lat, lng)
+            setRadius(radius.toDouble())
+            strokeWidth = 1F
+            strokeColor = mFragment?.resources?.getColor(R.color.colorCyan)?: Color.CYAN
+        }
+    }
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.detail_back -> {

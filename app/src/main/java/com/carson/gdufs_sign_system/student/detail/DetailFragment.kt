@@ -15,6 +15,7 @@ import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.student.detail.controller.DetailController
 import com.carson.gdufs_sign_system.utils.PermissionUtils
 import com.carson.gdufs_sign_system.widget.RoundImageView
+import com.tencent.tencentmap.mapsdk.map.MapView
 
 class DetailFragment : BaseFragment(), IViewCallback {
     override fun onFabShow(value: Float) {
@@ -37,7 +38,8 @@ class DetailFragment : BaseFragment(), IViewCallback {
     private lateinit var mScrollView: NestedScrollView
     private lateinit var mTitle: TextView
     private lateinit var mCover: RoundImageView
-    private lateinit var mDetailInfo: TextView
+    private lateinit var mMapView: MapView
+    private lateinit var mDetailSignPlace: TextView
     private lateinit var mDetailType: TextView
     private lateinit var mDetailTime: TextView
     private lateinit var mDetailArea: TextView
@@ -64,7 +66,8 @@ class DetailFragment : BaseFragment(), IViewCallback {
         mScrollView = mRootView.findViewById(R.id.detail_scrollView)
         mTitle = mRootView.findViewById(R.id.detail_activity_name)
         mCover = mRootView.findViewById(R.id.detail_cover)
-        mDetailInfo = mRootView.findViewById(R.id.detail_info)
+        mMapView = mRootView.findViewById(R.id.detail_map_view)
+        mDetailSignPlace = mRootView.findViewById(R.id.detail_sign_place)
         mDetailType = mRootView.findViewById(R.id.detail_type)
         mDetailTime = mRootView.findViewById(R.id.detail_time)
         mDetailArea = mRootView.findViewById(R.id.detail_area)

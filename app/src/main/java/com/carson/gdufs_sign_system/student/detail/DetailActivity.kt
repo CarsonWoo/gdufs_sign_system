@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseActivity
+import com.carson.gdufs_sign_system.utils.PermissionUtils
 import com.carson.gdufs_sign_system.utils.StatusBarUtil
 
 class DetailActivity : BaseActivity() {
@@ -37,6 +38,15 @@ class DetailActivity : BaseActivity() {
 
     override fun getContentViewResId(): Int {
         return R.layout.activity_detail
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        PermissionUtils.getInstance().with(this).onRequestPermissionResult(requestCode, permissions, grantResults)
     }
 
 }

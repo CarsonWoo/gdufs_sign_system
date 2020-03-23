@@ -1,5 +1,6 @@
 package com.carson.gdufs_sign_system.student.main.controller
 
+import android.Manifest
 import android.content.Intent
 import android.util.Log
 import android.view.View
@@ -15,6 +16,7 @@ import com.carson.gdufs_sign_system.student.main.adapter.HomeSignItemAdapter
 import com.carson.gdufs_sign_system.student.main.home.HomeFragment
 import com.carson.gdufs_sign_system.student.main.model.SignItem
 import com.carson.gdufs_sign_system.utils.Const
+import com.carson.gdufs_sign_system.utils.PermissionUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -100,8 +102,18 @@ class HomeController(homeFragment: HomeFragment): BaseController<HomeFragment>(h
             putExtra("id", id)
         }
         mFragment?.activity?.apply {
-            startActivity(toDetail)
-            overridePendingTransition(R.anim.slide_right_in, R.anim.scale_out)
+            PermissionUtils.getInstance().with(this).requestCode(PermissionUtils.CODE_MULTI)
+                .permissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE)
+                .request(object: PermissionUtils.PermissionCallback {
+                    override fun denied() {
+                        PermissionUtils.getInstance().showDialog()
+                    }
+
+                    override fun granted() {
+                        startActivity(toDetail)
+                        overridePendingTransition(R.anim.slide_right_in, R.anim.scale_out)
+                    }
+                })
         }
     }
 
