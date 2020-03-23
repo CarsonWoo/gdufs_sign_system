@@ -55,6 +55,8 @@ class BannerDot : LinearLayout {
     fun getPosition() = mPosisition
 
     private fun initViews(context: Context) {
+        mDotList.clear()
+        removeAllViews()
         for (i in 1..mSize) {
             val imgView = CircleImageView(context)
             val layoutParams = LayoutParams(ScreenUtils.dip2px_5(context), ScreenUtils.dip2px_5(context))
