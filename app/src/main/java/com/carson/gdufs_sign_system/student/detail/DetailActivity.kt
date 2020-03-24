@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseActivity
+import com.carson.gdufs_sign_system.utils.Const
 import com.carson.gdufs_sign_system.utils.PermissionUtils
 import com.carson.gdufs_sign_system.utils.StatusBarUtil
 
@@ -16,7 +17,12 @@ class DetailActivity : BaseActivity() {
         setContentView(getContentViewResId())
         if (savedInstanceState == null) {
             if (mDetailFragment == null) {
-                mDetailFragment = DetailFragment.newInstance()
+                mDetailFragment = DetailFragment.newInstance().apply {
+                    val bundle = Bundle()
+                    bundle.putLong(Const.BundleKeys.DETAIL_ID,
+                        intent.getLongExtra(Const.BundleKeys.DETAIL_ID, 0L))
+                    arguments = bundle
+                }
             }
             mDetailFragment?.let {
                 it.allowReturnTransitionOverlap = true

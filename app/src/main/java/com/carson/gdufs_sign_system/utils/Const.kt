@@ -50,6 +50,10 @@ object Const {
         const val IDENTITY = "identity"
     }
 
+    object BundleKeys {
+        const val DETAIL_ID = "detail_id"
+    }
+
     fun getCurrentDate(): String {
         val sdf = SimpleDateFormat(SIMPLE_DATE_FORMAT, Locale.US)
         return sdf.format(Date())

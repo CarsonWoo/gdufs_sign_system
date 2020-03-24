@@ -34,3 +34,16 @@ data class SignBean(
     val num: Int,
     val picUrl: String
 )
+
+data class SignDetailBean(
+    val programName: String,
+    val startTime: String,
+    val endTime: String,
+    val latitude: Double,
+    val longtitude: Double,
+    val place: String,
+    val range: Int,
+    val status: String,
+    val picUrl: String,
+    val num: Int
+)

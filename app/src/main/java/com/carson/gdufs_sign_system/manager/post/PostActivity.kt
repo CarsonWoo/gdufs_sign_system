@@ -19,7 +19,7 @@ import java.lang.ref.WeakReference
 class PostActivity : BaseActivity(), IViewCallback, View.OnClickListener {
 
     private enum class SELECTTYPE {
-        START_TIME, END_TIME, CLAZZ
+        START_TIME, END_TIME, CLAZZ, RADIUS
     }
 
     companion object {
@@ -35,6 +35,7 @@ class PostActivity : BaseActivity(), IViewCallback, View.OnClickListener {
     private lateinit var mSignClazzLayout: LinearLayout
     private lateinit var mSignClazz: TextView
     private lateinit var mSignPlace: TextView
+    private lateinit var mSignRadius: TextView
     private lateinit var mMapView: MapView
     private lateinit var mBtnPost: Button
 
@@ -65,6 +66,7 @@ class PostActivity : BaseActivity(), IViewCallback, View.OnClickListener {
         mSignClazzLayout = findViewById(R.id.sign_student_clazz_layout)
         mSignClazz = findViewById(R.id.sign_student_clazz)
         mSignPlace = findViewById(R.id.sign_place)
+        mSignRadius = findViewById(R.id.sign_radius)
         mMapView = findViewById(R.id.post_map_view)
         mBtnPost = findViewById(R.id.btn_post)
         mContainer = findViewById(R.id.post_container)
@@ -95,17 +97,18 @@ class PostActivity : BaseActivity(), IViewCallback, View.OnClickListener {
         mBtnPost.setOnClickListener(this)
         mPostView.setOnClickListener(this)
         mSignPlace.setOnClickListener(this)
+        mSignRadius.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.et_start_time -> {
                 mSelectType = SELECTTYPE.START_TIME
-                mPostController.initPopupPickerWindow(mContainer)
+                mPostController.initPopupTimePickerWindow(mContainer)
             }
             R.id.et_end_time -> {
                 mSelectType = SELECTTYPE.END_TIME
-                mPostController.initPopupPickerWindow(mContainer)
+                mPostController.initPopupTimePickerWindow(mContainer)
             }
             R.id.sign_student_clazz_layout -> {
                 // popup the multi choice selector
@@ -121,6 +124,10 @@ class PostActivity : BaseActivity(), IViewCallback, View.OnClickListener {
             R.id.sign_place -> {
                 mPostController.navigateToPickLocation()
             }
+            R.id.sign_radius -> {
+                mSelectType = SELECTTYPE.RADIUS
+                mPostController.initPopupChoicePickerWindow(mContainer)
+            }
         }
     }
 
@@ -129,6 +136,7 @@ class PostActivity : BaseActivity(), IViewCallback, View.OnClickListener {
             SELECTTYPE.START_TIME -> mEtStartTime.setText(text)
             SELECTTYPE.END_TIME -> mEtEndTime.setText(text)
             SELECTTYPE.CLAZZ -> mSignClazz.text = text
+            SELECTTYPE.RADIUS -> mSignRadius.text = text
         }
     }
 

@@ -30,7 +30,8 @@ import java.lang.ref.WeakReference
 import java.net.URLDecoder
 import kotlin.coroutines.CoroutineContext
 
-class LoginController(mFragment: LoginFragment?): BaseController<LoginFragment?>(mFragment), CoroutineScope {
+class LoginController(mFragment: LoginFragment?) : BaseController<LoginFragment?>(mFragment),
+    CoroutineScope {
 
     private var mJob: Job = Job()
 
@@ -49,7 +50,8 @@ class LoginController(mFragment: LoginFragment?): BaseController<LoginFragment?>
         // 登录操作
         Log.i(TAG, "login")
         if (isEmpty(username) || isEmpty(password)) {
-            Toast.makeText(mFragment?.activity, "please fill the blank info.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(mFragment?.activity, "please fill the blank info.", Toast.LENGTH_SHORT)
+                .show()
             return
         }
 
@@ -71,11 +73,13 @@ class LoginController(mFragment: LoginFragment?): BaseController<LoginFragment?>
 //                    return@executeRequest result.body()
 //                }
             },
-            onSuccess = {res ->
+            onSuccess = { res ->
                 if (res.isSuccessful) {
                     res.body()?.let {
-                        Log.i(TAG, "status: ${it.status} msg: ${it.msg} identity: ${it.identity} " +
-                                "authImageBase: ${it.authImageBase} userId: ${it.userId}")
+                        Log.i(
+                            TAG, "status: ${it.status} msg: ${it.msg} identity: ${it.identity} " +
+                                    "authImageBase: ${it.authImageBase} userId: ${it.userId}"
+                        )
                         if (it.status == Const.Net.RESPONSE_SUCCESS) {
                             // 还要记录sp
                             val mSharedPreferences =
@@ -106,13 +110,13 @@ class LoginController(mFragment: LoginFragment?): BaseController<LoginFragment?>
         if (identity == "0") {
             // 学生端
             // to student
-        (mFragment?.activity as BaseActivity?)?.let {
-            val toMain = Intent(it, MainActivity::class.java)
-            // set data bundle
-            it.startActivity(toMain)
-            it.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out)
-            it.finish(LoginActivity::class.java.name)
-        }
+            (mFragment?.activity as BaseActivity?)?.let {
+                val toMain = Intent(it, MainActivity::class.java)
+                // set data bundle
+                it.startActivity(toMain)
+                it.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out)
+                it.finish(LoginActivity::class.java.name)
+            }
         } else {
             // 管理端
             // to manager

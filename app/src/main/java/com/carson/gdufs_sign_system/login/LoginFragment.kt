@@ -80,7 +80,8 @@ class LoginFragment : BaseFragment(), View.OnClickListener,
             ?.getString(Const.PreferenceKeys.USER_ID, ""))
         if (Const.getSharedPreference(WeakReference(context))
                 ?.getString(Const.PreferenceKeys.USER_ID, "")?.isNotEmpty() == true) {
-
+            Log.e(TAG, "identity = ${Const.getSharedPreference(WeakReference(context))
+                ?.getString(Const.PreferenceKeys.IDENTITY, "0")}")
             // 直接跳主页
             mLoginController.jumpToMain(Const.getSharedPreference(WeakReference(context))
                 ?.getString(Const.PreferenceKeys.IDENTITY, "0"))

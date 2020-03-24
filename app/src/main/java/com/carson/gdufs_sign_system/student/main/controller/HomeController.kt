@@ -99,7 +99,7 @@ class HomeController(homeFragment: HomeFragment): BaseController<HomeFragment>(h
 
     override fun onSignClick(id: Long) {
         val toDetail = Intent(mFragment?.context, DetailActivity::class.java).apply {
-            putExtra("id", id)
+            putExtra(Const.BundleKeys.DETAIL_ID, id)
         }
         mFragment?.activity?.apply {
             PermissionUtils.getInstance().with(this).requestCode(PermissionUtils.CODE_MULTI)

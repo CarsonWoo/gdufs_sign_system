@@ -1,9 +1,6 @@
 package com.carson.gdufs_sign_system.utils
 
-import com.carson.gdufs_sign_system.model.CommonResponse
-import com.carson.gdufs_sign_system.model.HomeResponse
-import com.carson.gdufs_sign_system.model.LoginResponse
-import com.carson.gdufs_sign_system.model.PersonalResponse
+import com.carson.gdufs_sign_system.model.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -57,5 +54,9 @@ interface ApiService {
     fun signIn(@Field("username") username: String?,
                @Field("programId") programId: Long,
                @Field("signTime") signTime: String): Call<CommonResponse>
+
+    @FormUrlEncoded
+    @POST("GetProgramWithId")
+    fun getDetailData(@FieldMap dataFields: HashMap<String, Any?>): @JvmSuppressWildcards Call<SignDetailBean>
 
 }

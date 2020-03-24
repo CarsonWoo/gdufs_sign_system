@@ -9,11 +9,13 @@ import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.carson.gdufs_sign_system.BuildConfig
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.manager.post.IViewCallback
 import com.carson.gdufs_sign_system.manager.post.PostActivity
@@ -22,14 +24,14 @@ import com.carson.gdufs_sign_system.manager.post.adapter.PopupMultiItem
 import com.carson.gdufs_sign_system.manager.post.adapter.PopupMultiItemAdapter
 import com.carson.gdufs_sign_system.utils.PermissionUtils
 import com.carson.gdufs_sign_system.utils.ScreenUtils
+import com.carson.gdufs_sign_system.widget.PickerPopupWindow
+import com.carson.gdufs_sign_system.widget.PickerScrollView
 import com.carson.gdufs_sign_system.widget.TimePickerView
 import com.tencent.map.geolocation.*
-import com.tencent.mapsdk.raster.model.BitmapDescriptor
-import com.tencent.mapsdk.raster.model.BitmapDescriptorFactory
-import com.tencent.mapsdk.raster.model.LatLng
-import com.tencent.mapsdk.raster.model.MarkerOptions
+import com.tencent.mapsdk.raster.model.*
 import com.tencent.tencentmap.mapsdk.map.CameraUpdateFactory
 import com.tencent.tencentmap.mapsdk.map.MapView
+import org.w3c.dom.Text
 import java.lang.ref.WeakReference
 
 class PostController(private val context: WeakReference<Context>, private val mIView: IViewCallback) : TencentLocationListener {
@@ -44,7 +46,13 @@ class PostController(private val context: WeakReference<Context>, private val mI
 
     private var mPopupMultiChoiceWindow: PopupWindow? = null
 
+    private var mPopupChoiceWindow: PickerPopupWindow? = null
+
     private var mLatLng: LatLng? = null
+
+    private var mRadius = 0
+
+    private var mCircle: Circle? = null
 
     fun setupMap(mMapView: MapView) {
         this.mMapView = mMapView
@@ -81,6 +89,17 @@ class PostController(private val context: WeakReference<Context>, private val mI
             title = data.getStringExtra("address")
             position = latLng
             setAnchor(0.5F, 0.5F)
+        }
+
+        if (mRadius != 0 && mCircle != null) {
+            Log.e(TAG, "add circle after location changed")
+            mCircle?.remove()
+            mCircle = mMap.addCircle(CircleOptions()).apply {
+                center = latLng
+                radius = mRadius.toDouble()
+                strokeColor = context.get()?.resources?.getColor(R.color.colorCyan) ?: Color.CYAN
+                strokeWidth = 5F
+            }
         }
     }
 
@@ -129,7 +148,48 @@ class PostController(private val context: WeakReference<Context>, private val mI
         }
     }
 
-    fun initPopupPickerWindow(anchorView: ViewGroup) {
+    private fun addCircle() {
+        mMapView?: return
+        val map = mMapView.map
+
+        if (mCircle != null) {
+            if (BuildConfig.DEBUG) {
+                Log.e(TAG, "addCircle circle is not null")
+            }
+            mCircle?.remove()
+        }
+
+        if (BuildConfig.DEBUG) {
+            Log.e(TAG, "addCircle")
+        }
+
+        mCircle = map.addCircle(CircleOptions()).apply {
+            center = mLatLng
+            radius = mRadius.toDouble()
+            strokeWidth = 5F
+            strokeColor = context.get()?.resources?.getColor(R.color.colorCyan) ?: Color.CYAN
+        }
+
+    }
+
+    fun initPopupChoicePickerWindow(anchorView: ViewGroup) {
+        if (mPopupChoiceWindow == null) {
+            mPopupChoiceWindow = PickerPopupWindow(
+                context, anchorView, mutableListOf("300", "500", "800", "1000"), object : PickerPopupWindow.OnConfirmPickListener {
+                    override fun onConfirmPick(value: String) {
+                        mRadius = value.toInt()
+                        context.get()?.apply {
+                            mIView.onShowSelectedText(resources.getString(R.string.distance, value))
+                        }
+                        addCircle()
+                    }
+                }
+            )
+        }
+        mPopupChoiceWindow?.show()
+    }
+
+    fun initPopupTimePickerWindow(anchorView: ViewGroup) {
         if (mPopupWindow == null) {
             val contentView = LayoutInflater.from(context.get()).inflate(R.layout.layout_popup_time_picker,
                 anchorView, false)

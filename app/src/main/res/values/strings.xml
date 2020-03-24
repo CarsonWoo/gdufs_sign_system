@@ -32,11 +32,11 @@
     <string name="setting">设置</string>
 
     <!--  详情页  -->
-    <string name="detail_type">活动类别:  %s</string>
-    <string name="detail_time">活动时间:  %s</string>
-    <string name="detail_area">活动地点:  %s</string>
-    <string name="detail_people">签到人数:  %d1 / %d2</string>
+    <string name="detail_type">签到状态:  %s</string>
+    <string name="detail_time">签到开始时间:  %s</string>
+    <string name="detail_people">签到人数:  %d</string>
     <string name="detail_end_time">签到截止时间:  %s</string>
+    <string name="detail_sign_radius">签到距离: %s</string>
 
     <!--  签到页  -->
     <string name="sign_success">签到成功</string>
@@ -73,6 +73,8 @@
     <string name="confirm">确定</string>
     <string name="previous_day">前一天</string>
     <string name="next_day">后一天</string>
+    <string name="post_sign_distance">签到距离设置</string>
+    <string name="distance">%s 米</string>
 
     <string-array name="static_class_name">
         <item>计算机大类1班</item>

@@ -1,33 +1,27 @@
 package com.carson.gdufs_sign_system.student.detail
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.widget.NestedScrollView
 import com.bumptech.glide.Glide
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
+import com.carson.gdufs_sign_system.model.SignDetailBean
 import com.carson.gdufs_sign_system.student.detail.controller.DetailController
+import com.carson.gdufs_sign_system.utils.Const
 import com.carson.gdufs_sign_system.utils.PermissionUtils
 import com.carson.gdufs_sign_system.widget.RoundImageView
 import com.tencent.tencentmap.mapsdk.map.MapView
 
 class DetailFragment : BaseFragment(), IViewCallback {
-    override fun onFabShow(value: Float) {
-        Log.i(TAG, "value = $value")
-        if (value > 0.1F) {
-            mFloatingButton.visibility = View.VISIBLE
-            mFloatingButton.translationY = 50F * (1F - value)
-            mFloatingButton.alpha = value
-        } else {
-            mFloatingButton.visibility = View.GONE
-        }
-    }
 
     override fun fragmentString(): String {
         return FRAGMENT_TAG
@@ -42,12 +36,17 @@ class DetailFragment : BaseFragment(), IViewCallback {
     private lateinit var mDetailSignPlace: TextView
     private lateinit var mDetailType: TextView
     private lateinit var mDetailTime: TextView
-    private lateinit var mDetailArea: TextView
+    private lateinit var mDetailRadius: TextView
     private lateinit var mDetailSignedPeople: TextView
     private lateinit var mDetailEndTime: TextView
     private lateinit var mFloatingButton: RelativeLayout
+    private lateinit var mDetailTypeImage: ImageView
+
+    private lateinit var mProgressBar: ProgressBar
 
     private lateinit var mDetailController: DetailController
+
+    private var mIsSigned = false
 
     override fun getContentView(
         inflater: LayoutInflater,
@@ -56,6 +55,7 @@ class DetailFragment : BaseFragment(), IViewCallback {
     ): View? {
         mRootView = inflater.inflate(R.layout.fragment_detail, container, false)
         initViews()
+        initEvents()
         return mRootView
     }
 
@@ -70,16 +70,53 @@ class DetailFragment : BaseFragment(), IViewCallback {
         mDetailSignPlace = mRootView.findViewById(R.id.detail_sign_place)
         mDetailType = mRootView.findViewById(R.id.detail_type)
         mDetailTime = mRootView.findViewById(R.id.detail_time)
-        mDetailArea = mRootView.findViewById(R.id.detail_area)
+        mDetailRadius = mRootView.findViewById(R.id.detail_radius)
         mDetailSignedPeople = mRootView.findViewById(R.id.detail_people)
         mDetailEndTime = mRootView.findViewById(R.id.detail_end_time)
         mFloatingButton = mRootView.findViewById(R.id.detail_sign_fab)
+        mDetailTypeImage = mRootView.findViewById(R.id.detail_type_img)
+        mProgressBar = mRootView.findViewById(R.id.detail_progress_bar)
+        mProgressBar.visibility = View.VISIBLE
+    }
 
-        Glide.with(this).load("https://file.ourbeibei.com/l_e/static/mini_program_icons/banner_challenge.png").into(mCover)
-
+    private fun initEvents() {
         mScrollView.setOnScrollChangeListener(mDetailController)
         mBack.setOnClickListener(mDetailController)
         mFloatingButton.setOnClickListener(mDetailController)
+
+        arguments?.let {
+            mDetailController.loadData(it.getLong(Const.BundleKeys.DETAIL_ID))
+        }
+    }
+
+    override fun onFabShow(value: Float) {
+        Log.i(TAG, "value = $value")
+        if (value > 0.1F && !mIsSigned) {
+            mFloatingButton.visibility = View.VISIBLE
+            mFloatingButton.translationY = 50F * (1F - value)
+            mFloatingButton.alpha = value
+        } else {
+            mFloatingButton.visibility = View.GONE
+        }
+    }
+
+    override fun onDataLoaded(data: SignDetailBean) {
+        mProgressBar.visibility = View.GONE
+        mScrollView.visibility = View.VISIBLE
+
+        mTitle.text = data.programName
+        Glide.with(this).load(data.picUrl).into(mCover)
+        mIsSigned = data.status != "未签到"
+        mDetailRadius.text = resources.getString(R.string.detail_sign_radius,
+            resources.getString(R.string.distance, data.range.toString()))
+        mDetailTime.text = resources.getString(R.string.detail_time, data.startTime)
+        mDetailEndTime.text = resources.getString(R.string.detail_end_time, data.endTime)
+        mDetailSignPlace.text = data.place
+        mDetailType.text = resources.getString(R.string.detail_type, data.status)
+        mDetailTypeImage.setImageResource(if (mIsSigned) R.drawable.status_pass else R.drawable.status_unpass)
+        mDetailSignedPeople.text = resources.getString(R.string.detail_people, data.num)
+
+        mDetailController.setupMapView(mMapView, data.latitude, data.longtitude, data.range)
     }
 
     override fun onDestroy() {

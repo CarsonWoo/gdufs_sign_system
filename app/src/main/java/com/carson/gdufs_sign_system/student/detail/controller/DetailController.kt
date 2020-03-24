@@ -12,22 +12,34 @@ import com.carson.gdufs_sign_system.student.detail.DetailActivity
 import com.carson.gdufs_sign_system.student.detail.DetailFragment
 import com.carson.gdufs_sign_system.student.detail.IViewCallback
 import com.carson.gdufs_sign_system.student.sign.SignActivity
+import com.carson.gdufs_sign_system.utils.Const
 import com.carson.gdufs_sign_system.utils.PermissionUtils
 import com.tencent.mapsdk.raster.model.BitmapDescriptorFactory
 import com.tencent.mapsdk.raster.model.CircleOptions
 import com.tencent.mapsdk.raster.model.LatLng
 import com.tencent.mapsdk.raster.model.MarkerOptions
 import com.tencent.tencentmap.mapsdk.map.MapView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import java.lang.ref.WeakReference
+import kotlin.coroutines.CoroutineContext
 
-class DetailController(detailFragment: DetailFragment, private val mIView: IViewCallback)
-    : BaseController<DetailFragment>(detailFragment),
-    NestedScrollView.OnScrollChangeListener, View.OnClickListener {
+class DetailController(detailFragment: DetailFragment, private val mIView: IViewCallback) :
+    BaseController<DetailFragment>(detailFragment),
+    NestedScrollView.OnScrollChangeListener, View.OnClickListener, CoroutineScope {
+
+    private var mJob = Job()
+
+    override val coroutineContext: CoroutineContext
+        get() = mJob + Dispatchers.Main
 
 //    private var mMapView: MapView? = null
 
     fun setupMapView(mapView: MapView, lat: Double, lng: Double, radius: Int) {
 //        this.mMapView = mapView
         mapView.uiSettings.setZoomGesturesEnabled(false)
+        mapView.uiSettings.setScrollGesturesEnabled(false)
 
         val map = mapView.map
         map.setZoom(15)
@@ -40,8 +52,8 @@ class DetailController(detailFragment: DetailFragment, private val mIView: IView
         map.addCircle(CircleOptions()).apply {
             center = LatLng(lat, lng)
             setRadius(radius.toDouble())
-            strokeWidth = 1F
-            strokeColor = mFragment?.resources?.getColor(R.color.colorCyan)?: Color.CYAN
+            strokeWidth = 5F
+            strokeColor = mFragment?.resources?.getColor(R.color.colorCyan) ?: Color.CYAN
         }
     }
 
@@ -53,7 +65,10 @@ class DetailController(detailFragment: DetailFragment, private val mIView: IView
             R.id.detail_sign_fab -> {
                 mFragment?.let {
                     PermissionUtils.getInstance().with(it).requestCode(PermissionUtils.CODE_MULTI)
-                        .permissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        .permissions(
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        )
                         .request(object : PermissionUtils.PermissionCallback {
                             override fun denied() {
                                 PermissionUtils.getInstance().showDialog()
@@ -63,7 +78,10 @@ class DetailController(detailFragment: DetailFragment, private val mIView: IView
                                 (mFragment?.activity as DetailActivity?)?.apply {
                                     val toSign = Intent(this, SignActivity::class.java)
                                     startActivity(toSign)
-                                    overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out)
+                                    overridePendingTransition(
+                                        R.anim.slide_right_in,
+                                        R.anim.slide_left_out
+                                    )
                                 }
                             }
                         })
@@ -87,10 +105,45 @@ class DetailController(detailFragment: DetailFragment, private val mIView: IView
         val scrollMax = v?.getChildAt(0)?.height?.minus(v.measuredHeight)
         if (scrollY >= SCROLL_BASE) {
             scrollMax?.apply {
-                Log.i(TAG , "${(scrollY - SCROLL_BASE) / (this.toFloat() - SCROLL_BASE)}")
+                Log.i(TAG, "${(scrollY - SCROLL_BASE) / (this.toFloat() - SCROLL_BASE)}")
                 mIView.onFabShow((scrollY - SCROLL_BASE) / (this.toFloat() - SCROLL_BASE))
             }
         }
+    }
+
+    fun loadData(id: Long) {
+        val dataMap = hashMapOf(
+            Pair(
+                "username",
+                Const.getSharedPreference(WeakReference(mFragment?.context))?.getString(
+                    Const.PreferenceKeys.USER_ID,
+                    ""
+                )
+            ),
+            Pair("programId", id)
+        )
+        mJob.cancel()
+        needGsonConverter(true)
+        mJob = executeRequest(
+            request = {
+                Log.e(TAG, "request")
+                mApiService.getDetailData(dataMap).execute()
+            },
+            onSuccess = { res ->
+                Log.e(TAG, "res = ?")
+                if (res.isSuccessful) {
+                    Log.e(TAG, "res.body = ${res.body()}")
+                    res.body()?.let {
+                        mIView.onDataLoaded(it)
+                    }
+                } else {
+                    Log.e(TAG, res.message())
+                }
+            },
+            onFail = {
+                Log.e(TAG, it.message)
+            }
+        )
     }
 
 }
