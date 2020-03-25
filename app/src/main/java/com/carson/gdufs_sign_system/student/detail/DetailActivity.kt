@@ -1,5 +1,7 @@
 package com.carson.gdufs_sign_system.student.detail
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.FrameLayout
 import com.carson.gdufs_sign_system.R
@@ -53,6 +55,15 @@ class DetailActivity : BaseActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         PermissionUtils.getInstance().with(this).onRequestPermissionResult(requestCode, permissions, grantResults)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Const.REQUEST_CODE_FROM_DETAIL_TO_SIGN
+            && resultCode == Const.RESULT_CODE_SIGN_SUCCESS) {
+            setResult(Const.RESULT_CODE_SIGN_SUCCESS)
+            onBackPressed()
+        }
     }
 
 }

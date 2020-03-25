@@ -32,11 +32,9 @@ class ScanFragment : BaseFragment(), ViewTreeObserver.OnGlobalLayoutListener, IV
 
         private const val FRAGMENT_TAG = "Scan"
 
-        fun newInstance(enterType: Int): ScanFragment {
+        fun newInstance(): ScanFragment {
             return ScanFragment().apply {
-                arguments = Bundle().apply arg@{
-                    putInt(Const.SCAN_ENTER_FLAG, enterType)
-                }
+
             }
         }
     }
@@ -68,7 +66,9 @@ class ScanFragment : BaseFragment(), ViewTreeObserver.OnGlobalLayoutListener, IV
             return@setFactory textView
         }
 
-        mController = ScanController(this, this)
+        mController = ScanController(this, this,
+            arguments?.getLong(Const.BundleKeys.DETAIL_ID)?: 0L)
+        Log.e(TAG, arguments?.getLong(Const.BundleKeys.DETAIL_ID)?.toString()?: 0L.toString())
         mController?.setTextureView(mTextureView)
     }
 
@@ -100,6 +100,14 @@ class ScanFragment : BaseFragment(), ViewTreeObserver.OnGlobalLayoutListener, IV
 
     override fun onSwitchShadowText(text: String) {
         mTextureBorder.setTipsText(text)
+    }
+
+    override fun onCaptureFailed() {
+        mBtnSubmit.isEnabled = true
+    }
+
+    override fun onUploadSuccess() {
+        (activity as ScanActivity?)?.onBackPressed()
     }
 
     override fun onGlobalLayout() {

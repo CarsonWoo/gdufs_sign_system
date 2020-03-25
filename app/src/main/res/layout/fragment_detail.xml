@@ -142,8 +142,8 @@
 
                     <ImageView
                         android:id="@+id/detail_type_img"
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
                         android:layout_marginStart="15dp"/>
 
                 </LinearLayout>

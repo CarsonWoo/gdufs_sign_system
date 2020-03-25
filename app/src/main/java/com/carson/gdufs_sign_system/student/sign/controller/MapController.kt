@@ -1,12 +1,10 @@
 package com.carson.gdufs_sign_system.student.sign.controller
 
 import android.Manifest
-import android.graphics.Bitmap
 import android.graphics.Color
-import android.os.Handler
-import android.os.Message
 import android.util.Log
 import android.widget.Toast
+import com.carson.gdufs_sign_system.BuildConfig
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseController
 import com.carson.gdufs_sign_system.student.sign.IViewCallback
@@ -36,22 +34,22 @@ class MapController(mapFragment: MapFragment, private val mView: IViewCallback) 
     private var mPositionMarker: Marker? = null
 
     // 23.114335 & 113.214641  我家定位
-    private val mTestLatLng = LatLng(23.114, 113.21)
+    private var mTargetLatLng = Const.GDUFS_LATLNG
 
     fun setMapView(mapView: MapView) {
         this.mMapView = mapView
     }
 
-    fun initMapEvent() {
+    fun initMapEvent(lat: Double, lng: Double, titleStr: String?, distanceRadius: Int) {
         mMapView ?: return
+
+        mTargetLatLng = LatLng(lat, lng)
 
         val mMap = mMapView?.map
         mMap?.setOnMapCameraChangeListener(this)
 //        mMap?.setCenter(Const.GDUFS_LATLNG)
-        /**
-         * test
-         */
-        mMap?.setCenter(mTestLatLng)
+
+        mMap?.setCenter(mTargetLatLng)
 //        mMap?.setZoom(16)
 
         // uiSettings
@@ -60,12 +58,9 @@ class MapController(mapFragment: MapFragment, private val mView: IViewCallback) 
         uiSettings?.setZoomGesturesEnabled(true)
 
         mSchoolMarkerView = mMap?.addMarker(MarkerOptions())?.apply {
-            /**
-             * test
-             */
-            position = mTestLatLng
+            position = mTargetLatLng
 //            position = Const.GDUFS_LATLNG
-            title = Const.GDUFS_STR
+            title = titleStr?: Const.GDUFS_STR
             setAnchor(0.5f, 0.5f)
             setIcon(BitmapDescriptorFactory.fromResource(R.drawable.signin_location))
             showInfoWindow()
@@ -73,12 +68,9 @@ class MapController(mapFragment: MapFragment, private val mView: IViewCallback) 
 
         // add circle
         mCircleView = mMap?.addCircle(CircleOptions())?.apply {
-            /**
-             * test
-             */
-            center = mTestLatLng
+            center = mTargetLatLng
             //            center = Const.GDUFS_LATLNG
-            radius = 500.0
+            radius = distanceRadius.toDouble()
             fillColor = mFragment?.resources?.getColor(R.color.alphaColorCyan)?: Color.CYAN
             strokeColor = Color.parseColor("#7FFFFFFF")
             strokeWidth = 2F
@@ -128,14 +120,14 @@ class MapController(mapFragment: MapFragment, private val mView: IViewCallback) 
 
     override fun onCameraChangeFinish(position: CameraPosition?) {
         // 这里是地图移动完成以后的回调
-        Log.e(TAG, "onCameraChangeFinish: position = ${position?.target?.latitude}, ${position?.target?.longitude}")
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "onCameraChangeFinish: position = ${position?.target?.latitude}," +
+                    " ${position?.target?.longitude}")
+        }
         if (mLatLng?.let { mCircleView?.contains(it) } == true) {
             // 如果在签到点中
 //            mMapView?.map?.animateCamera(CameraUpdateFactory.newLatLngZoom(Const.GDUFS_LATLNG, 15F))
-            /**
-             * test
-             */
-            mMapView?.map?.animateCamera(CameraUpdateFactory.newLatLngZoom(mTestLatLng, 15F))
+            mMapView?.map?.animateCamera(CameraUpdateFactory.newLatLngZoom(mTargetLatLng, 15F))
             mSchoolMarkerView?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.signin_location))
         } else {
             // 不在签到点 做些什么？
@@ -155,8 +147,6 @@ class MapController(mapFragment: MapFragment, private val mView: IViewCallback) 
             if (mPositionMarker != null) {
                 mPositionMarker?.remove()
             }
-
-            val test = LatLng(23.06554, 113.39735)
 
             mPositionMarker = mMap?.addMarker(MarkerOptions())
             mPositionMarker?.apply {

@@ -34,10 +34,18 @@ class DetailController(detailFragment: DetailFragment, private val mIView: IView
     override val coroutineContext: CoroutineContext
         get() = mJob + Dispatchers.Main
 
+    private lateinit var mLatLng: LatLng
+    private var mRadius: Int = 500
+    private var mTitle: String? = null
+
 //    private var mMapView: MapView? = null
 
-    fun setupMapView(mapView: MapView, lat: Double, lng: Double, radius: Int) {
+    fun setupMapView(mapView: MapView, lat: Double, lng: Double, radius: Int, title: String?) {
 //        this.mMapView = mapView
+        mLatLng = LatLng(lat, lng)
+        mTitle = title
+        mRadius = radius
+
         mapView.uiSettings.setZoomGesturesEnabled(false)
         mapView.uiSettings.setScrollGesturesEnabled(false)
 
@@ -76,8 +84,15 @@ class DetailController(detailFragment: DetailFragment, private val mIView: IView
 
                             override fun granted() {
                                 (mFragment?.activity as DetailActivity?)?.apply {
-                                    val toSign = Intent(this, SignActivity::class.java)
-                                    startActivity(toSign)
+                                    val toSign = Intent(this,
+                                        SignActivity::class.java).apply {
+                                        putExtra(Const.BundleKeys.SIGN_LAT, mLatLng.latitude)
+                                        putExtra(Const.BundleKeys.SIGN_LNG, mLatLng.longitude)
+                                        putExtra(Const.BundleKeys.SIGN_PLACE, mTitle)
+                                        putExtra(Const.BundleKeys.SIGN_RADIUS, mRadius)
+                                        putExtra(Const.BundleKeys.DETAIL_ID, v.tag as Long)
+                                    }
+                                    startActivityForResult(toSign, Const.REQUEST_CODE_FROM_DETAIL_TO_SIGN)
                                     overridePendingTransition(
                                         R.anim.slide_right_in,
                                         R.anim.slide_left_out
@@ -138,10 +153,14 @@ class DetailController(detailFragment: DetailFragment, private val mIView: IView
                     }
                 } else {
                     Log.e(TAG, res.message())
+                    mIView.onDataLoadFail(if (res.message().isEmpty()) Const.Net.ERR_MSG_COMMON
+                        else res.message())
                 }
             },
             onFail = {
                 Log.e(TAG, it.message)
+                mIView.onDataLoadFail(if (it.message?.isEmpty() == true) Const.Net.ERR_MSG_COMMON
+                    else it.message)
             }
         )
     }

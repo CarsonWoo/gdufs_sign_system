@@ -20,7 +20,12 @@ class ScanActivity: BaseActivity() {
         if (mScanFragment == null) {
             var enterFlag = this.intent.extras?.getInt(Const.SCAN_ENTER_FLAG, Const.SCAN_ENTER_COMPARE)
             if (enterFlag == null) enterFlag = Const.SCAN_ENTER_COMPARE
-            mScanFragment = ScanFragment.newInstance(enterFlag)
+            mScanFragment = ScanFragment.newInstance().apply {
+                arguments = Bundle().apply {
+                    putInt(Const.SCAN_ENTER_FLAG, enterFlag)
+                    putLong(Const.BundleKeys.DETAIL_ID, intent.extras?.getLong(Const.BundleKeys.DETAIL_ID)?: 0L)
+                }
+            }
         }
         mScanFragment?.let {
             it.allowEnterTransitionOverlap = true

@@ -6,10 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.core.widget.NestedScrollView
 import com.bumptech.glide.Glide
 import com.carson.gdufs_sign_system.R
@@ -76,10 +73,13 @@ class DetailFragment : BaseFragment(), IViewCallback {
         mFloatingButton = mRootView.findViewById(R.id.detail_sign_fab)
         mDetailTypeImage = mRootView.findViewById(R.id.detail_type_img)
         mProgressBar = mRootView.findViewById(R.id.detail_progress_bar)
+
         mProgressBar.visibility = View.VISIBLE
+        mFloatingButton.isEnabled = false
     }
 
     private fun initEvents() {
+        mFloatingButton.tag = arguments?.getLong(Const.BundleKeys.DETAIL_ID)
         mScrollView.setOnScrollChangeListener(mDetailController)
         mBack.setOnClickListener(mDetailController)
         mFloatingButton.setOnClickListener(mDetailController)
@@ -103,6 +103,7 @@ class DetailFragment : BaseFragment(), IViewCallback {
     override fun onDataLoaded(data: SignDetailBean) {
         mProgressBar.visibility = View.GONE
         mScrollView.visibility = View.VISIBLE
+        mFloatingButton.isEnabled = true
 
         mTitle.text = data.programName
         Glide.with(this).load(data.picUrl).into(mCover)
@@ -114,9 +115,14 @@ class DetailFragment : BaseFragment(), IViewCallback {
         mDetailSignPlace.text = data.place
         mDetailType.text = resources.getString(R.string.detail_type, data.status)
         mDetailTypeImage.setImageResource(if (mIsSigned) R.drawable.status_pass else R.drawable.status_unpass)
-        mDetailSignedPeople.text = resources.getString(R.string.detail_people, data.num)
+        mDetailSignedPeople.text = resources.getString(R.string.detail_people, data.signedNum, data.totalNum)
 
-        mDetailController.setupMapView(mMapView, data.latitude, data.longtitude, data.range)
+        mDetailController.setupMapView(mMapView, data.latitude, data.longtitude, data.range, data.place)
+    }
+
+    override fun onDataLoadFail(errMsg: String?) {
+        mProgressBar.visibility = View.GONE
+        Toast.makeText(context, errMsg, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroy() {

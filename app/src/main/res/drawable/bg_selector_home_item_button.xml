@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="true" android:drawable="@drawable/bg_cyan_home_item_button" />
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+
+            <corners android:radius="10dp" />
+
+            <gradient
+                android:angle="315"
+                android:startColor="#A3A3A3"
+                android:centerColor="#B8B8B8"
+                android:endColor="#7A7A7A" />
+
+        </shape>
+    </item>
+</selector>

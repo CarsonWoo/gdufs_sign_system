@@ -6,4 +6,8 @@ interface IViewCallback {
 
     fun onSwitchShadowText(text: String)
 
+    fun onCaptureFailed()
+
+    fun onUploadSuccess()
+
 }

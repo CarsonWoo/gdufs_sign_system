@@ -31,7 +31,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
-class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback) :
+class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback ,
+                     private val mDetailId: Long) :
     BaseController<ScanFragment>(mFragment),
     CameraListener, ImageSaveCallback, CoroutineScope {
 
@@ -85,8 +86,6 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback)
     fun setResumePreview() {
         this.mIsTakingPhoto = false
         switchText("请将人脸放入取景框中", "请点击按钮拍照")
-//        mIView.onSwitchText("请将人脸放入取景框中")
-//        mIView.onSwitchShadowText("请点击拍照")
         // 先stop再start 重置一下参数
         mCameraHelper?.stop()
         mCameraHelper?.start()
@@ -160,14 +159,13 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback)
                 // 进行比对
                 if (matchFace(postImage, authImage)) {
                     // 比对成功
-                    mHandler.sendEmptyMessageDelayed(1, 2 * 1000L)
+                    doServerSign()
                 }
             } else {
                 // 进行提交
                 switchText("提交数据中...", "")
 
                 doServerSubmit(postImage)
-
             }
         }
     }
@@ -188,10 +186,47 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback)
                 if (res.isSuccessful) {
                     Log.e(TAG, "success")
                     res.body()?.let {
+                        when (it.status) {
+                            Const.Net.RESPONSE_SUCCESS -> {
+                                Toast.makeText(
+                                    mFragment?.context, "上传成功",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                mIView.onSwitchText("上传成功")
+                                mIView.onUploadSuccess()
+                            }
+                            else -> {
+                                Log.e(TAG, it.msg)
+                            }
+                        }
+                    }
+                } else {
+                    Log.e(TAG, res.message())
+                }
+            },
+            onFail = {
+                Log.e(TAG, it.message)
+            }
+        )
+    }
+
+    private fun doServerSign() {
+        mJob.cancel()
+
+        needGsonConverter(true)
+
+        mJob = executeRequest(
+            request = {
+                mApiService.signIn(Const.getSharedPreference(WeakReference(mFragment?.context))
+                    ?.getString(Const.PreferenceKeys.USER_ID, ""),
+                    mDetailId, Const.getCurrentDate() + " " + Const.getCurrentTime()).execute()
+            },
+            onSuccess = { res ->
+                if (res.isSuccessful) {
+                    res.body()?.let {
                         if (it.status == Const.Net.RESPONSE_SUCCESS) {
-                            Toast.makeText(mFragment?.context, "上传成功",
-                                Toast.LENGTH_SHORT).show()
-                            mIView.onSwitchText("上传成功")
+                            mHandler.sendEmptyMessageDelayed(1, 2 * 1000L)
+                            Log.i(TAG, "load success")
                         } else {
                             Log.e(TAG, it.msg)
                         }
@@ -211,6 +246,7 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback)
         mFragment?.activity?.apply {
             runOnUiThread {
                 setResumePreview()
+                mIView.onCaptureFailed()
                 Toast.makeText(this, "截取的时候出现问题了哦~重拍一下吧~", Toast.LENGTH_SHORT).show()
             }
         }
@@ -259,12 +295,11 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback)
         val filePathDir = File(filePath)
         if (!filePathDir.exists()) {
             filePathDir.mkdirs()
+            FileUtils.setNoMediaFile(filePath)
         }
 
         mFragment?.context?.apply {
-            val sp = getSharedPreferences("u1001", Context.MODE_PRIVATE)
             mFileName = filePath + File.separator + fileName
-            sp.edit().putString(mFileName, Base64Util.encode(byteArray)).apply()
             Log.e(TAG, "fileName = $mFileName")
 
             LocalThreadPools.getInstance(this)
@@ -317,11 +352,14 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback)
         if (detectRes.getInt("error_code") == 0) {
             // 检测成功
             bSuccess = true
-            val detectBean = Gson().fromJson<DetectFaceBean>(detectRes.getJSONObject("result").toString(), DetectFaceBean::class.java)
-            Log.e(TAG, "detect beauty=${detectBean.face_list[0].beauty} and expression=${detectBean.face_list[0].expression.type} and age = ${detectBean.face_list[0].age}")
+            val detectBean = Gson().fromJson<DetectFaceBean>(
+                detectRes.getJSONObject("result").toString(), DetectFaceBean::class.java)
+            Log.e(TAG, "detect beauty=${detectBean.face_list[0].beauty} and" +
+                    " expression=${detectBean.face_list[0].expression.type} and" +
+                    " age = ${detectBean.face_list[0].age}")
             mText = "\n性别：${if (detectBean.face_list[0].gender.type == "male") "男" else "女"}" +
-                    "\n年龄：${detectBean.face_list[0].age.toInt()}" +
-                    "\n打分：${detectBean.face_list[0].beauty.toInt()}"
+                    "\n年龄：${detectBean.face_list[0].age.toInt()}"/* +
+                    "\n打分：${detectBean.face_list[0].beauty.toInt()}"*/
             mShadowText = "成功检测到人脸"
         } else {
             mText = "检测失败 请点击取景框重试"
@@ -330,8 +368,6 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback)
 
         mFragment?.activity?.runOnUiThread {
             switchText(mText, mShadowText)
-//            mIView.onSwitchText(mText)
-//            mIView.onSwitchShadowText(mShadowText)
         }
         return bSuccess
     }

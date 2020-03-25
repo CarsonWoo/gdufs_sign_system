@@ -1,11 +1,13 @@
 package com.carson.gdufs_sign_system.student.main
 
+import android.content.Intent
 import android.os.Bundle
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.base.BaseFragmentActivity
 import com.carson.gdufs_sign_system.student.main.home.HomeFragment
 import com.carson.gdufs_sign_system.student.main.user.UserFragment
+import com.carson.gdufs_sign_system.utils.Const
 import com.carson.gdufs_sign_system.utils.PermissionUtils
 import com.carson.gdufs_sign_system.utils.StatusBarUtil
 import com.carson.gdufs_sign_system.widget.TabSelector
@@ -88,6 +90,15 @@ class MainActivity: BaseFragmentActivity(), TabSelector.OnTabSelectListener {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         PermissionUtils.getInstance().onRequestPermissionResult(requestCode, permissions, grantResults)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Const.REQUEST_CODE_FROM_HOME_TO_DETAIL &&
+                resultCode == Const.RESULT_CODE_SIGN_SUCCESS) {
+            mHomeFragment?.onRefresh()
+            mUserFragment?.onRefresh()
+        }
     }
 
 }

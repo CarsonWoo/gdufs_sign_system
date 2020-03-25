@@ -34,7 +34,7 @@
     <!--  详情页  -->
     <string name="detail_type">签到状态:  %s</string>
     <string name="detail_time">签到开始时间:  %s</string>
-    <string name="detail_people">签到人数:  %d</string>
+    <string name="detail_people">签到人数:  $1%d / $2%d</string>
     <string name="detail_end_time">签到截止时间:  %s</string>
     <string name="detail_sign_radius">签到距离: %s</string>
 

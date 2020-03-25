@@ -56,7 +56,17 @@ class HomeSignItemAdapter: RecyclerView.Adapter<HomeSignItemAdapter.HomeItemView
             mName.text = item.name
             mDate.text = item.startTime
             mPeopleNum.text = mPeopleNum.context.resources.getString(R.string.sign_people, item.num.toString())
+            if (item.status == "已签到") {
+                mBtnSign.text = "已签到"
+                mBtnSign.isEnabled = false
+            } else {
+                mBtnSign.text = "签到"
+                mBtnSign.isEnabled = true
+            }
             mBtnSign.setOnClickListener {
+                mSignClickListener?.onSignClick(item.id)
+            }
+            mItemView.setOnClickListener {
                 mSignClickListener?.onSignClick(item.id)
             }
         }

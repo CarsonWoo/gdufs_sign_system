@@ -39,9 +39,16 @@ class SignSuccessFragment: BaseFragment() {
         mSignTime.text = Const.getCurrentTime()
     }
 
+    fun setCurrentTime() {
+        mSignTime.text = Const.getCurrentTime()
+    }
+
     private fun initEvents() {
         mBtnComplete.setOnClickListener {
-            (activity as SignActivity?)?.onBackPressed()
+            (activity as SignActivity?)?.apply {
+                setResult(Const.RESULT_CODE_SIGN_SUCCESS)
+                onBackPressed()
+            }
         }
     }
 

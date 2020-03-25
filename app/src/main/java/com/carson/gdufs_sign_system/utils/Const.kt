@@ -28,12 +28,20 @@ object Const {
 
     const val RESULT_CODE_COMPARE_SUCCESS = 0x4001   // 人脸比对成功的结果码
 
+    const val REQUEST_CODE_FROM_DETAIL_TO_SIGN = 0x3002       // 从detailfragment去signfragment签到
+
+    const val RESULT_CODE_SIGN_SUCCESS = 0x4002
+
+    const val REQUEST_CODE_FROM_HOME_TO_DETAIL = 0x3003       // 从homefragment去detailfragment
+
     const val BASE_URL = "http://111.230.181.17:8888/myWeb/"
 
     object Net {
         const val RESPONSE_SUCCESS = "200"
         const val RESPONSE_CLIENT_ERROR = "400"
         const val RESPONSE_SERVER_ERROR = "500"
+
+        const val ERR_MSG_COMMON = "请求数据有误"
     }
 
     object SearchApi {
@@ -52,6 +60,10 @@ object Const {
 
     object BundleKeys {
         const val DETAIL_ID = "detail_id"
+        const val SIGN_LAT = "sign_latitude"
+        const val SIGN_LNG = "sign_longitude"
+        const val SIGN_RADIUS = "sign_radius"
+        const val SIGN_PLACE = "sign_place"
     }
 
     fun getCurrentDate(): String {
@@ -66,8 +78,14 @@ object Const {
 
     fun getCurrentTime(): String {
         val mCalender = Calendar.getInstance()
-        val mCurrentTime = mCalender.get(Calendar.HOUR_OF_DAY).toString() + ":" +
-                mCalender.get(Calendar.MINUTE).toString() + ":" + mCalender.get(Calendar.SECOND)
+        val hour = mCalender.get(Calendar.HOUR_OF_DAY)
+        val minute = mCalender.get(Calendar.MINUTE)
+        val seconds = mCalender.get(Calendar.SECOND)
+        val hourStr = if (hour < 10) "0$hour" else hour.toString()
+        val minuteStr = if (minute < 10) "0$minute" else minute.toString()
+        val secondStr = if (seconds < 10) "0$seconds" else seconds.toString()
+
+        val mCurrentTime = hourStr + ":" + minuteStr + ":" + secondStr
         Log.i(TAG, mCurrentTime)
         return mCurrentTime
     }

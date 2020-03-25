@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.util.Log
 import androidx.appcompat.widget.AppCompatImageView
+import com.carson.gdufs_sign_system.BuildConfig
 import com.carson.gdufs_sign_system.R
 
 class CircleImageView: AppCompatImageView {
@@ -31,7 +32,7 @@ class CircleImageView: AppCompatImageView {
             }
             if (hasValue(R.styleable.CircleImageView_borderWidth)) {
                 mBorderWidth = getDimension(R.styleable.CircleImageView_borderWidth, 1F)
-                Log.e(TAG, "width = $mBorderWidth")
+//                Log.e(TAG, "width = $mBorderWidth")
             }
             recycle()
         }
@@ -57,7 +58,9 @@ class CircleImageView: AppCompatImageView {
             return
         }
         if (drawable is ColorDrawable) {
-            Log.e(TAG, "colorDrawable")
+            if (BuildConfig.DEBUG) {
+                Log.i(TAG, "colorDrawable")
+            }
             mPaint.color = drawable.color
             canvas.drawCircle(paddingLeft + mRealSize.toFloat() / 2, paddingTop + mRealSize.toFloat() / 2,
                 mRadius.toFloat(), mPaint)
@@ -71,7 +74,9 @@ class CircleImageView: AppCompatImageView {
             return
         }
         if (drawable is BitmapDrawable) {
-            Log.e(TAG, "BitmapDrawable")
+            if (BuildConfig.DEBUG) {
+                Log.i(TAG, "BitmapDrawable")
+            }
             mPaint.shader = initBitmapShader(drawable)
             canvas.drawCircle(paddingLeft + mRealSize.toFloat() / 2, paddingTop + mRealSize.toFloat() / 2,
                 mRadius.toFloat(), mPaint)

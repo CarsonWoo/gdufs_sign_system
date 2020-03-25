@@ -110,7 +110,7 @@ class HomeController(homeFragment: HomeFragment): BaseController<HomeFragment>(h
                     }
 
                     override fun granted() {
-                        startActivity(toDetail)
+                        startActivityForResult(toDetail, Const.REQUEST_CODE_FROM_HOME_TO_DETAIL)
                         overridePendingTransition(R.anim.slide_right_in, R.anim.scale_out)
                     }
                 })

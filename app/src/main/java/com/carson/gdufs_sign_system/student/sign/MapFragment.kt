@@ -124,21 +124,28 @@ class MapFragment : BaseFragment(), IViewCallback {
         mBackLayout = mRoot.findViewById(R.id.map_back_layout)
         mSignButton = mRoot.findViewById(R.id.btn_sign_scan)
         mLocateButton = mRoot.findViewById(R.id.btn_locate)
+    }
+
+    private fun initEvents() {
         mMapView.let {
             if (it != null) {
                 mMapController.setMapView(it)
                 mMapController.registerLocationEvent()
-                mMapController.initMapEvent()
+                arguments?.apply {
+                    mMapController.initMapEvent(getDouble(Const.BundleKeys.SIGN_LAT),
+                        getDouble(Const.BundleKeys.SIGN_LNG),
+                        getString(Const.BundleKeys.SIGN_PLACE),
+                        getInt(Const.BundleKeys.SIGN_RADIUS))
+                }
             }
         }
-    }
-
-    private fun initEvents() {
         mSignButton.setOnClickListener {
             Intent(context, ScanActivity::class.java).apply {
                 // 默认这里先都是compare
                 putExtra(Const.SCAN_ENTER_FLAG, Const.SCAN_ENTER_COMPARE)
-                startActivityForResult(this, Const.REQUEST_CODE_FROM_MAP_TO_SCAN_COMPARE)
+                putExtra(Const.BundleKeys.DETAIL_ID, arguments?.getLong(Const.BundleKeys.DETAIL_ID))
+                (activity as SignActivity?)?.startActivityForResult(this,
+                    Const.REQUEST_CODE_FROM_MAP_TO_SCAN_COMPARE)
                 activity?.overridePendingTransition(R.anim.slide_right_in, R.anim.scale_out)
             }
         }
@@ -152,18 +159,7 @@ class MapFragment : BaseFragment(), IViewCallback {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            Const.REQUEST_CODE_FROM_MAP_TO_SCAN_COMPARE -> {
-                if (resultCode == Const.RESULT_CODE_COMPARE_SUCCESS) {
-                    // 比对成功
-                    (activity as BaseFragmentActivity?)?.apply {
-                        setFragmentAnimation(R.anim.slide_right_in, R.anim.slide_left_out)
-                        hide(this@MapFragment)
-                        show("SignSuccess")
-                    }
-                }
-            }
-        }
+
     }
 
     override fun fragmentString(): String {

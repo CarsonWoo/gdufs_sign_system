@@ -6,4 +6,6 @@ interface IViewCallback {
     fun onFabShow(value: Float)
 
     fun onDataLoaded(data: SignDetailBean)
+
+    fun onDataLoadFail(errMsg: String?)
 }

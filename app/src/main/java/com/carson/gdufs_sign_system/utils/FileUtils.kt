@@ -127,4 +127,15 @@ object FileUtils {
         return returnBmp
     }
 
+    fun setNoMediaFile(filePath: String) {
+        val file = File(filePath + File.separator + ".nomedia")
+        if (!file.exists()) {
+            try {
+                file.createNewFile()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
 }

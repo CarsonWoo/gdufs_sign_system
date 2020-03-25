@@ -45,5 +45,6 @@ data class SignDetailBean(
     val range: Int,
     val status: String,
     val picUrl: String,
-    val num: Int
+    val signedNum: Int,
+    val totalNum: Int
 )
