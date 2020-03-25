@@ -77,15 +77,15 @@
     <string name="distance">%s 米</string>
 
     <string-array name="static_class_name">
-        <item>计算机大类1班</item>
-        <item>计算机大类2班</item>
-        <item>计算机大类3班</item>
-        <item>计算机大类4班</item>
-        <item>计算机大类5班</item>
-        <item>计算机大类6班</item>
-        <item>计算机大类7班</item>
-        <item>计算机大类8班</item>
-        <item>计算机大类9班</item>
+        <item>计算机大类1901</item>
+        <item>计算机大类1902</item>
+        <item>计算机大类1903</item>
+        <item>计算机大类1904</item>
+        <item>计算机大类1905</item>
+        <item>计算机大类1906</item>
+        <item>计算机大类1907</item>
+        <item>计算机大类1908</item>
+        <item>计算机大类1909</item>
         <item>计算机与科学1801</item>
         <item>计算机与科学1802</item>
         <item>网络工程1801</item>
