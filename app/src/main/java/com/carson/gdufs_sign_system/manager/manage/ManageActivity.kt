@@ -41,7 +41,7 @@ class ManageActivity : BaseActivity(), IViewCallback {
         mLogoutButton = findViewById(R.id.btn_logout)
         mPostSign = findViewById(R.id.manage_post_sign)
         mLookupSign = findViewById(R.id.manage_lookup_sign)
-        mController = ManageController(this, this)
+        mController = ManageController(WeakReference(this), this)
     }
 
     private fun initEvent() {

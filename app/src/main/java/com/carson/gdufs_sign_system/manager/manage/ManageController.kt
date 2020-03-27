@@ -1,12 +1,13 @@
 package com.carson.gdufs_sign_system.manager.manage
 
 import android.app.Activity
+import com.carson.gdufs_sign_system.base.BaseManageController
 import kotlinx.coroutines.*
 import java.lang.ref.WeakReference
 import kotlin.coroutines.CoroutineContext
 
-class ManageController(activity: ManageActivity, private val mIView: IViewCallback): CoroutineScope {
-    private var mActivity = WeakReference<Activity>(activity)
+class ManageController(activity: WeakReference<ManageActivity>, private val mIView: IViewCallback):
+    BaseManageController<ManageActivity>(activity), CoroutineScope {
 
     private var mJob: Job = Job()
 
@@ -33,8 +34,8 @@ class ManageController(activity: ManageActivity, private val mIView: IViewCallba
 
     }
 
-    fun onDestroy() {
+    override fun onDestroy() {
         mJob.cancel()
-        mActivity.clear()
+        super.onDestroy()
     }
 }
