@@ -80,27 +80,7 @@ class HomeFragment: BaseFragment() {
 
     private fun initEvents() {
         mScan.setOnClickListener {
-            PermissionUtils.getInstance()
-                .with(this)
-                .permissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.READ_EXTERNAL_STORAGE)
-                .requestCode(PermissionUtils.CODE_MULTI)
-                .request(object : PermissionUtils.PermissionCallback {
-                    override fun denied() {
-                        PermissionUtils.getInstance().showDialog()
-                    }
-
-                    override fun granted() {
-                        activity?.let {
-                            Intent(it, ScanActivity::class.java).apply {
-                                // 先暂时从这里控制submit与否
-                                putExtra(Const.SCAN_ENTER_FLAG, Const.SCAN_ENTER_SUBMIT)
-                                startActivity(this)
-                                it.overridePendingTransition(R.anim.slide_right_in, R.anim.scale_out)
-                            }
-                        }
-                    }
-                })
+           mHomeController.onScanClick()
         }
         mHomeController.loadData()
     }

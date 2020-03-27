@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.model.SignBean
-import com.carson.gdufs_sign_system.student.main.model.SignItem
 import com.carson.gdufs_sign_system.utils.ScreenUtils
 
 class HomeSignItemAdapter: RecyclerView.Adapter<HomeSignItemAdapter.HomeItemViewHolder> {

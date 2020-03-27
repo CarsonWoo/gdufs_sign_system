@@ -150,6 +150,7 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback 
 //        val authByteArray = buf.array()
 //        Log.e(TAG, "authByteArray = ${authByteArray.size} and postByteArray = ${bytes.size}")
 
+        // 提取从服务器获取的该用户人脸基准认证图片
         val authImage = Const.getSharedPreference(WeakReference(mFragment?.context))
             ?.getString(Const.PreferenceKeys.AUTH_IMAGE, "")
 
@@ -160,6 +161,8 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback 
                 if (matchFace(postImage, authImage)) {
                     // 比对成功
                     doServerSign()
+                } else {
+                    switchText("比对不正确 请重新核实身份", "比对错误 点击重新拍照")
                 }
             } else {
                 // 进行提交

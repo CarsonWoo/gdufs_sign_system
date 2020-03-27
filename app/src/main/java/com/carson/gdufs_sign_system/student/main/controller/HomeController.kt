@@ -14,7 +14,7 @@ import com.carson.gdufs_sign_system.student.main.MainActivity
 import com.carson.gdufs_sign_system.student.main.adapter.HomeBannerAdapter
 import com.carson.gdufs_sign_system.student.main.adapter.HomeSignItemAdapter
 import com.carson.gdufs_sign_system.student.main.home.HomeFragment
-import com.carson.gdufs_sign_system.student.main.model.SignItem
+import com.carson.gdufs_sign_system.student.scan.ScanActivity
 import com.carson.gdufs_sign_system.utils.Const
 import com.carson.gdufs_sign_system.utils.PermissionUtils
 import kotlinx.coroutines.CoroutineScope
@@ -95,6 +95,31 @@ class HomeController(homeFragment: HomeFragment): BaseController<HomeFragment>(h
                 Log.e(TAG, it.message)
             }
         )
+    }
+
+    fun onScanClick() {
+        (mFragment?.activity as MainActivity?)?.let {
+            PermissionUtils.getInstance()
+                .with(it)
+                .permissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)
+                .requestCode(PermissionUtils.CODE_MULTI)
+                .request(object : PermissionUtils.PermissionCallback {
+                    override fun denied() {
+                        PermissionUtils.getInstance().showDialog()
+                    }
+
+                    override fun granted() {
+                        Intent(it, ScanActivity::class.java).apply {
+                            // 从这里控制submit与否
+                            putExtra(Const.SCAN_ENTER_FLAG, Const.SCAN_ENTER_SUBMIT)
+                            it.startActivity(this)
+                            it.overridePendingTransition(R.anim.slide_right_in, R.anim.scale_out)
+                        }
+                    }
+                })
+        }
+
     }
 
     override fun onSignClick(id: Long) {

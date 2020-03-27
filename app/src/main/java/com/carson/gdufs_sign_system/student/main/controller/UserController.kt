@@ -1,10 +1,13 @@
 package com.carson.gdufs_sign_system.student.main.controller
 
+import android.content.Intent
 import android.util.Log
+import com.carson.gdufs_sign_system.base.BaseActivity
 import com.carson.gdufs_sign_system.base.BaseController
+import com.carson.gdufs_sign_system.login.LoginActivity
 import com.carson.gdufs_sign_system.model.SignBean
+import com.carson.gdufs_sign_system.student.main.MainActivity
 import com.carson.gdufs_sign_system.student.main.adapter.UserSignItemAdapter
-import com.carson.gdufs_sign_system.student.main.model.SignItem
 import com.carson.gdufs_sign_system.student.main.user.IViewCallback
 import com.carson.gdufs_sign_system.student.main.user.UserFragment
 import com.carson.gdufs_sign_system.utils.Const
@@ -32,6 +35,16 @@ class UserController constructor(userFragment: UserFragment, private val mIView:
         val itemList = mutableListOf<SignBean>()
         mAdapter = UserSignItemAdapter(itemList)
         return mAdapter
+    }
+
+    fun logout() {
+        Const.getSharedPreference(WeakReference(mFragment?.context))?.edit()?.clear()?.apply()
+        (mFragment?.activity as MainActivity?)?.let {
+            Intent(it, LoginActivity::class.java).apply {
+                it.startActivity(this)
+                (it as BaseActivity?)?.finish(MainActivity::class.java.name)
+            }
+        }
     }
 
     fun loadPersonalData() {
