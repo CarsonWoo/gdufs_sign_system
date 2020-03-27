@@ -3,6 +3,7 @@ package com.carson.gdufs_sign_system.student.sign.controller
 import android.Manifest
 import android.graphics.Color
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.carson.gdufs_sign_system.BuildConfig
 import com.carson.gdufs_sign_system.R
@@ -152,7 +153,8 @@ class MapController(mapFragment: MapFragment, private val mView: IViewCallback) 
             mPositionMarker?.apply {
                 position = mLatLng
                 setAnchor(0.5f, 0.5f)
-                setIcon(BitmapDescriptorFactory.fromResource(android.R.drawable.star_on))
+                setIcon(BitmapDescriptorFactory.fromView(View.inflate(mFragment?.context,
+                    R.layout.layout_marker_my_location, null)))
             }
 //            23.06554767726593, 113.39734911918642
 

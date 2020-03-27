@@ -415,10 +415,7 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback 
 
         mFragment?.activity?.runOnUiThread {
             switchText(mText, mShadowText)
-//            mIView.onSwitchShadowText(mShadowText)
-//            mIView.onSwitchText(mText)
         }
-
 
         return bSuccess
     }
