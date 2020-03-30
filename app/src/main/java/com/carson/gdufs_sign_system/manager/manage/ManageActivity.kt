@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import com.bumptech.glide.Glide
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseActivity
 import com.carson.gdufs_sign_system.login.LoginActivity
@@ -12,6 +14,7 @@ import com.carson.gdufs_sign_system.manager.lookup.LookupActivity
 import com.carson.gdufs_sign_system.manager.post.PostActivity
 import com.carson.gdufs_sign_system.utils.Const
 import com.carson.gdufs_sign_system.utils.StatusBarUtil
+import com.carson.gdufs_sign_system.widget.RoundImageView
 import java.lang.ref.WeakReference
 
 class ManageActivity : BaseActivity(), IViewCallback {
@@ -23,6 +26,10 @@ class ManageActivity : BaseActivity(), IViewCallback {
     private lateinit var mPostSign: RelativeLayout
 
     private lateinit var mLookupSign: RelativeLayout
+
+    private lateinit var mAvatar: RoundImageView
+
+    private lateinit var mUsername: TextView
 
     override fun getContentViewResId(): Int {
         return R.layout.activity_manage
@@ -41,6 +48,12 @@ class ManageActivity : BaseActivity(), IViewCallback {
         mLogoutButton = findViewById(R.id.btn_logout)
         mPostSign = findViewById(R.id.manage_post_sign)
         mLookupSign = findViewById(R.id.manage_lookup_sign)
+        mAvatar = findViewById(R.id.manager_avatar)
+        mUsername = findViewById(R.id.manager_account)
+
+        mUsername.text = Const.getSharedPreference(WeakReference(this))?.getString(Const.PreferenceKeys.USER_ID, "")
+        Glide.with(this).load(R.drawable.icon_manager).into(mAvatar)
+
         mController = ManageController(WeakReference(this), this)
     }
 

@@ -64,6 +64,8 @@ object Const {
         const val SIGN_LNG = "sign_longitude"
         const val SIGN_RADIUS = "sign_radius"
         const val SIGN_PLACE = "sign_place"
+        const val ACTIVITY_ID = "activity_id"
+        const val ACTIVITY_DETAIL_SHOULD_RELOAD = "activity_detail_should_reload"
     }
 
     fun getCurrentDate(): String {

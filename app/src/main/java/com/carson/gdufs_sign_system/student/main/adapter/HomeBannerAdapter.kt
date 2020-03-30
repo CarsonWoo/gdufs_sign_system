@@ -75,7 +75,7 @@ class HomeBannerAdapter(bannerList: MutableList<String>) : PagerAdapter(),
     }
 
     fun onDestroy() {
-        mHandler.removeCallbacksAndMessages(MSG_INFINITE)
+        mHandler.removeCallbacksAndMessages(null)
     }
 
     fun setUpWithViewPager(viewPager: ViewPager) {

@@ -8,15 +8,18 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.carson.gdufs_sign_system.R
-import com.carson.gdufs_sign_system.manager.lookup.model.SingleItemModel
-import com.carson.gdufs_sign_system.widget.CircleImageView
+import com.carson.gdufs_sign_system.model.MyActivityStudentItemBean
 import com.carson.gdufs_sign_system.widget.RoundImageView
 
-class LookupSingleItemAdapter(private val mItemList: MutableList<SingleItemModel>) : RecyclerView.Adapter<LookupSingleItemAdapter.LookupSingleHolder>() {
+class LookupSingleItemAdapter(private var mItemList: MutableList<MyActivityStudentItemBean>) : RecyclerView.Adapter<LookupSingleItemAdapter.LookupSingleHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LookupSingleHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.layout_item_lookup_single, parent, false)
         return LookupSingleHolder(itemView)
+    }
+
+    fun setData(itemList: MutableList<MyActivityStudentItemBean>) {
+        this.mItemList = itemList
     }
 
     override fun getItemCount(): Int {
@@ -25,10 +28,10 @@ class LookupSingleItemAdapter(private val mItemList: MutableList<SingleItemModel
 
     override fun onBindViewHolder(holder: LookupSingleHolder, position: Int) {
         val model = mItemList[position]
-        holder.mClazz.text = model.clazz
-        holder.mUsername.text = model.username
+        holder.mClazz.text = model.classes
+        holder.mUsername.text = model.name
 //        holder.mPortrait.setImageResource(R.drawable.icon_student)
-        if (model.isSigned) {
+        if (model.status == "已签到") {
             holder.mStatus.text = "已签到"
             val drawable = holder.mRoot.context.resources.getDrawable(R.drawable.status_pass)
             drawable.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)

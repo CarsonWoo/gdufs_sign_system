@@ -1,7 +1,6 @@
 package com.carson.gdufs_sign_system.utils
 
 import com.carson.gdufs_sign_system.model.*
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -58,5 +57,13 @@ interface ApiService {
     @FormUrlEncoded
     @POST("GetProgramWithId")
     fun getDetailData(@FieldMap dataFields: HashMap<String, Any?>): @JvmSuppressWildcards Call<SignDetailBean>
+
+    @FormUrlEncoded
+    @POST("GetSigningWithAuthor")
+    fun getMyActivity(@Field("username") username: String): Call<MutableList<MyActivityItemBean>>
+
+    @FormUrlEncoded
+    @POST("GetSigningStatus")
+    fun getActivityStudentData(@Field("signingId") signingId: Long): Call<MutableList<MyActivityStudentItemBean>>
 
 }

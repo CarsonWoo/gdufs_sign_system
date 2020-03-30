@@ -1,6 +1,7 @@
 package com.carson.gdufs_sign_system.manager.lookup
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,8 @@ import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.manager.lookup.adapter.LookupSingleItemAdapter
 import com.carson.gdufs_sign_system.manager.lookup.controller.LookupSingleController
-import com.carson.gdufs_sign_system.manager.lookup.model.SingleItemModel
+import com.carson.gdufs_sign_system.model.MyActivityStudentItemBean
+import com.carson.gdufs_sign_system.utils.Const
 
 class LookupSingleFragment: BaseFragment() {
 
@@ -30,8 +32,6 @@ class LookupSingleFragment: BaseFragment() {
 
     private lateinit var mAdapter: LookupSingleItemAdapter
 
-    private val mItemList = mutableListOf<SingleItemModel>()
-
     private lateinit var mLookupSingleController: LookupSingleController
 
     override fun getContentView(
@@ -46,18 +46,13 @@ class LookupSingleFragment: BaseFragment() {
     }
 
     private fun initViews() {
+        mLookupSingleController = LookupSingleController(this)
+
         mBackView = mRoot.findViewById(R.id.lookup_back)
         mTitleView = mRoot.findViewById(R.id.lookup_title)
         mRecyclerView = mRoot.findViewById(R.id.lookup_recyclerview)
-//        mTitleView.text = resources.getString(R.string.)
 
-        mockData()
-
-        mAdapter = LookupSingleItemAdapter(mItemList)
-
-        mRecyclerView.adapter = mAdapter
-
-        mLookupSingleController = LookupSingleController(this)
+        mRecyclerView.adapter = mLookupSingleController.getAdapter()
     }
 
     private fun initEvents() {
@@ -66,17 +61,18 @@ class LookupSingleFragment: BaseFragment() {
         }
     }
 
-    private fun mockData() {
-        (0..10).forEach {
-            val model = SingleItemModel("userName $it",
-                "软工1603班", it % 2 == 0)
-            mItemList.add(model)
-        }
-    }
-
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-        mRecyclerView.smoothScrollToPosition(0)
+        if (!hidden) {
+            // 如果显示
+            mRecyclerView.smoothScrollToPosition(0)
+            // 当重新显示
+            Log.e(FRAGMENT_TAG, "onResume")
+            Log.e(FRAGMENT_TAG, "argument = ${arguments?.getLong(Const.BundleKeys.ACTIVITY_ID)}")
+            if (arguments?.getBoolean(Const.BundleKeys.ACTIVITY_DETAIL_SHOULD_RELOAD) == true) {
+                mLookupSingleController.loadData()
+            }
+        }
     }
 
     override fun fragmentString(): String {

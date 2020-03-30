@@ -92,13 +92,17 @@ class SearchLocationController(private val contextRef: WeakReference<Context>) {
     }
 
     fun navigateBackWithData(activity: SearchLocationActivity) {
-        Intent().apply {
-            putExtra("address", mAddress)
-            putExtra("lat", mLatLng.latitude)
-            putExtra("lng", mLatLng.longitude)
-            activity.let {
-                it.setResult(Activity.RESULT_OK, this)
-                it.onBackPressed()
+        if (mAddress.isEmpty()) {
+            Toast.makeText(activity, "请先选择地点", Toast.LENGTH_SHORT).show()
+        } else {
+            Intent().apply {
+                putExtra("address", mAddress)
+                putExtra("lat", mLatLng.latitude)
+                putExtra("lng", mLatLng.longitude)
+                activity.let {
+                    it.setResult(Activity.RESULT_OK, this)
+                    it.onBackPressed()
+                }
             }
         }
     }

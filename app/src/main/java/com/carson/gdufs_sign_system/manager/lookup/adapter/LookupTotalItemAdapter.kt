@@ -8,10 +8,10 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.carson.gdufs_sign_system.R
-import com.carson.gdufs_sign_system.manager.lookup.model.TotalItemModel
+import com.carson.gdufs_sign_system.model.MyActivityItemBean
 import com.carson.gdufs_sign_system.widget.RoundImageView
 
-class LookupTotalItemAdapter(private val mItemList: MutableList<TotalItemModel>,
+class LookupTotalItemAdapter(private var mItemList: MutableList<MyActivityItemBean>,
                              private val mCallback: LookupItemClickCallback):
     RecyclerView.Adapter<LookupTotalItemAdapter.LookupTotalItemHolder>() {
 
@@ -24,15 +24,19 @@ class LookupTotalItemAdapter(private val mItemList: MutableList<TotalItemModel>,
         return mItemList.size
     }
 
+    fun setData(itemList: MutableList<MyActivityItemBean>) {
+        mItemList = itemList
+    }
+
     override fun onBindViewHolder(holder: LookupTotalItemHolder, position: Int) {
         val itemModel = mItemList[position]
         holder.mStartTime.text = itemModel.startTime
-        holder.mTitle.text = itemModel.title
+        holder.mTitle.text = itemModel.name
         holder.mEndTime.text = itemModel.endTime
         holder.mImageView.setImageResource(R.drawable.gdufs_tmp)
-//        Glide.with(holder.itemView.context).load(R.drawable.gdufs_tmp).into(holder.mImageView)
+        Glide.with(holder.itemView.context).load(itemModel.picUrl).into(holder.mImageView)
         holder.mCardView.setOnClickListener {
-            mCallback.onItemClick(it)
+            mCallback.onItemClick(it, itemModel.signingId)
         }
     }
 
@@ -45,7 +49,7 @@ class LookupTotalItemAdapter(private val mItemList: MutableList<TotalItemModel>,
     }
 
     interface LookupItemClickCallback {
-        fun onItemClick(view: View)
+        fun onItemClick(view: View, id: Long)
     }
 
 }

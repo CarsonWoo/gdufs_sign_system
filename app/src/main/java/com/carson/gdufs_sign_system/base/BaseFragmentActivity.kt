@@ -103,6 +103,19 @@ abstract class BaseFragmentActivity: BaseActivity() {
         }
     }
 
+    fun show(fragmentTag: String?, arg: Bundle?) {
+        if (fragmentTag == null) {
+            throw Exception("Fragment Tag is Null")
+        }
+        mFragmentList?.apply {
+            val fragment = mFragmentManager?.findFragmentByTag(fragmentTag) as BaseFragment?
+            fragment?.let {
+                it.arguments = arg
+                show(it)
+            }
+        }
+    }
+
     fun hide(fragmentTag: String?) {
         if (fragmentTag == null) {
             throw Exception("Fragment Tag is Null")

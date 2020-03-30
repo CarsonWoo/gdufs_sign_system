@@ -71,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sign_basic_info"
-                android:textColor="@color/colorDeepGray"
+                android:textColor="@color/colorBlack"
                 android:textSize="@dimen/normal_text_size"
                 android:layout_marginTop="30dp"
                 app:layout_constraintTop_toTopOf="parent"
@@ -167,6 +167,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorBlack"
+                        android:hint="@string/select_clazz_hint"
+                        android:paddingStart="23dp"
+                        android:paddingEnd="0dp"
                         android:textSize="@dimen/normal_text_size"
                         android:layout_marginTop="10dp"
                         />

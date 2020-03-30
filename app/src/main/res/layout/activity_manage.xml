@@ -11,7 +11,7 @@
         android:id="@+id/manage_top_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="25dp"
+        android:paddingTop="40dp"
         android:paddingBottom="8dp"
         android:background="@color/colorCyan"
         app:layout_constraintTop_toTopOf="parent">
@@ -40,105 +40,101 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.carson.gdufs_sign_system.widget.CircleImageView
-        android:id="@+id/manager_avatar"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="#000"
-        android:layout_marginTop="30dp"
-        app:borderWidth="3dp"
-        app:borderColor="@color/colorCyan"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="120dp"
         app:layout_constraintTop_toBottomOf="@id/manage_top_bar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <TextView
-        android:id="@+id/manager_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/normal_text_size"
-        android:hint="管理者用户名"
-        android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@id/manager_avatar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
-        android:id="@+id/manager_account"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/normal_text_size"
-        android:hint="管理者帐号"
-        android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@id/manager_username"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-
-    <RelativeLayout
-        android:id="@+id/manage_post_sign"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:gravity="center"
-        android:elevation="2dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="@drawable/bg_selector_round_rect_white2gray"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        app:layout_constraintTop_toBottomOf="@id/manager_account">
+        <com.carson.gdufs_sign_system.widget.RoundImageView
+            android:id="@+id/manager_avatar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:radius="40dp"
+            android:src="@drawable/icon_manager"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/manager_account"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="start"
-            android:drawableStart="@drawable/scan"
-            android:drawableEnd="@drawable/arrow_right"
-            android:text="@string/manage_post_sign"
+            android:textColor="@color/colorBlack"
             android:textSize="@dimen/normal_text_size"
-            android:drawablePadding="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="20dp"
-            />
+            android:hint="管理者帐号"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/manager_avatar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/manage_lookup_sign"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:gravity="center"
-        android:elevation="2dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="@drawable/bg_selector_round_rect_white2gray"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        app:layout_constraintTop_toBottomOf="@id/manage_post_sign">
-
-        <TextView
+        <RelativeLayout
+            android:id="@+id/manage_post_sign"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:drawableStart="@drawable/lookup"
-            android:drawableEnd="@drawable/arrow_right"
-            android:text="@string/manage_lookup_my_sign"
-            android:textSize="@dimen/normal_text_size"
-            android:drawablePadding="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="20dp"
-            />
+            android:layout_height="80dp"
+            android:gravity="center"
+            android:elevation="2dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/bg_selector_round_rect_white2gray"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            app:layout_constraintTop_toBottomOf="@id/manager_account">
 
-    </RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:drawableStart="@drawable/scan"
+                android:drawableEnd="@drawable/arrow_right"
+                android:text="@string/manage_post_sign"
+                android:textSize="@dimen/normal_text_size"
+                android:drawablePadding="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="20dp"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/manage_lookup_sign"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:gravity="center"
+            android:elevation="2dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/bg_selector_round_rect_white2gray"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="80dp"
+            app:layout_constraintTop_toBottomOf="@id/manage_post_sign"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:drawableStart="@drawable/lookup"
+                android:drawableEnd="@drawable/arrow_right"
+                android:text="@string/manage_lookup_my_sign"
+                android:textSize="@dimen/normal_text_size"
+                android:drawablePadding="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="20dp"
+                />
+
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

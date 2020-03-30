@@ -75,6 +75,7 @@
     <string name="next_day">后一天</string>
     <string name="post_sign_distance">签到距离设置</string>
     <string name="distance">%s 米</string>
+    <string name="select_clazz_hint">请选择签到班级</string>
 
     <string-array name="static_class_name">
         <item>计算机大类1901</item>

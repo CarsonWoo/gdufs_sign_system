@@ -48,3 +48,20 @@ data class SignDetailBean(
     val signedNum: Int,
     val totalNum: Int
 )
+
+// 所有签到活动查看
+data class MyActivityItemBean(
+    val signingId: Long,
+    val name: String,
+    val startTime: String,
+    val endTime: String,
+    val picUrl: String
+)
+
+// 单个签到活动学生查看
+data class MyActivityStudentItemBean(
+    val number: String,
+    val name: String,
+    val classes: String,
+    val status: String
+)
