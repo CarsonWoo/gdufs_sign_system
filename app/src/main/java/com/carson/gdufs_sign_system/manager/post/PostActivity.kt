@@ -2,11 +2,14 @@ package com.carson.gdufs_sign_system.manager.post
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseActivity
@@ -43,6 +46,8 @@ class PostActivity : BaseActivity(), IViewCallback, View.OnClickListener {
 
     private lateinit var mContainer: CoordinatorLayout
 
+    private lateinit var mContentContainer: ConstraintLayout
+
     private var mSelectType = SELECTTYPE.START_TIME
 
     override fun getContentViewResId(): Int = R.layout.activity_post
@@ -70,6 +75,7 @@ class PostActivity : BaseActivity(), IViewCallback, View.OnClickListener {
         mMapView = findViewById(R.id.post_map_view)
         mBtnPost = findViewById(R.id.btn_post)
         mContainer = findViewById(R.id.post_container)
+        mContentContainer = findViewById(R.id.post_content_container)
 
         mPostController = PostController(WeakReference(this), this)
 
@@ -98,28 +104,48 @@ class PostActivity : BaseActivity(), IViewCallback, View.OnClickListener {
         mPostView.setOnClickListener(this)
         mSignPlace.setOnClickListener(this)
         mSignRadius.setOnClickListener(this)
+        mContentContainer.setOnClickListener(this)
+    }
+
+    private fun hideInputMethod() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(window.decorView.windowToken, 0)
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.post_content_container -> {
+                v.requestFocus()
+                v.isFocusable = true
+                hideInputMethod()
+            }
             R.id.et_start_time -> {
+                v.requestFocus()
                 mSelectType = SELECTTYPE.START_TIME
                 mPostController.initPopupTimePickerWindow(mContainer)
+                hideInputMethod()
             }
             R.id.et_end_time -> {
+                v.requestFocus()
                 mSelectType = SELECTTYPE.END_TIME
                 mPostController.initPopupTimePickerWindow(mContainer)
+                hideInputMethod()
             }
             R.id.sign_student_clazz_layout -> {
                 // popup the multi choice selector
                 mSelectType = SELECTTYPE.CLAZZ
                 mPostController.initPopupMultiChoiceWindow(mContainer)
+                hideInputMethod()
             }
             R.id.post_back -> {
                 onBackPressed()
             }
             R.id.top_post, R.id.btn_post -> {
                 // post the sign activity
+                mPostController.checkParam(mEtActivityName.text.toString(), mEtStartTime.text.toString(),
+                    mEtEndTime.text.toString(), mSignClazz.text.toString(), mSignRadius.text.toString(),
+                    mSignPlace.text.toString())
+                hideInputMethod()
             }
             R.id.sign_place -> {
                 mPostController.navigateToPickLocation()
@@ -127,6 +153,7 @@ class PostActivity : BaseActivity(), IViewCallback, View.OnClickListener {
             R.id.sign_radius -> {
                 mSelectType = SELECTTYPE.RADIUS
                 mPostController.initPopupChoicePickerWindow(mContainer)
+                hideInputMethod()
             }
         }
     }
@@ -168,6 +195,7 @@ class PostActivity : BaseActivity(), IViewCallback, View.OnClickListener {
 
     override fun onDestroy() {
         PermissionUtils.getInstance().destroy()
+        mPostController.onDestroy()
         super.onDestroy()
     }
 }

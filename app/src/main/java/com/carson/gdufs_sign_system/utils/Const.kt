@@ -42,6 +42,8 @@ object Const {
         const val RESPONSE_SERVER_ERROR = "500"
 
         const val ERR_MSG_COMMON = "请求数据有误"
+
+        const val ERR_MSG_SERVER = "服务器错误 请稍后再试"
     }
 
     object SearchApi {
@@ -51,6 +53,8 @@ object Const {
     }
 
     private const val SIMPLE_DATE_FORMAT = "yyyy-MM-dd"
+
+    const val SIMPLE_TOTAL_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"
 
     object PreferenceKeys {
         const val USER_ID = "userId"

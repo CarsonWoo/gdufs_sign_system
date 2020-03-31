@@ -4,9 +4,8 @@
     <!--  字符常量  -->
     <string name="back_confirm_toast">再按一次退出app</string>
     <!--  登录  -->
-    <string name="phone_number">手机号</string>
+    <string name="username">用户名</string>
     <string name="student_id">学工号</string>
-    <string name="phone_number_or_student_id">手机号/学工号</string>
     <string name="password">密码</string>
     <string name="forget_password">忘记密码?</string>
     <string name="login">登录</string>
@@ -14,6 +13,7 @@
     <string name="get_code">获取验证码</string>
     <string name="auth_code">验证码</string>
     <string name="confirm_password">再次输入密码</string>
+    <string name="username_hint">请填写用户名 建议实名</string>
 
     <!--  首页  -->
     <string name="sign">签到</string>

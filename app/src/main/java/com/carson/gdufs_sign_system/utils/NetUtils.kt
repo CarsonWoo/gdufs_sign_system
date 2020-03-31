@@ -28,8 +28,8 @@ object NetUtils {
         if (needGsonConverter) builder.addConverterFactory(GsonConverterFactory.create())
         val client = getOkHttpClient().newBuilder()
             .addInterceptor(getLoggingInterceptor())
-            .readTimeout(15 * 1000, TimeUnit.SECONDS)
-            .connectTimeout(15 * 1000, TimeUnit.SECONDS)
+            .readTimeout(15 * 1000, TimeUnit.MILLISECONDS)
+            .connectTimeout(15 * 1000, TimeUnit.MILLISECONDS)
         builder.client(client.build())
         return builder.build().create(clazz)
     }

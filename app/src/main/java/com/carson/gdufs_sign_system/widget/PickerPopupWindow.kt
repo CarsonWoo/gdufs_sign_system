@@ -70,6 +70,14 @@ class PickerPopupWindow(
         mPopupWindow.showAtLocation(anchorView, Gravity.BOTTOM, 0, 0)
     }
 
+    fun dismiss() {
+        mPopupWindow.dismiss()
+    }
+
+    fun isShowing(): Boolean {
+        return mPopupWindow.isShowing
+    }
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.popup_confirm -> {

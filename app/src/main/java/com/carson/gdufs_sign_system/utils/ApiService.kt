@@ -66,4 +66,8 @@ interface ApiService {
     @POST("GetSigningStatus")
     fun getActivityStudentData(@Field("signingId") signingId: Long): Call<MutableList<MyActivityStudentItemBean>>
 
+    @FormUrlEncoded
+    @POST("PublishSigning")
+    fun post(@FieldMap dataFields: HashMap<String, Any?>): @JvmSuppressWildcards Call<CommonResponse>
+
 }
