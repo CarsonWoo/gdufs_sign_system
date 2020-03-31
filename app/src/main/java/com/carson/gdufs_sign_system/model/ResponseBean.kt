@@ -21,6 +21,7 @@ data class HomeResponse(
 data class PersonalResponse(
     val userId: String,
     val userClass: String,
+    val name: String,
     val signedList: MutableList<SignBean>
 )
 

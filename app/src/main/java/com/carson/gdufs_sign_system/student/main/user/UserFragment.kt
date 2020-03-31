@@ -86,7 +86,7 @@ class UserFragment: BaseFragment(), IViewCallback {
     }
 
     override fun onDataLoaded(
-        username: String,
+        username: String?,
         studentId: String,
         clazz: String,
         signedNum: String

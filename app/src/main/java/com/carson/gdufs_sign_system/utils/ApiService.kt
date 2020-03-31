@@ -33,7 +33,7 @@ interface ApiService {
     @FormUrlEncoded
     @POST("Register")
     fun register(@Field("username") userId: String,
-                 @Field("phoneNumber") phoneNumber: String,
+                 @Field("name") name: String,
                  @Field("class") clazz: String,
                  @Field("password") password: String): Call<CommonResponse>
 

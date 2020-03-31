@@ -60,7 +60,7 @@ class UserController constructor(userFragment: UserFragment, private val mIView:
             onSuccess = { res ->
                 if (res.isSuccessful) {
                     res.body()?.let {
-                        mIView.onDataLoaded(it.userId, it.userId, it.userClass, it.signedList.size.toString())
+                        mIView.onDataLoaded(it.name, it.userId, it.userClass, it.signedList.size.toString())
                         mAdapter.setData(it.signedList)
                         mAdapter.notifyDataSetChanged()
                     }
