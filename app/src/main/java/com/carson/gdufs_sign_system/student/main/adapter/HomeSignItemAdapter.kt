@@ -50,7 +50,7 @@ class HomeSignItemAdapter: RecyclerView.Adapter<HomeSignItemAdapter.HomeItemView
             this.layoutParams = params
         }
         val item = mItemList[position]
-        Glide.with(holder.mPic.context).load(item.picUrl).into(holder.mPic)
+        Glide.with(holder.mPic.context).load(item.picUrl).thumbnail(0.5F).into(holder.mPic)
         holder.apply {
             mName.text = item.name
             mDate.text = item.startTime

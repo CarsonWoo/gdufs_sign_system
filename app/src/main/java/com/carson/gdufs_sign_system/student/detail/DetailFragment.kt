@@ -37,6 +37,7 @@ class DetailFragment : BaseFragment(), IViewCallback {
     private lateinit var mDetailSignedPeople: TextView
     private lateinit var mDetailEndTime: TextView
     private lateinit var mFloatingButton: RelativeLayout
+    private lateinit var mDetailSign: TextView
     private lateinit var mDetailTypeImage: ImageView
 
     private lateinit var mProgressBar: ProgressBar
@@ -73,6 +74,7 @@ class DetailFragment : BaseFragment(), IViewCallback {
         mFloatingButton = mRootView.findViewById(R.id.detail_sign_fab)
         mDetailTypeImage = mRootView.findViewById(R.id.detail_type_img)
         mProgressBar = mRootView.findViewById(R.id.detail_progress_bar)
+        mDetailSign = mRootView.findViewById(R.id.detail_sign)
 
         mProgressBar.visibility = View.VISIBLE
         mFloatingButton.isEnabled = false
@@ -83,6 +85,7 @@ class DetailFragment : BaseFragment(), IViewCallback {
         mScrollView.setOnScrollChangeListener(mDetailController)
         mBack.setOnClickListener(mDetailController)
         mFloatingButton.setOnClickListener(mDetailController)
+        mDetailSign.setOnClickListener(mDetailController)
 
         arguments?.let {
             mDetailController.loadData(it.getLong(Const.BundleKeys.DETAIL_ID))

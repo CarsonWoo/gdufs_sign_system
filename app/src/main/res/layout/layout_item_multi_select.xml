@@ -16,7 +16,7 @@
     <TextView
         android:id="@+id/item_multi_select_text"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_height="wrap_content"
         android:textColor="@color/alphaColorCyan"
         android:textSize="@dimen/mini_text_size" />
 

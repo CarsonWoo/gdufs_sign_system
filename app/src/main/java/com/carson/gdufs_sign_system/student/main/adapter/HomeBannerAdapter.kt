@@ -105,7 +105,7 @@ class HomeBannerAdapter(bannerList: MutableList<String>) : PagerAdapter(),
 //            imgView = mImgList[position]
 //        }*/
         container.addView(imgView)
-        Glide.with(container.context).load(mBannerList[position]).into(imgView)
+        Glide.with(container.context).load(mBannerList[position]).thumbnail(0.5F).into(imgView)
         imgView.setOnClickListener {
             mBannerClickListener?.onBannerClick(it, mBannerList[position], position)
         }

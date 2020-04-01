@@ -28,6 +28,8 @@ import com.carson.gdufs_sign_system.utils.PermissionUtils
 import com.carson.gdufs_sign_system.utils.ScreenUtils
 import com.carson.gdufs_sign_system.widget.PickerPopupWindow
 import com.carson.gdufs_sign_system.widget.TimePickerView
+import com.google.android.flexbox.*
+import com.google.android.material.internal.FlowLayout
 import com.tencent.map.geolocation.TencentLocation
 import com.tencent.map.geolocation.TencentLocationListener
 import com.tencent.map.geolocation.TencentLocationManager
@@ -214,9 +216,9 @@ class PostController(private val mActivity: WeakReference<PostActivity>, private
                 anchorView, false)
             val timePicker = contentView.findViewById<TimePickerView>(R.id.popup_time_picker)
             mPopupWindow = PopupWindow(contentView).apply {
-                width = ScreenUtils.getScreenWidth(mActivity.get()!!)
-                height = ScreenUtils.dip2px(mActivity.get()!!, 260F)
-                elevation = ScreenUtils.dip2px_5(mActivity.get()!!).toFloat()
+                width = ScreenUtils.getScreenWidth(contentView.context)
+                height = ScreenUtils.dip2px(contentView.context, 260F)
+                elevation = ScreenUtils.dip2px_5(contentView.context).toFloat()
                 animationStyle = R.style.PopupAnimation
                 setBackgroundDrawable(ColorDrawable(Color.WHITE))
                 isOutsideTouchable = true
@@ -251,19 +253,9 @@ class PostController(private val mActivity: WeakReference<PostActivity>, private
             }
             val adapter = PopupMultiItemAdapter(dataList)
             recyclerView.adapter = adapter
-            val gridLayoutManager = GridLayoutManager(mActivity.get()!!,
-                ScreenUtils.getScreenWidth(mActivity.get()!!))
-            val mPaint = Paint()
-            mPaint.textSize = ScreenUtils.dip2px(mActivity.get()!!, 12F).toFloat()
-            gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                override fun getSpanSize(position: Int): Int {
-                    val textWidth = mPaint.measureText(clazzArray[position])
-                    + ScreenUtils.dip2px(mActivity.get()!!, 48F)
-                    return if (textWidth > ScreenUtils.getScreenWidth(mActivity.get()!!))
-                        ScreenUtils.getScreenWidth(mActivity.get()!!) else textWidth.toInt()
-                }
-            }
-            recyclerView.layoutManager = gridLayoutManager
+            val flowLayoutManager = FlexboxLayoutManager(recyclerView.context, FlexDirection.ROW, FlexWrap.WRAP)
+
+            recyclerView.layoutManager = flowLayoutManager
 
             // init widget
             contentView.findViewById<TextView>(R.id.popup_confirm).setOnClickListener {

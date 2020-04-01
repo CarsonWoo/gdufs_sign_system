@@ -51,7 +51,7 @@ class UserSignItemAdapter(private var mList: MutableList<SignBean>):
             this.layoutParams = params
         }
         val item = mList[position]
-        Glide.with(holder.mPic.context).load(item.picUrl).into(holder.mPic)
+        Glide.with(holder.mPic.context).load(item.picUrl).thumbnail(0.5F).into(holder.mPic)
         holder.apply {
             mName.text = item.name
             mDate.text = item.signingTime

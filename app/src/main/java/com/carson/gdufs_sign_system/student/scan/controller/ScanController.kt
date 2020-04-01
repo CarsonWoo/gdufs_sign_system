@@ -195,6 +195,8 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback 
                                     mFragment?.context, "上传成功",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                Const.getSharedPreference(WeakReference(mFragment?.context))?.edit()
+                                    ?.putString(Const.PreferenceKeys.AUTH_IMAGE, postImage)?.apply()
                                 mIView.onSwitchText("上传成功")
                                 mIView.onUploadSuccess()
                             }

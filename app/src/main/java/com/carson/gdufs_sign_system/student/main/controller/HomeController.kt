@@ -14,17 +14,22 @@ import com.carson.gdufs_sign_system.student.main.MainActivity
 import com.carson.gdufs_sign_system.student.main.adapter.HomeBannerAdapter
 import com.carson.gdufs_sign_system.student.main.adapter.HomeSignItemAdapter
 import com.carson.gdufs_sign_system.student.main.home.HomeFragment
+import com.carson.gdufs_sign_system.student.main.home.IViewCallback
 import com.carson.gdufs_sign_system.student.scan.ScanActivity
 import com.carson.gdufs_sign_system.utils.Const
 import com.carson.gdufs_sign_system.utils.PermissionUtils
+import com.carson.gdufs_sign_system.widget.TipsDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import java.lang.ref.WeakReference
 import kotlin.coroutines.CoroutineContext
 
-class HomeController(homeFragment: HomeFragment): BaseController<HomeFragment>(homeFragment),
-    HomeBannerAdapter.OnBannerItemClickListener, CoroutineScope, HomeSignItemAdapter.OnSignClickListener {
+class HomeController(homeFragment: HomeFragment, private val mIView: IViewCallback) :
+    BaseController<HomeFragment>(homeFragment),
+    HomeBannerAdapter.OnBannerItemClickListener, CoroutineScope,
+    HomeSignItemAdapter.OnSignClickListener,
+    TipsDialog.OnTipsDialogClickListener {
 
     companion object {
         private const val TAG = "HomeController"
@@ -37,6 +42,8 @@ class HomeController(homeFragment: HomeFragment): BaseController<HomeFragment>(h
 
     private lateinit var mBannerAdapter: HomeBannerAdapter
     private lateinit var mItemAdapter: HomeSignItemAdapter
+
+    private var mTipsDialog: TipsDialog? = null
 
     fun onBackPressed(): Boolean {
         return if (LifeCallbackManager.get().getActivitySize() == 1) {
@@ -75,12 +82,15 @@ class HomeController(homeFragment: HomeFragment): BaseController<HomeFragment>(h
 
         mJob = executeRequest(
             request = {
-                mApiService.getHomeData(Const.getSharedPreference(WeakReference(mFragment?.context))
-                    ?.getString(Const.PreferenceKeys.USER_ID, "")).execute()
+                mApiService.getHomeData(
+                    Const.getSharedPreference(WeakReference(mFragment?.context))
+                        ?.getString(Const.PreferenceKeys.USER_ID, "")
+                ).execute()
             },
             onSuccess = { res ->
                 if (res.isSuccessful) {
                     res.body()?.let {
+                        mIView.onDataLoaded()
                         Log.i(TAG, it.bannerList.size.toString() + " " + it.signingList.size)
                         mBannerAdapter.setData(it.bannerList)
                         mBannerAdapter.notifyDataSetChanged()
@@ -101,8 +111,10 @@ class HomeController(homeFragment: HomeFragment): BaseController<HomeFragment>(h
         (mFragment?.activity as MainActivity?)?.let {
             PermissionUtils.getInstance()
                 .with(it)
-                .permissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.READ_EXTERNAL_STORAGE)
+                .permissions(
+                    Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                )
                 .requestCode(PermissionUtils.CODE_MULTI)
                 .request(object : PermissionUtils.PermissionCallback {
                     override fun denied() {
@@ -123,28 +135,60 @@ class HomeController(homeFragment: HomeFragment): BaseController<HomeFragment>(h
     }
 
     override fun onSignClick(id: Long) {
-        val toDetail = Intent(mFragment?.context, DetailActivity::class.java).apply {
-            putExtra(Const.BundleKeys.DETAIL_ID, id)
-        }
-        mFragment?.activity?.apply {
-            PermissionUtils.getInstance().with(this).requestCode(PermissionUtils.CODE_MULTI)
-                .permissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE)
-                .request(object: PermissionUtils.PermissionCallback {
-                    override fun denied() {
-                        PermissionUtils.getInstance().showDialog()
-                    }
+        val authImage = Const.getSharedPreference(WeakReference(mFragment?.context))
+            ?.getString(Const.PreferenceKeys.AUTH_IMAGE, "")
+        if (authImage.isNullOrEmpty() || authImage == "empty") {
+            showTipsDialog()
+        } else {
+            val toDetail = Intent(mFragment?.context, DetailActivity::class.java).apply {
+                putExtra(Const.BundleKeys.DETAIL_ID, id)
+            }
+            mFragment?.activity?.apply {
+                PermissionUtils.getInstance().with(this).requestCode(PermissionUtils.CODE_MULTI)
+                    .permissions(
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_PHONE_STATE
+                    )
+                    .request(object : PermissionUtils.PermissionCallback {
+                        override fun denied() {
+                            PermissionUtils.getInstance().showDialog()
+                        }
 
-                    override fun granted() {
-                        startActivityForResult(toDetail, Const.REQUEST_CODE_FROM_HOME_TO_DETAIL)
-                        overridePendingTransition(R.anim.slide_right_in, R.anim.scale_out)
-                    }
-                })
+                        override fun granted() {
+                            startActivityForResult(toDetail, Const.REQUEST_CODE_FROM_HOME_TO_DETAIL)
+                            overridePendingTransition(R.anim.slide_right_in, R.anim.scale_out)
+                        }
+                    })
+            }
         }
     }
 
     override fun onDestroy() {
         mBannerAdapter.onDestroy()
+        mTipsDialog?.dismiss()
         super.onDestroy()
+    }
+
+    fun showTipsDialog() {
+        if (mTipsDialog == null) {
+            mTipsDialog = TipsDialog(WeakReference(mFragment?.context!!)).apply {
+                setListener(this@HomeController)
+                setTips("当前用户还没有认证人脸信息，请先前往验证哦~")
+            }
+        }
+        mTipsDialog?.show()
+    }
+
+    override fun onCancel(dialog: TipsDialog) {
+        dialog.dismiss()
+    }
+
+    override fun onConfirm(dialog: TipsDialog) {
+        dialog.dismiss()
+        Intent(mFragment?.context, ScanActivity::class.java).apply {
+            putExtra(Const.SCAN_ENTER_FLAG, Const.SCAN_ENTER_SUBMIT)
+            mFragment?.activity?.startActivity(this)
+        }
     }
 
 }

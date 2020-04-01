@@ -23,8 +23,9 @@ import com.carson.gdufs_sign_system.utils.PermissionUtils
 import com.carson.gdufs_sign_system.widget.BannerDot
 import com.carson.gdufs_sign_system.widget.CircleImageView
 import com.carson.gdufs_sign_system.widget.RoundImageView
+import java.lang.ref.WeakReference
 
-class HomeFragment: BaseFragment() {
+class HomeFragment: BaseFragment(), IViewCallback {
     override fun fragmentString(): String {
         return FRAGMENT_TAG
     }
@@ -56,7 +57,7 @@ class HomeFragment: BaseFragment() {
     }
 
     private fun initViews() {
-        mHomeController = HomeController(this)
+        mHomeController = HomeController(this, this)
         mAvatar = mRoot.findViewById(R.id.avatar)
         mUsername = mRoot.findViewById(R.id.username)
         mScan = mRoot.findViewById(R.id.home_scan)
@@ -87,6 +88,14 @@ class HomeFragment: BaseFragment() {
 
     fun onRefresh() {
         mHomeController.loadData()
+    }
+
+    override fun onDataLoaded() {
+        val authImage = Const.getSharedPreference(WeakReference(context))
+            ?.getString(Const.PreferenceKeys.AUTH_IMAGE, "")
+        if (authImage.isNullOrEmpty() || authImage == "empty") {
+            mHomeController.showTipsDialog()
+        }
     }
 
     override fun onDestroy() {

@@ -34,7 +34,7 @@ class LookupTotalItemAdapter(private var mItemList: MutableList<MyActivityItemBe
         holder.mTitle.text = itemModel.name
         holder.mEndTime.text = itemModel.endTime
         holder.mImageView.setImageResource(R.drawable.gdufs_tmp)
-        Glide.with(holder.itemView.context).load(itemModel.picUrl).into(holder.mImageView)
+        Glide.with(holder.itemView.context).load(itemModel.picUrl).thumbnail(0.5F).into(holder.mImageView)
         holder.mCardView.setOnClickListener {
             mCallback.onItemClick(it, itemModel.signingId)
         }

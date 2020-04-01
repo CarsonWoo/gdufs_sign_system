@@ -70,7 +70,7 @@ class DetailController(detailFragment: DetailFragment, private val mIView: IView
             R.id.detail_back -> {
                 (mFragment?.activity as DetailActivity?)?.onBackPressed()
             }
-            R.id.detail_sign_fab -> {
+            R.id.detail_sign_fab, R.id.detail_sign -> {
                 mFragment?.let {
                     PermissionUtils.getInstance().with(it).requestCode(PermissionUtils.CODE_MULTI)
                         .permissions(
@@ -107,7 +107,7 @@ class DetailController(detailFragment: DetailFragment, private val mIView: IView
 
     companion object {
         private const val TAG = "DetailController"
-        private const val SCROLL_BASE = 30F
+        private const val SCROLL_BASE = 10F
     }
 
     override fun onScrollChange(
