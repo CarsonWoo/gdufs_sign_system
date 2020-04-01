@@ -106,7 +106,7 @@ class LoginController(mFragment: LoginFragment?) : BaseController<LoginFragment?
         )
     }
 
-    fun jumpToMain(identity: String?) {
+    private fun jumpToMain(identity: String?) {
         if (identity == "0") {
             // 学生端
             // to student

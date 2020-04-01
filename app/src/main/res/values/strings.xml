@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">人人签</string>
+    <string name="app_logo_name">人脸识别考勤应用</string>
+    <string name="app_logo_name_en">Face-Detected Sign Application</string>
 
     <!--  字符常量  -->
     <string name="back_confirm_toast">再按一次退出app</string>
@@ -113,5 +115,8 @@
         <item>软件工程1602</item>
         <item>软件工程1603</item>
     </string-array>
+
+    <!--  view  -->
+    <string name="transition_logo_view">transition_logo_view</string>
 
 </resources>

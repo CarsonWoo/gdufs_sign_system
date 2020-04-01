@@ -13,7 +13,9 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.carson.gdufs_sign_system.widget.TipsDialog
 import java.lang.IllegalArgumentException
+import java.lang.ref.WeakReference
 import java.util.concurrent.ConcurrentHashMap
 
 class PermissionUtils private constructor() {
@@ -61,11 +63,11 @@ class PermissionUtils private constructor() {
 
     private val mPermissionStatusList = ConcurrentHashMap<String, STATE>()
 
-    private var mDialog: AlertDialog? = null
+    private var mDialog: TipsDialog? = null
 
     fun destroy() {
         if (mDialog != null) {
-            mDialog?.isShowing ?: mDialog?.dismiss()
+            mDialog?.isShowing() ?: mDialog?.dismiss()
             mDialog = null
         }
         if (mInstance != null) {
@@ -178,17 +180,19 @@ class PermissionUtils private constructor() {
     fun showDialog() {
         mActivity ?: return
         if (mDialog == null) {
-            mDialog = AlertDialog.Builder(mActivity)
-                .setMessage("有权限设置了不再提示，会影响app使用哦~快去\"设置\"页允许吧~")
-                .setPositiveButton("前往") { dialog, _ ->
-                    goToSetting()
-                    dialog.dismiss()
-                }
-                .setNegativeButton("取消") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .setCancelable(true)
-                .create()
+            mDialog = TipsDialog(WeakReference(mActivity)).apply {
+                setTips("有权限设置了不再提示，会影响app使用哦~快去\"设置\"页允许吧~")
+                setListener(object : TipsDialog.OnTipsDialogClickListener {
+                    override fun onCancel(dialog: TipsDialog) {
+                        dialog.dismiss()
+                    }
+
+                    override fun onConfirm(dialog: TipsDialog) {
+                        goToSetting()
+                        dialog.dismiss()
+                    }
+                })
+            }
         }
         mDialog?.show()
     }

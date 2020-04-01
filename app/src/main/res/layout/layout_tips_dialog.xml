@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="250dp"
-    android:layout_height="wrap_content"
+    android:layout_height="150dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bg_round_rect_white">
 
     <TextView
         android:id="@+id/tips_dialog_text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/tips_dialog_bottom_sheet"
         android:textSize="@dimen/normal_text_size"
         android:textColor="@color/colorBlack"
+        android:textAlignment="center"
+        android:gravity="center"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"/>
 
     <LinearLayout
         android:id="@+id/tips_dialog_bottom_sheet"
@@ -52,7 +54,7 @@
             android:textAlignment="center"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:textColor="@color/colorGray"
+            android:textColor="@color/colorDeepGray"
             android:text="@string/cancel"
             android:textSize="@dimen/normal_text_size" />
 

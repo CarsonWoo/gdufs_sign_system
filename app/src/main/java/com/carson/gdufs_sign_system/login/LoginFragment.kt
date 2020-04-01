@@ -75,17 +75,6 @@ class LoginFragment : BaseFragment(), View.OnClickListener,
         mBtnRegister.setOnClickListener(this)
         mTvForgetPassword.setOnClickListener(this)
         mEditPassword.setOnKeyListener(this)
-
-        Log.e(TAG, Const.getSharedPreference(WeakReference(context))
-            ?.getString(Const.PreferenceKeys.USER_ID, ""))
-        if (Const.getSharedPreference(WeakReference(context))
-                ?.getString(Const.PreferenceKeys.USER_ID, "")?.isNotEmpty() == true) {
-            Log.e(TAG, "identity = ${Const.getSharedPreference(WeakReference(context))
-                ?.getString(Const.PreferenceKeys.IDENTITY, "0")}")
-            // 直接跳主页
-            mLoginController.jumpToMain(Const.getSharedPreference(WeakReference(context))
-                ?.getString(Const.PreferenceKeys.IDENTITY, "0"))
-        }
     }
 
     override fun onKey(v: View?, keyCode: Int, event: KeyEvent?): Boolean {

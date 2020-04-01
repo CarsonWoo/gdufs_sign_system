@@ -15,13 +15,16 @@ class LoginActivity : BaseFragmentActivity() {
     }
 
     override fun getFragmentList(): MutableList<BaseFragment> {
+        if (mSplashFragment == null) {
+            mSplashFragment = SplashFragment.newInstance()
+        }
         if (mLoginFragment == null) {
             mLoginFragment = LoginFragment.newInstance()
         }
         if (mRegisterFragment == null) {
             mRegisterFragment = RegisterFragment.newInstance()
         }
-        return mutableListOf(mLoginFragment!!, mRegisterFragment!!)
+        return mutableListOf(mSplashFragment!!, mLoginFragment!!, mRegisterFragment!!)
     }
 
     override fun getContainerId(): Int {
@@ -34,6 +37,7 @@ class LoginActivity : BaseFragmentActivity() {
 
     private var mLoginFragment: LoginFragment? = null
     private var mRegisterFragment: RegisterFragment? = null
+    private var mSplashFragment: SplashFragment? = null
 
     override fun onBackPressed() {
         if (mLoginFragment?.let { return@let isFragmentTop(it) } == true) {
