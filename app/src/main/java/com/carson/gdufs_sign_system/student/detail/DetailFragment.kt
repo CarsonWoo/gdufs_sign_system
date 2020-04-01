@@ -82,6 +82,7 @@ class DetailFragment : BaseFragment(), IViewCallback {
 
     private fun initEvents() {
         mFloatingButton.tag = arguments?.getLong(Const.BundleKeys.DETAIL_ID)
+        mDetailSign.tag = arguments?.getLong(Const.BundleKeys.DETAIL_ID)
         mScrollView.setOnScrollChangeListener(mDetailController)
         mBack.setOnClickListener(mDetailController)
         mFloatingButton.setOnClickListener(mDetailController)
