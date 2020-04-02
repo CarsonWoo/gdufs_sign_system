@@ -10,10 +10,12 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
+import com.carson.gdufs_sign_system.model.SignBean
 import com.carson.gdufs_sign_system.student.main.adapter.HomeBannerAdapter
 import com.carson.gdufs_sign_system.student.main.adapter.HomeSignItemAdapter
 import com.carson.gdufs_sign_system.student.main.controller.HomeController
@@ -90,11 +92,16 @@ class HomeFragment: BaseFragment(), IViewCallback {
         mHomeController.loadData()
     }
 
-    override fun onDataLoaded() {
+    override fun onDataLoaded(mItemList: MutableList<SignBean>) {
         val authImage = Const.getSharedPreference(WeakReference(context))
             ?.getString(Const.PreferenceKeys.AUTH_IMAGE, "")
         if (authImage.isNullOrEmpty() || authImage == "empty") {
             mHomeController.showTipsDialog()
+        }
+        if (mItemList.size == 0) {
+            mRecyclerview.layoutManager = LinearLayoutManager(this.context)
+        } else {
+            mRecyclerview.layoutManager = GridLayoutManager(this.context, 2)
         }
     }
 

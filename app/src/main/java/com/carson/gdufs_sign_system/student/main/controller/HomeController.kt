@@ -90,7 +90,7 @@ class HomeController(homeFragment: HomeFragment, private val mIView: IViewCallba
             onSuccess = { res ->
                 if (res.isSuccessful) {
                     res.body()?.let {
-                        mIView.onDataLoaded()
+                        mIView.onDataLoaded(it.signingList)
                         Log.i(TAG, it.bannerList.size.toString() + " " + it.signingList.size)
                         mBannerAdapter.setData(it.bannerList)
                         mBannerAdapter.notifyDataSetChanged()

@@ -118,5 +118,6 @@
 
     <!--  view  -->
     <string name="transition_logo_view">transition_logo_view</string>
+    <string name="empty_content">没有内容哦</string>
 
 </resources>

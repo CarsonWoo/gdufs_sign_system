@@ -11,8 +11,14 @@ import com.bumptech.glide.Glide
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.model.SignBean
 import com.carson.gdufs_sign_system.utils.ScreenUtils
+import com.carson.gdufs_sign_system.widget.EmptyViewHolder
 
-class HomeSignItemAdapter: RecyclerView.Adapter<HomeSignItemAdapter.HomeItemViewHolder> {
+class HomeSignItemAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    companion object {
+        private const val EMPTY = 1
+        private const val ITEM = 2
+    }
 
     private var mItemList: MutableList<SignBean>
 
@@ -26,48 +32,74 @@ class HomeSignItemAdapter: RecyclerView.Adapter<HomeSignItemAdapter.HomeItemView
         this.mItemList = itemList
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeItemViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.home_sign_item, parent, false)
-        return HomeItemViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val view: View
+        return when (viewType) {
+            EMPTY -> {
+                view = LayoutInflater.from(parent.context).inflate(R.layout.layout_item_empty, parent, false)
+                EmptyViewHolder(view)
+            }
+            ITEM -> {
+                view = LayoutInflater.from(parent.context).inflate(R.layout.home_sign_item, parent, false)
+                HomeItemViewHolder(view)
+            }
+            else -> {
+                view = LayoutInflater.from(parent.context).inflate(R.layout.layout_item_empty, parent, false)
+                EmptyViewHolder(view)
+            }
+        }
     }
 
     override fun getItemCount(): Int {
-        return mItemList.size
+        return if (mItemList.size == 0) 1 else mItemList.size
     }
 
-    override fun onBindViewHolder(holder: HomeItemViewHolder, position: Int) {
-        holder.mItemView.apply {
-            val params = layoutParams as RecyclerView.LayoutParams
-            params.bottomMargin = ScreenUtils.dip2px_20(context)
-            if (position % 2 == 0) {
-                // 左侧item
-                params.leftMargin = ScreenUtils.dip2px_20(context)
-                params.rightMargin = ScreenUtils.dip2px_10(context)
-            } else {
-                params.leftMargin = ScreenUtils.dip2px_10(context)
-                params.rightMargin = ScreenUtils.dip2px_20(context)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is HomeItemViewHolder) {
+            holder.mItemView.apply {
+                val params = layoutParams as RecyclerView.LayoutParams
+                params.bottomMargin = ScreenUtils.dip2px_20(context)
+                if (position % 2 == 0) {
+                    // 左侧item
+                    params.leftMargin = ScreenUtils.dip2px_20(context)
+                    params.rightMargin = ScreenUtils.dip2px_10(context)
+                } else {
+                    params.leftMargin = ScreenUtils.dip2px_10(context)
+                    params.rightMargin = ScreenUtils.dip2px_20(context)
+                }
+                this.layoutParams = params
             }
-            this.layoutParams = params
+            val item = mItemList[position]
+            Glide.with(holder.mPic.context).load(item.picUrl).thumbnail(0.5F).into(holder.mPic)
+            holder.apply {
+                mName.text = item.name
+                mDate.text = item.startTime
+                mPeopleNum.text = mPeopleNum.context.resources.getString(R.string.sign_people, item.num.toString())
+                if (item.status == "已签到") {
+                    mBtnSign.text = "已签到"
+                    mBtnSign.isEnabled = false
+                } else {
+                    mBtnSign.text = "签到"
+                    mBtnSign.isEnabled = true
+                }
+                mBtnSign.setOnClickListener {
+                    mSignClickListener?.onSignClick(item.id)
+                }
+                mItemView.setOnClickListener {
+                    mSignClickListener?.onSignClick(item.id)
+                }
+            }
+        } else if (holder is EmptyViewHolder) {
+            // 空
+            holder.emptyText.text = "还没有签到活动哦"
         }
-        val item = mItemList[position]
-        Glide.with(holder.mPic.context).load(item.picUrl).thumbnail(0.5F).into(holder.mPic)
-        holder.apply {
-            mName.text = item.name
-            mDate.text = item.startTime
-            mPeopleNum.text = mPeopleNum.context.resources.getString(R.string.sign_people, item.num.toString())
-            if (item.status == "已签到") {
-                mBtnSign.text = "已签到"
-                mBtnSign.isEnabled = false
-            } else {
-                mBtnSign.text = "签到"
-                mBtnSign.isEnabled = true
-            }
-            mBtnSign.setOnClickListener {
-                mSignClickListener?.onSignClick(item.id)
-            }
-            mItemView.setOnClickListener {
-                mSignClickListener?.onSignClick(item.id)
-            }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        if (mItemList.size == 0) {
+            return EMPTY
+        } else {
+            return ITEM
         }
     }
 

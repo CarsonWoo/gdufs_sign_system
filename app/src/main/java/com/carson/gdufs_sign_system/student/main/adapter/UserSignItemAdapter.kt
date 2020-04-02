@@ -11,51 +11,82 @@ import com.bumptech.glide.Glide
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.model.SignBean
 import com.carson.gdufs_sign_system.utils.ScreenUtils
+import com.carson.gdufs_sign_system.widget.EmptyViewHolder
 
 class UserSignItemAdapter(private var mList: MutableList<SignBean>):
-    RecyclerView.Adapter<UserSignItemAdapter.UserItemViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    companion object {
+        private const val EMPTY = 0
+        private const val ITEM = 1
+    }
 
     fun setData(list: MutableList<SignBean>) {
         mList = list
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserItemViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.home_sign_item, parent, false)
-        return UserItemViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val view: View
+        return when (viewType) {
+            ITEM -> {
+                view = LayoutInflater.from(parent.context).inflate(R.layout.home_sign_item, parent, false)
+                UserItemViewHolder(view)
+            }
+            EMPTY -> {
+                view = LayoutInflater.from(parent.context).inflate(R.layout.layout_item_empty, parent, false)
+                EmptyViewHolder(view)
+            }
+            else -> {
+                view = LayoutInflater.from(parent.context).inflate(R.layout.layout_item_empty, parent, false)
+                EmptyViewHolder(view)
+            }
+        }
     }
 
     override fun getItemCount(): Int {
-        return mList.size
+        return if (mList.size == 0) 1 else mList.size
     }
 
-    override fun onBindViewHolder(holder: UserItemViewHolder, position: Int) {
-        holder.mItemView.apply {
-            val params = layoutParams as RecyclerView.LayoutParams
-            params.width = ScreenUtils.dip2px(context, 160F)
-            when (position) {
-                0 -> {
-                    // 最左侧item
-                    params.leftMargin = ScreenUtils.dip2px_20(context)
-                    params.rightMargin = ScreenUtils.dip2px_10(context)
+    override fun getItemViewType(position: Int): Int {
+        return if (mList.size == 0) EMPTY else ITEM
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is UserItemViewHolder) {
+            holder.mItemView.apply {
+                val params = layoutParams as RecyclerView.LayoutParams
+                params.width = ScreenUtils.dip2px(context, 160F)
+                when (position) {
+                    0 -> {
+                        // 最左侧item
+                        params.leftMargin = ScreenUtils.dip2px_20(context)
+                        params.rightMargin = ScreenUtils.dip2px_10(context)
+                    }
+                    mList.size - 1 -> {
+                        // 最右侧item
+                        params.leftMargin = ScreenUtils.dip2px_10(context)
+                        params.rightMargin = ScreenUtils.dip2px_20(context)
+                    }
+                    else -> {
+                        params.leftMargin = ScreenUtils.dip2px_10(context)
+                        params.rightMargin = ScreenUtils.dip2px_10(context)
+                    }
                 }
-                mList.size - 1 -> {
-                    // 最右侧item
-                    params.leftMargin = ScreenUtils.dip2px_10(context)
-                    params.rightMargin = ScreenUtils.dip2px_20(context)
-                }
-                else -> {
-                    params.leftMargin = ScreenUtils.dip2px_10(context)
-                    params.rightMargin = ScreenUtils.dip2px_10(context)
-                }
+                this.layoutParams = params
             }
-            this.layoutParams = params
-        }
-        val item = mList[position]
-        Glide.with(holder.mPic.context).load(item.picUrl).thumbnail(0.5F).into(holder.mPic)
-        holder.apply {
-            mName.text = item.name
-            mDate.text = item.signingTime
-            mPeopleNum.text = mPeopleNum.context.resources.getString(R.string.sign_people, item.num.toString())
+            val item = mList[position]
+            Glide.with(holder.mPic.context).load(item.picUrl).thumbnail(0.5F).into(holder.mPic)
+            holder.apply {
+                mName.text = item.name
+                mDate.text = item.signingTime
+                mPeopleNum.text = mPeopleNum.context.resources.getString(R.string.sign_people, item.num.toString())
+            }
+        } else if (holder is EmptyViewHolder) {
+            holder.emptyText.text = "还没有已签到的活动哦~"
+            val params = holder.mItemView.layoutParams
+            params.width = ScreenUtils.getScreenWidth(holder.mItemView.context) - ScreenUtils.dip2px_20(holder.mItemView.context)
+            params.height = ScreenUtils.dip2px(holder.mItemView.context, 230F)
+            holder.mItemView.layoutParams = params
         }
     }
 
