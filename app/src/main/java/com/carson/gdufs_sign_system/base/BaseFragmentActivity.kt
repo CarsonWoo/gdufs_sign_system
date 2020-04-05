@@ -66,7 +66,7 @@ abstract class BaseFragmentActivity: BaseActivity() {
                     setTransition(mTransaction)
                 }
                 show(fragment)
-                commit()
+                commitAllowingStateLoss()
             }
         }
         mFragmentList?.forEachIndexed { index, baseFragment ->
@@ -136,7 +136,7 @@ abstract class BaseFragmentActivity: BaseActivity() {
                 setTransition(mTransaction)
             }
             hide(fragment)
-            commit()
+            commitAllowingStateLoss()
         }
     }
 

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.carson.gdufs_sign_system.R
@@ -18,6 +19,7 @@ import com.carson.gdufs_sign_system.student.main.adapter.UserSignItemAdapter
 import com.carson.gdufs_sign_system.student.main.controller.UserController
 import com.carson.gdufs_sign_system.utils.Const
 import com.carson.gdufs_sign_system.widget.RoundImageView
+import com.carson.gdufs_sign_system.widget.RoundRelativeLayout
 import java.lang.ref.WeakReference
 
 class UserFragment: BaseFragment(), IViewCallback {
@@ -37,6 +39,7 @@ class UserFragment: BaseFragment(), IViewCallback {
     private lateinit var mScan: RelativeLayout
     private lateinit var mSetting: RelativeLayout
     private lateinit var mLogout: RelativeLayout
+    private lateinit var mUserHeader: RoundRelativeLayout
 
     private lateinit var mAdapter: UserSignItemAdapter
 
@@ -66,6 +69,7 @@ class UserFragment: BaseFragment(), IViewCallback {
         mScan = mRoot.findViewById(R.id.scan)
         mSetting = mRoot.findViewById(R.id.setting)
         mLogout = mRoot.findViewById(R.id.logout)
+        mUserHeader = mRoot.findViewById(R.id.user_tab_header)
 
         // recyclerview
         mAdapter = mUserController.getUserItemAdapter()
@@ -77,6 +81,26 @@ class UserFragment: BaseFragment(), IViewCallback {
     private fun initEvents() {
         mLogout.setOnClickListener {
             mUserController.logout()
+        }
+        mDarkMode.setOnClickListener {
+            (activity as BaseActivity).let { aty ->
+                if (aty.isNightMode()) {
+                    aty.setNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                } else {
+                    aty.setNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                }
+            }
+        }
+        if ((activity as BaseActivity).isNightMode()) {
+            mUserHeader.setBackgroundResource(R.drawable.bg_round_rect_night)
+            mDarkMode.setBackgroundResource(R.drawable.bg_round_rect_night)
+            mScan.setBackgroundResource(R.drawable.bg_round_rect_night)
+            mSetting.setBackgroundResource(R.drawable.bg_round_rect_night)
+        } else {
+            mUserHeader.setBackgroundResource(R.drawable.bg_round_rect_white)
+            mDarkMode.setBackgroundResource(R.drawable.bg_selector_round_rect_white2gray)
+            mScan.setBackgroundResource(R.drawable.bg_selector_round_rect_white2gray)
+            mSetting.setBackgroundResource(R.drawable.bg_selector_round_rect_white2gray)
         }
         mUserController.loadPersonalData()
     }

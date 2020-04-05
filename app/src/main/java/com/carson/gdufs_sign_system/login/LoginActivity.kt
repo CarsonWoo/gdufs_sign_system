@@ -1,6 +1,7 @@
 package com.carson.gdufs_sign_system.login
 
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatDelegate
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.base.BaseFragmentActivity
@@ -12,6 +13,9 @@ class LoginActivity : BaseFragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getContentViewResId())
+        if (!isNightMode()) {
+            setNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
     }
 
     override fun getFragmentList(): MutableList<BaseFragment> {

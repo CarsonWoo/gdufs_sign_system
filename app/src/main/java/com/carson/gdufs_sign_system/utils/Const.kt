@@ -60,6 +60,7 @@ object Const {
         const val USER_ID = "userId"
         const val AUTH_IMAGE = "authImage"
         const val IDENTITY = "identity"
+        const val DAYNIGHT_MODE = "daynight_mode"
     }
 
     object BundleKeys {

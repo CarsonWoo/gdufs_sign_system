@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.carson.gdufs_sign_system.R
 import com.carson.gdufs_sign_system.utils.Const
 import com.carson.gdufs_sign_system.utils.StatusBarUtil
+import java.lang.ref.WeakReference
 
 /**
  * Activity基类
@@ -62,6 +64,24 @@ abstract class BaseActivity : AppCompatActivity() {
 //            StatusBarUtil.setStatusBarColor(this, 0x55000000)
 //        }
         StatusBarUtil.setStatusBarColor(this, 0x55000000)
+    }
+
+    fun setNightMode(tmpMode: Int) {
+        val mode = if (tmpMode != 1 && tmpMode != 2) AppCompatDelegate.MODE_NIGHT_NO else tmpMode
+        AppCompatDelegate.setDefaultNightMode(mode)
+        Const.getSharedPreference(WeakReference(this))!!.edit()
+            .putInt(Const.PreferenceKeys.DAYNIGHT_MODE, mode).apply()
+    }
+
+    fun isNightMode(): Boolean {
+        return Const.getSharedPreference(WeakReference(this))
+            ?.getInt(Const.PreferenceKeys.DAYNIGHT_MODE,
+                AppCompatDelegate.MODE_NIGHT_NO) == AppCompatDelegate.MODE_NIGHT_YES
+    }
+
+    fun setDarkStatusBar() {
+        StatusBarUtil.setStatusBarColor(this, resources.getColor(R.color.colorBlack))
+        StatusBarUtil.setStatusBarDarkTheme(this, false)
     }
 
     abstract fun getContentViewResId(): Int

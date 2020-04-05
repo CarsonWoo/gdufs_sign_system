@@ -22,9 +22,19 @@ class MainActivity: BaseFragmentActivity(), TabSelector.OnTabSelectListener {
         super.onCreate(savedInstanceState)
         setContentView(getContentViewResId())
         mTabSelector = findViewById(R.id.tab_selector)
+        initEvent()
+    }
+
+    private fun initEvent() {
         mTabSelector.setSelectListener(this)
-        StatusBarUtil.setStatusBarColor(this, resources.getColor(R.color.colorWhite))
-        StatusBarUtil.setStatusBarDarkTheme(this, true)
+        if (isNightMode()) {
+            mTabSelector.setBackgroundResource(R.drawable.bg_tabbar_night)
+            setDarkStatusBar()
+        } else {
+            mTabSelector.setBackgroundResource(R.drawable.bg_tabbar)
+            StatusBarUtil.setStatusBarColor(this, resources.getColor(R.color.colorCommonBackground))
+            StatusBarUtil.setStatusBarDarkTheme(this, true)
+        }
     }
 
     override fun onBackPressed() {
@@ -40,8 +50,12 @@ class MainActivity: BaseFragmentActivity(), TabSelector.OnTabSelectListener {
     override fun onTabSelected(position: Int) {
         when (position) {
             0 -> {
-                StatusBarUtil.setStatusBarColor(this, resources.getColor(R.color.colorWhite))
-                StatusBarUtil.setStatusBarDarkTheme(this, true)
+                if (isNightMode()) {
+                    setDarkStatusBar()
+                } else {
+                    StatusBarUtil.setStatusBarColor(this, resources.getColor(R.color.colorWhite))
+                    StatusBarUtil.setStatusBarDarkTheme(this, true)
+                }
                 hide(mUserFragment?.fragmentString())
                 show(mHomeFragment?.fragmentString())
             }

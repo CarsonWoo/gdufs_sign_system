@@ -15,4 +15,6 @@
     <color name="alphaColorWhite_70">#B2FFFFFF</color>
     <color name="alphaColorWhite_50">#7FFFFFFF</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="alphaColorBlack_70">#B2333333</color>
+    <color name="alphaColorBlack_50">#7F333333</color>
 </resources>

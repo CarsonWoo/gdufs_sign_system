@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.*
 import android.widget.*
 import com.carson.gdufs_sign_system.R
+import com.carson.gdufs_sign_system.base.BaseActivity
 import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.student.scan.controller.ScanController
 import com.carson.gdufs_sign_system.utils.Const
@@ -61,7 +62,11 @@ class ScanFragment : BaseFragment(), ViewTreeObserver.OnGlobalLayoutListener, IV
         mTextSwitcher.setFactory {
             val textView = TextView(context)
             textView.textSize = 14F
-            textView.setTextColor(Color.BLACK)
+            if ((activity as BaseActivity).isNightMode()) {
+                textView.setTextColor(Color.WHITE)
+            } else {
+                textView.setTextColor(Color.BLACK)
+            }
             textView.gravity = Gravity.CENTER
             return@setFactory textView
         }
@@ -92,6 +97,18 @@ class ScanFragment : BaseFragment(), ViewTreeObserver.OnGlobalLayoutListener, IV
         }
 
         mTextSwitcher.setText("请将人脸放入取景框中")
+
+        applyDarkMode()
+    }
+
+    private fun applyDarkMode() {
+        (activity as BaseActivity).apply {
+            if (isNightMode()) {
+                mRoot.setBackgroundColor(resources.getColor(R.color.colorBlack))
+            } else {
+                mRoot.setBackgroundColor(resources.getColor(R.color.colorWhite))
+            }
+        }
     }
 
     override fun onSwitchText(text: String) {

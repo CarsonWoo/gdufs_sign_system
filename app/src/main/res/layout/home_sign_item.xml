@@ -24,7 +24,6 @@
         android:ellipsize="end"
         android:layout_below="@id/home_item_pic"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="8dp"
         tools:text="@string/sign_activity"
         android:layout_marginStart="10dp" />
 
@@ -33,8 +32,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/mini_text_size"
+        android:textColor="@color/colorDeepGray"
         tools:text="2019年11月30日 14：00-18：00"
-        android:layout_alignLeft="@id/home_item_activity_name"
         android:layout_alignStart="@id/home_item_activity_name"
         android:layout_below="@id/home_item_activity_name"
         android:layout_marginTop="5dp"/>

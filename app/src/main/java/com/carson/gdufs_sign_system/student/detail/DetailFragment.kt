@@ -7,9 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.view.children
 import androidx.core.widget.NestedScrollView
 import com.bumptech.glide.Glide
 import com.carson.gdufs_sign_system.R
+import com.carson.gdufs_sign_system.base.BaseActivity
 import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.model.SignDetailBean
 import com.carson.gdufs_sign_system.student.detail.controller.DetailController
@@ -39,6 +41,8 @@ class DetailFragment : BaseFragment(), IViewCallback {
     private lateinit var mFloatingButton: RelativeLayout
     private lateinit var mDetailSign: TextView
     private lateinit var mDetailTypeImage: ImageView
+    private lateinit var mDetailInfo: LinearLayout
+    private lateinit var mDetailStatusLayout: LinearLayout
 
     private lateinit var mProgressBar: ProgressBar
 
@@ -75,6 +79,8 @@ class DetailFragment : BaseFragment(), IViewCallback {
         mDetailTypeImage = mRootView.findViewById(R.id.detail_type_img)
         mProgressBar = mRootView.findViewById(R.id.detail_progress_bar)
         mDetailSign = mRootView.findViewById(R.id.detail_sign)
+        mDetailInfo = mRootView.findViewById(R.id.detail_info)
+        mDetailStatusLayout = mRootView.findViewById(R.id.detail_status_layout)
 
         mProgressBar.visibility = View.VISIBLE
         mFloatingButton.isEnabled = false
@@ -88,8 +94,42 @@ class DetailFragment : BaseFragment(), IViewCallback {
         mFloatingButton.setOnClickListener(mDetailController)
         mDetailSign.setOnClickListener(mDetailController)
 
+        applyDarkMode()
+
         arguments?.let {
             mDetailController.loadData(it.getLong(Const.BundleKeys.DETAIL_ID))
+        }
+    }
+
+    private fun applyDarkMode() {
+        if ((activity as BaseActivity).isNightMode()) {
+            mTitle.setTextColor(resources.getColor(R.color.colorWhite))
+            mDetailInfo.setBackgroundResource(R.drawable.bg_round_rect_night)
+            mDetailSignPlace.setTextColor(resources.getColor(R.color.colorWhite))
+            mDetailStatusLayout.setBackgroundResource(R.drawable.bg_round_rect_night)
+            for (v in mDetailStatusLayout.children) {
+                if (v is ViewGroup) {
+                    for (cv in v.children) {
+                        if (cv is TextView) cv.setTextColor(resources.getColor(R.color.colorWhite))
+                    }
+                }
+                if (v is TextView) v.setTextColor(resources.getColor(R.color.colorWhite))
+            }
+            mScrollView.setBackgroundColor(resources.getColor(R.color.colorBlack))
+        } else {
+            mTitle.setTextColor(resources.getColor(R.color.colorBlack))
+            mDetailInfo.setBackgroundResource(R.drawable.bg_round_rect_white)
+            mDetailSignPlace.setTextColor(resources.getColor(R.color.colorBlack))
+            mDetailStatusLayout.setBackgroundResource(R.drawable.bg_round_rect_white)
+            for (v in mDetailStatusLayout.children) {
+                if (v is ViewGroup) {
+                    for (cv in v.children) {
+                        if (cv is TextView) cv.setTextColor(resources.getColor(R.color.colorBlack))
+                    }
+                }
+                if (v is TextView) v.setTextColor(resources.getColor(R.color.colorBlack))
+            }
+            mScrollView.setBackgroundColor(resources.getColor(R.color.colorWhite))
         }
     }
 
@@ -97,7 +137,7 @@ class DetailFragment : BaseFragment(), IViewCallback {
         Log.i(TAG, "value = $value")
         if (value > 0.1F && !mIsSigned) {
             mFloatingButton.visibility = View.VISIBLE
-            mFloatingButton.translationY = 50F * (1F - value)
+            mFloatingButton.translationY = 10F * (1F - value)
             mFloatingButton.alpha = value
         } else {
             mFloatingButton.visibility = View.GONE
@@ -120,6 +160,13 @@ class DetailFragment : BaseFragment(), IViewCallback {
         mDetailType.text = resources.getString(R.string.detail_type, data.status)
         mDetailTypeImage.setImageResource(if (mIsSigned) R.drawable.status_pass else R.drawable.status_unpass)
         mDetailSignedPeople.text = resources.getString(R.string.detail_people, data.signedNum, data.totalNum)
+
+        if (mIsSigned) {
+            // 已签到
+            mDetailSign.visibility = View.GONE
+        } else {
+            mDetailSign.visibility = View.VISIBLE
+        }
 
         mDetailController.setupMapView(mMapView, data.latitude, data.longtitude, data.range, data.place)
     }

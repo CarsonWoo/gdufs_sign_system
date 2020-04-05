@@ -4,11 +4,20 @@ import android.app.Activity
 import android.app.Application
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatDelegate
 import com.carson.gdufs_sign_system.login.LoginActivity
+import com.carson.gdufs_sign_system.utils.Const
+import java.lang.ref.WeakReference
 
 class BaseApplication : Application() {
     override fun onCreate() {
         super.onCreate()
+
+        Const.getSharedPreference(WeakReference(applicationContext))?.let { sp ->
+            AppCompatDelegate.setDefaultNightMode(sp.getInt(Const.PreferenceKeys.DAYNIGHT_MODE,
+                AppCompatDelegate.MODE_NIGHT_NO))
+        }
+
         registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
             override fun onActivityPaused(activity: Activity?) {
             }

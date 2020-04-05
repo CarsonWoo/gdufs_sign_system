@@ -15,9 +15,10 @@ import com.carson.gdufs_sign_system.manager.post.PostActivity
 import com.carson.gdufs_sign_system.utils.Const
 import com.carson.gdufs_sign_system.utils.StatusBarUtil
 import com.carson.gdufs_sign_system.widget.RoundImageView
+import com.carson.gdufs_sign_system.widget.TipsDialog
 import java.lang.ref.WeakReference
 
-class ManageActivity : BaseActivity(), IViewCallback {
+class ManageActivity : BaseActivity(), IViewCallback, TipsDialog.OnTipsDialogClickListener {
 
     private lateinit var mController: ManageController
 
@@ -59,18 +60,23 @@ class ManageActivity : BaseActivity(), IViewCallback {
 
     private fun initEvent() {
         mLogoutButton.setOnClickListener {
-            AlertDialog.Builder(this)
-                .setMessage("确定退出登录么")
-                .setPositiveButton("确定") {
-                    dialog, _ ->
-                    doLogout()
-                    dialog.dismiss()
-                }
-                .setNegativeButton("取消") {
-                    dialog, _ -> dialog.dismiss()
-                }
-                .setCancelable(true)
-                .show()
+//            AlertDialog.Builder(this)
+//                .setMessage("确定退出登录么")
+//                .setPositiveButton("确定") {
+//                    dialog, _ ->
+//                    doLogout()
+//                    dialog.dismiss()
+//                }
+//                .setNegativeButton("取消") {
+//                    dialog, _ -> dialog.dismiss()
+//                }
+//                .setCancelable(true)
+//                .show()
+            TipsDialog(WeakReference(this)).apply {
+                setTips("确定退出登录么")
+                setListener(this@ManageActivity)
+                show()
+            }
         }
         mPostSign.setOnClickListener {
             Intent(this, PostActivity::class.java).apply {
@@ -97,6 +103,15 @@ class ManageActivity : BaseActivity(), IViewCallback {
 
     override fun onShowText(str: String, type: Int) {
 
+    }
+
+    override fun onConfirm(dialog: TipsDialog) {
+        dialog.dismiss()
+        doLogout()
+    }
+
+    override fun onCancel(dialog: TipsDialog) {
+        dialog.dismiss()
     }
 
     override fun onDestroy() {

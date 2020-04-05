@@ -2,11 +2,13 @@ package com.carson.gdufs_sign_system.student.main.home
 
 import android.Manifest
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.carson.gdufs_sign_system.R
+import com.carson.gdufs_sign_system.base.BaseActivity
 import com.carson.gdufs_sign_system.base.BaseFragment
 import com.carson.gdufs_sign_system.model.SignBean
 import com.carson.gdufs_sign_system.student.main.adapter.HomeBannerAdapter
@@ -40,6 +43,7 @@ class HomeFragment: BaseFragment(), IViewCallback {
     private lateinit var mViewPager: ViewPager
     private lateinit var mBannerDot: BannerDot
     private lateinit var mRecyclerview: RecyclerView
+    private lateinit var mScanImage: View
 
     private lateinit var mPagerAdapter: HomeBannerAdapter
 
@@ -63,6 +67,7 @@ class HomeFragment: BaseFragment(), IViewCallback {
         mAvatar = mRoot.findViewById(R.id.avatar)
         mUsername = mRoot.findViewById(R.id.username)
         mScan = mRoot.findViewById(R.id.home_scan)
+        mScanImage = mRoot.findViewById(R.id.home_scan_image)
         mSearchBar = mRoot.findViewById(R.id.home_search_bar)
         mViewPager = mRoot.findViewById(R.id.view_pager)
         mBannerDot = mRoot.findViewById(R.id.banner_dot)
@@ -82,6 +87,10 @@ class HomeFragment: BaseFragment(), IViewCallback {
     }
 
     private fun initEvents() {
+        if ((activity as BaseActivity).isNightMode()) {
+            mScanImage.setBackgroundResource(R.drawable.icon_face_scan_night)
+            mSearchBar.setHintTextColor(Color.BLACK)
+        }
         mScan.setOnClickListener {
            mHomeController.onScanClick()
         }
