@@ -12,15 +12,15 @@ import com.carson.gdufs_sign_system.utils.ScreenUtils
 
 class CircleTextureBorderView : View {
 
-    private var mPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val mPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
-    private var mAnimatePaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val mAnimatePaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
-    private var mTextureViewWidth: Int = measuredWidth - ScreenUtils.dip2px(context, 73F)
+    private var mTextureViewWidth: Int = measuredWidth /*- ScreenUtils.dip2px(context, 73F)*/
 
     private var mColor = Color.CYAN
 
-    private var mTextPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val mTextPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     private var mTipsText: String = "请放入人脸"
 
@@ -37,12 +37,11 @@ class CircleTextureBorderView : View {
         mTextPaint.style = Paint.Style.FILL
         mTextPaint.textSize = ScreenUtils.dip2px(context, 12F).toFloat()
         mTextPaint.strokeWidth = 1F
-        mTextPaint.letterSpacing = 0.1F
         mTextHeight = mTextPaint.fontMetrics.descent - mTextPaint.fontMetrics.ascent
         attributeSet?.apply {
             val a = context.obtainStyledAttributes(this, R.styleable.CircleTextureBorderView)
-            mTextureViewWidth = a.getDimensionPixelSize(R.styleable.CircleTextureBorderView_circleTextureWidth,
-                measuredWidth - ScreenUtils.dip2px(context, 73F))
+//            mTextureViewWidth = a.getDimensionPixelSize(R.styleable.CircleTextureBorderView_circleTextureWidth,
+//                measuredWidth /*- ScreenUtils.dip2px(context, 73F)*/)
             mColor = a.getColor(R.styleable.CircleTextureBorderView_circleTextureBorderColor,
                 Color.CYAN)
             a.recycle()
@@ -75,6 +74,11 @@ class CircleTextureBorderView : View {
 
     fun setTipsText(str: String) {
         this.mTipsText = str
+        postInvalidate()
+    }
+
+    fun setCircleTextureWidth(width: Int) {
+        this.mTextureViewWidth = width
         postInvalidate()
     }
 

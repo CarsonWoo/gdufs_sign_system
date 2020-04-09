@@ -60,18 +60,6 @@ class ManageActivity : BaseActivity(), IViewCallback, TipsDialog.OnTipsDialogCli
 
     private fun initEvent() {
         mLogoutButton.setOnClickListener {
-//            AlertDialog.Builder(this)
-//                .setMessage("确定退出登录么")
-//                .setPositiveButton("确定") {
-//                    dialog, _ ->
-//                    doLogout()
-//                    dialog.dismiss()
-//                }
-//                .setNegativeButton("取消") {
-//                    dialog, _ -> dialog.dismiss()
-//                }
-//                .setCancelable(true)
-//                .show()
             TipsDialog(WeakReference(this)).apply {
                 setTips("确定退出登录么")
                 setListener(this@ManageActivity)

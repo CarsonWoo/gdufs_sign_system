@@ -135,7 +135,9 @@ class ScanFragment : BaseFragment(), ViewTreeObserver.OnGlobalLayoutListener, IV
         params.height = sideLength
         mTextureView.layoutParams = params
 //        mTextureView.setRadius(min(mTextureView.width.toFloat(), mTextureView.height.toFloat()) / 2)
+        Log.e("Texture", "sideLength = $sideLength")
         mTextureView.turnRound()
+        mTextureBorder.setCircleTextureWidth(sideLength)
         if (PermissionUtils.isGranted(Manifest.permission.CAMERA, this.context!!)) {
             mController?.initCamera()
         } else {

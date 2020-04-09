@@ -230,9 +230,7 @@ class CameraHelper private constructor(builder: Builder) {
         override fun onConfigured(session: CameraCaptureSession) {
             Log.i(TAG, "onConfigured: ")
             // The camera is already closed
-            if (null == mCameraDevice) {
-                return
-            }
+            mCameraDevice?: return
 
             // When the session is ready, we start displaying the preview
             mCaptureSession = session
@@ -267,7 +265,6 @@ class CameraHelper private constructor(builder: Builder) {
             // 这里做保存工作
             Log.e(TAG, "onImageAvailable")
             val image = reader?.acquireNextImage()
-            // Y : U : V = 4 : 2 : 2
             if (cameraListener != null && image?.format == ImageFormat.JPEG) {
                 val planes = image.planes
                 // 加锁保证y,u,v来源于同一个Image
@@ -546,7 +543,7 @@ class CameraHelper private constructor(builder: Builder) {
     }
 
     fun takePhoto() {
-        // 一定要在这里加 不然回调不了 如果在上面加 会导致一直在capture
+        // 一定要在这里加 不然回调不了 如果在上面加 会导致一直在捕获图像
         mImageReader?.let {
             mPreviewRequestBuilder?.addTarget(it.surface)
         }

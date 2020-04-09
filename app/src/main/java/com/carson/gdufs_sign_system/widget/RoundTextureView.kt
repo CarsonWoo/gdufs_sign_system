@@ -38,7 +38,8 @@ class RoundTextureView: TextureView {
                     Rect((measuredWidth - measuredHeight) / 2, 0, measuredHeight, (measuredHeight + measuredWidth) / 2)
                 }
 //                Log.e("RoundTextureView", "rect left = ${rect.left} top = ${rect.top} width = ${rect.width()} height = ${rect.height()}")
-                outline?.setRoundRect(rect, mRadius)
+//                outline?.setRoundRect(rect, mRadius)
+                outline?.setOval(rect)
 
             }
         }

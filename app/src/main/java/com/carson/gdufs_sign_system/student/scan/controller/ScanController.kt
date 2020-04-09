@@ -140,16 +140,6 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback 
 
         val postImage = Base64Util.encode(bytes)
 
-//        val path = mFragment?.activity?.application?.getExternalFilesDir(null)?.absolutePath +
-//                File.separator + "signPhoto" + File.separator + "IMG_20200304_2120017.jpg"
-//        Log.e(TAG, "path = $path")
-//        val bmp = BitmapFactory.decodeFile(path)
-//        val authBytes = bmp.byteCount
-//        val buf = ByteBuffer.allocate(authBytes)
-//        bmp.copyPixelsToBuffer(buf)
-//        val authByteArray = buf.array()
-//        Log.e(TAG, "authByteArray = ${authByteArray.size} and postByteArray = ${bytes.size}")
-
         // 提取从服务器获取的该用户人脸基准认证图片
         val authImage = Const.getSharedPreference(WeakReference(mFragment?.context))
             ?.getString(Const.PreferenceKeys.AUTH_IMAGE, "")
@@ -289,7 +279,6 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback 
     ) {
         Log.i(TAG, "onPreview: ")
         mFragment?.activity?.runOnUiThread {
-//            mIView.onSwitchText("识别图片中...")
             switchText("识别图片中", "")
         }
         val sdf = SimpleDateFormat("yyyyMMdd_HHmmsss", Locale.US)
@@ -311,11 +300,6 @@ class ScanController(mFragment: ScanFragment, private val mIView: IViewCallback 
                 .execute(ImageSaver(byteArray, mFileName, this@ScanController))
 
         }
-//        val buf = ByteArray(byteBuffer.remaining())
-//        val postImage = Base64Util.encode(buf)
-//        val path = Environment.getExternalStorageDirectory().absolutePath + File.separator +
-
-//        AipFaceObject.getClient().match()
     }
 
     override fun onCameraClosed() {

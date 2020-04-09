@@ -45,7 +45,6 @@
 
         <com.carson.gdufs_sign_system.widget.CircleTextureBorderView
             android:id="@+id/face_border"
-            app:circleTextureWidth="227dp"
             app:circleTextureBorderColor="@color/colorCyan"
             android:layout_width="300dp"
             android:layout_height="300dp"
