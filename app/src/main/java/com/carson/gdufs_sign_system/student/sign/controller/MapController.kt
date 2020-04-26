@@ -156,22 +156,15 @@ class MapController(mapFragment: MapFragment, private val mView: IViewCallback) 
                 setIcon(BitmapDescriptorFactory.fromView(View.inflate(mFragment?.context,
                     R.layout.layout_marker_my_location, null)))
             }
-//            23.06554767726593, 113.39734911918642
 
-//            val distance = TencentLocationUtils.distanceBetween(latitude, longitude,
-//                Const.GDUFS_LATLNG.latitude, Const.GDUFS_LATLNG.longitude)
-
-//            val distance = TencentLocationUtils.distanceBetween(Const.GDUFS_LATLNG.latitude, Const.GDUFS_LATLNG.longitude,
-//                23.06554, 113.39735)
-//            Log.e(TAG, "distance = $distance")
             if (mCircleView?.contains(mLatLng) == false) {
                 // 超出签到距离
-                mMap?.animateCamera(CameraUpdateFactory.newLatLngBounds(createBounds(mLatLng!!, Const.GDUFS_LATLNG), 10),
+                mMap?.animateCamera(CameraUpdateFactory.newLatLngBounds(createBounds(mLatLng!!, mTargetLatLng), 10),
                     1000L, null)
                 Toast.makeText(mFragment?.context, "超出签到距离", Toast.LENGTH_SHORT).show()
             } else {
                 // 满足签到距离
-                mMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(Const.GDUFS_LATLNG, 15F))
+                mMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(mTargetLatLng, 15F))
                 mView.onFabShow()
             }
         }
